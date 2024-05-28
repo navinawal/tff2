@@ -61,9 +61,9 @@ export default function LoginForm() {
 							</FormItem>
 						)}
 					/>
-					<p className="text-[#2f2cd8] font-medium">
+					<div className="text-[#2f2cd8] font-medium">
 						<Link href="/forgot-password">Forgot Password?</Link>
-					</p>
+					</div>
 					<Button className="w-full bg-[#2f2cd8]" type="submit" disabled={isSubmitting}>
 						{isSubmitting ? "Logging in ..." : "Submit"}
 					</Button>

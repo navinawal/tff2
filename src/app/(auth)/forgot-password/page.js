@@ -8,7 +8,13 @@ export const metadata = {
 
 export default function ForgotPassword() {
 	return (
-		<AuthContainer>
+		<AuthContainer
+			heading="Forgot Password"
+			subHeading="Enter your email below to get password reset link"
+			footerHeading="Back to Log In?"
+			footerLinkText="Log In"
+			footerLink="/login"
+		>
 			<ForgotPasswordForm />
 		</AuthContainer>
 	);

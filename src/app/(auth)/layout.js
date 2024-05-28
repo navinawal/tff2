@@ -10,7 +10,6 @@ const fontSans = FontSans({
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en" className="h-full" suppressHydrationWarning>
-			<head />
 			<body className={cn("relative min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
 				<main className="h-screen bg-[#f6f9fc]">{children}</main>
 			</body>

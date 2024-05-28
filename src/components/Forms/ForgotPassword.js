@@ -31,7 +31,6 @@ export default function ForgotPasswordForm() {
 
 	return (
 		<>
-			<h4 className="text-lg mb-2 font-medium text-black">Forgot Password</h4>
 			<Form {...ForgotPasswordForm}>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 					<FormField
@@ -52,9 +51,6 @@ export default function ForgotPasswordForm() {
 					</Button>
 				</form>
 			</Form>
-			<p className="mt-3 mb-0">
-				Back to Log In?<Link href="/login">Log In</Link>
-			</p>
 		</>
 	);
 }

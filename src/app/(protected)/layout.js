@@ -18,11 +18,11 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en" className="h-full" suppressHydrationWarning>
 			<body className={cn("relative min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-				<AppHeader />
 				<main className="relative flex flex-col min-h-screen">
+					<AppHeader />
 					<div className="flex-grow flex-1">{children}</div>
+					<AppFooter />
 				</main>
-				<AppFooter />
 			</body>
 		</html>
 	);

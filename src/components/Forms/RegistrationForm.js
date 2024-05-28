@@ -69,7 +69,7 @@ export default function RegistrationForm() {
 			{successMessage ? (
 				<div className="success-box">
 					<h4 className="text-lg mb-2 font-medium text-black">Registration Successful!</h4>
-					<p>A verification email has been sent to you. Please verify your email to log in.</p>
+					<div>A verification email has been sent to you. Please verify your email to log in.</div>
 					<Link href="/login" className="text-[#2f2cd8]">
 						Go to Login
 					</Link>

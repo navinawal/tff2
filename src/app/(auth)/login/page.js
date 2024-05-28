@@ -8,16 +8,14 @@ export const metadata = {
 
 export default function Login() {
 	return (
-		<>
-			<AuthContainer
-				heading="Login"
-				subHeading="Enter your email below to login to your account"
-				footerHeading="Don't have an account?"
-				footerLinkText="Register"
-				footerLink="/register"
-			>
-				<LoginForm />
-			</AuthContainer>
-		</>
+		<AuthContainer
+			heading="Login"
+			subHeading="Enter your email below to login to your account"
+			footerHeading="Don't have an account?"
+			footerLinkText="Register"
+			footerLink="/register"
+		>
+			<LoginForm />
+		</AuthContainer>
 	);
 }
