@@ -9,7 +9,13 @@ export const metadata = {
 export default function Register() {
 	return (
 		<>
-			<AuthContainer>
+			<AuthContainer
+				heading="Registration"
+				subHeading="Enter your info below to register to TeamForFilm"
+				footerHeading="Already have an account?"
+				footerLinkText="Login"
+				footerLink="/login"
+			>
 				<RegistrationForm />
 			</AuthContainer>
 		</>

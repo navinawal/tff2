@@ -9,14 +9,16 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import CustomSeparator from "@/components/ui/custom-separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
-import Login from "@/actions/login";
+import SocialLoginButtons from "@/components/Auth/SocialLoginButtons";
+import LoginAction from "@/actions/login";
 
 export default function LoginForm() {
 	const loginForm = useForm({
 		resolver: zodResolver(LoginSchema),
+		defaultValues: {
+			email: "",
+			password: "",
+		},
 	});
 
 	const {
@@ -25,13 +27,12 @@ export default function LoginForm() {
 		formState: { isSubmitting },
 	} = loginForm;
 
-	function onSubmit(values) {
-		Login(values);
+	function onSubmit(formData) {
+		LoginAction(formData);
 	}
 
 	return (
 		<>
-			<h4 className="text-lg mb-2 font-medium text-black">Log In</h4>
 			<Form {...loginForm}>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 					<FormField
@@ -64,30 +65,12 @@ export default function LoginForm() {
 						<Link href="/forgot-password">Forgot Password?</Link>
 					</p>
 					<Button className="w-full bg-[#2f2cd8]" type="submit" disabled={isSubmitting}>
-						{isSubmitting ? "Submitting..." : "Submit"}
+						{isSubmitting ? "Logging in ..." : "Submit"}
 					</Button>
 				</form>
 			</Form>
 			<CustomSeparator text="Or Sign In with" />
-			<div className="flex h-5 items-center space-x-4 text-sm">
-				<form className="flex-grow text-center">
-					<Button className="w-full" variant="outline">
-						<FcGoogle className="mr-2 h-4 w-4" /> Log In with Google
-					</Button>
-				</form>
-				<Separator orientation="vertical" />
-				<form className="flex-grow text-center">
-					<Button className="w-full" variant="outline">
-						<FaFacebook className="mr-2 h-4 w-4" /> Log In with Facebook
-					</Button>
-				</form>
-			</div>
-			<p className="mt-5 mb-0">
-				don`t have an account?&nbsp;
-				<Link href="/register" className="text-[#2f2cd8]">
-					Register
-				</Link>
-			</p>
+			<SocialLoginButtons />
 		</>
 	);
 }
