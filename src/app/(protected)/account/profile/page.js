@@ -2,7 +2,7 @@ import { auth, signOut } from "@/auth";
 export default async function Home() {
 	const session = await auth();
 	return (
-		<>
+		<div className="p-5">
 			<h1>Profile</h1>
 			{JSON.stringify(session)}
 			<form
@@ -13,6 +13,6 @@ export default async function Home() {
 			>
 				<button type="submit">Sign Out</button>
 			</form>
-		</>
+		</div>
 	);
 }
