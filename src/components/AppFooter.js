@@ -1,162 +1,83 @@
+import AppMaxWidthContainer from "./ui/max-width-container";
+import Image from "next/image";
+import Link from "next/link";
+import { socialLinks } from "@/lib/app.config";
+
 export default function AppFooter() {
+	const currentYear = new Date().getTime();
 	return (
-		<footer className="main-footer style-six alternate -type-11 bg-background">
-			<div className="footer-bg-image">
-				<img src="/images/index-11/footer/1.png" alt="image" />
-			</div>
-			<div className="auto-container">
-				<div className="row justify-content-center">
-					<div className="col-auto">
-						<div className="footer-title text-center">
-							<h3>Got a question?</h3>
-							<div>We are here to help. Check out our FAQs, send us an email or call us at 2 600 7777 9999</div>
+		<footer className="p-2">
+			<div className="relative flex flex-col pt-[200px] main-footer style-six alternate -type-11 bg-background rounded">
+				<AppMaxWidthContainer>
+					<div className="w-full absolute left-0 top-[-200px]">
+						<Image
+							className="inline-block h-auto max-w-[376px]"
+							alt="image"
+							src="/images/index-11/footer/1.png"
+							width="100"
+							height="100"
+							layout="responsive"
+							sizes="100vw"
+						></Image>
+					</div>
+					<div className="w-full flex flex-col md:flex-row justify-between items-start gap-4 py-4">
+						<Link href="/" className="w-100">
+							<Image
+								className="inline-block h-auto max-w-[376px]"
+								alt="image"
+								src="/logo_white.png"
+								width="100"
+								height="100"
+								layout="responsive"
+								sizes="100vw"
+							></Image>
+						</Link>
+						<div className="flex flex-col gap-2 w-100">
+							<p className="phone-num">
+								<span>Call us </span>
+								<a href="thebeehost@support.com">123 456 7890</a>
+							</p>
+							<p className="address">
+								329 Queensberry Street, North Melbourne VIC
+								<br />
+								3051, Australia. <br />
+								<a href="mailto:support@superio.com" className="email">
+									support@superio.com
+								</a>
+							</p>
+						</div>
+						<div className="widget-content w-100">
+							<h4 className="widget-title">For Candidates</h4>
+							<ul className="list">
+								<li>
+									<a href="/">Browse Jobs</a>
+								</li>
+								<li>
+									<a href="/">Browse Categories</a>
+								</li>
+								<li>
+									<a href="/">Candidate Dashboard</a>
+								</li>
+								<li>
+									<a href="/">Job Alerts</a>
+								</li>
+								<li>
+									<a href="/">My Bookmarks</a>
+								</li>
+							</ul>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div className="auto-container">
-				<div className="widgets-section aos-init aos-animate" data-aos="fade-up">
-					<div className="row">
-						<div className="big-column col-xl-3 col-lg-3 col-md-12">
-							<div className="footer-column about-widget">
-								<div className="logo">
-									<a href="#">
-										<img src="/images/logo-2.svg" alt="brand" />
-									</a>
-								</div>
-								<p className="phone-num">
-									<span>Call us </span>
-									<a href="thebeehost@support.com">123 456 7890</a>
-								</p>
-								<p className="address">
-									329 Queensberry Street, North Melbourne VIC
-									<br />
-									3051, Australia. <br />
-									<a href="mailto:support@superio.com" className="email">
-										support@superio.com
-									</a>
-								</p>
-							</div>
-						</div>
-						<div className="big-column col-xl-9 col-lg-9 col-md-12">
-							<div className="row">
-								<div className="footer-column col-lg-3 col-md-6 col-sm-12">
-									<div className="footer-widget links-widget">
-										<h4 className="widget-title">For Candidates</h4>
-										<div className="widget-content">
-											<ul className="list">
-												<li>
-													<a href="/">Browse Jobs</a>
-												</li>
-												<li>
-													<a href="/">Browse Categories</a>
-												</li>
-												<li>
-													<a href="/">Candidate Dashboard</a>
-												</li>
-												<li>
-													<a href="/">Job Alerts</a>
-												</li>
-												<li>
-													<a href="/">My Bookmarks</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div className="footer-column col-lg-3 col-md-6 col-sm-12">
-									<div className="footer-widget links-widget">
-										<h4 className="widget-title">For Employers</h4>
-										<div className="widget-content">
-											<ul className="list">
-												<li>
-													<a href="/">Browse Candidates</a>
-												</li>
-												<li>
-													<a href="/">Employer Dashboard</a>
-												</li>
-												<li>
-													<a href="/">Add Job</a>
-												</li>
-												<li>
-													<a href="/">Job Packages</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div className="footer-column col-lg-2 col-md-6 col-sm-12">
-									<div className="footer-widget links-widget">
-										<h4 className="widget-title">About Us</h4>
-										<div className="widget-content">
-											<ul className="list">
-												<li>
-													<a href="/">Job Page</a>
-												</li>
-												<li>
-													<a href="/">Job Page Alternative</a>
-												</li>
-												<li>
-													<a href="/">Resume Page</a>
-												</li>
-												<li>
-													<a href="/">Blog</a>
-												</li>
-												<li>
-													<a href="/">Contact</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div className="footer-column col-lg-4 col-md-12 col-sm-12">
-									<div className="footer-widget">
-										<h4 className="widget-title">Join Us On</h4>
-										<div className="widget-content">
-											<div className="newsletter-form">
-												<div className="text">We don’t send spam so don’t worry.</div>
-												<form>
-													<div className="form-group">
-														<div className="response"></div>
-													</div>
-													<div className="form-group">
-														<input type="email" name="email" className="email" placeholder="Email" required="" />
-														<button type="button" id="subscribe-newslatters" className="theme-btn">
-															<i className="flaticon-envelope"></i>
-														</button>
-													</div>
-												</form>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+					<div className="w-full flex flex-col md:flex-row justify-between items-center pt-3" style={{ borderTop: "1px solid" }}>
+						<div className="w-full text-start md:text-center">&copy; {currentYear} TeamForFilm. All rights reserved.</div>
+						<div className="w-full flex justify-end gap-4">
+							{socialLinks?.map((socialLink) => (
+								<Link key={socialLink.name} href={socialLink.href} target="_blank" rel="noopener norefer">
+									{socialLink.icon}
+								</Link>
+							))}
 						</div>
 					</div>
-				</div>
-			</div>
-			<div className="w-full flex justify-between items-center border-solid border-t border-t-white py-3 px-20">
-				<div className="copyright-text">
-					© 2024 Superio by{" "}
-					<a href="https://themeforest.net/user/ib-themes" target="_blank" rel="noopener noreferrer">
-						ib-themes
-					</a>
-					. All Right Reserved.
-				</div>
-				<div className="social-links">
-					<a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-						<i className="fab fa-facebook-f"></i>
-					</a>
-					<a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer">
-						<i className="fab fa-twitter"></i>
-					</a>
-					<a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-						<i className="fab fa-instagram"></i>
-					</a>
-					<a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
-						<i className="fab fa-linkedin-in"></i>
-					</a>
-				</div>
+				</AppMaxWidthContainer>
 			</div>
 		</footer>
 	);

@@ -17,13 +17,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en" className="h-full" suppressHydrationWarning>
-			<body className={cn("relative min-h-screen bg-background font-sans antialiased flex flex-col", fontSans.variable)}>
-				<div className="w-full h-full theme-zinc">
-					<div className="relative flex min-h-screen w-full flex-col">
-						<AppHeader />
-						<main className="flex-grow flex-1">{children}</main>
-						<AppFooter />
-					</div>
+			<body className={cn("relative min-h-screen bg-slate-50 font-sans antialiased flex flex-col", fontSans.variable)}>
+				<div className="relative flex flex-col h-full w-full min-h-screen p-2">
+					<AppHeader />
+					<main className="flex-grow flex-1">{children}</main>
+					<AppFooter />
 				</div>
 			</body>
 		</html>

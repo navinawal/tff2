@@ -1,67 +1,11 @@
+import AppBanner from "@/components/AppBanner";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
 	return (
 		<>
-			<section className="banner-section -type-13">
-				<div className="auto-container">
-					<div className="row">
-						<div className="content-column col-lg-7 col-md-12 col-sm-12">
-							<div className="inner-column aos-init aos-animate" data-aos="fade-up" data-aos-delay="500">
-								<div className="title-box">
-									<h3>
-										There Are 93,178 Postings Here
-										<br />
-										For you!
-									</h3>
-									<div className="text">Find Jobs, Employment &amp; Career Opportunities</div>
-								</div>
-								<div className="job-search-form aos-init aos-animate" data-aos="fade-up" data-aos-delay="700">
-									<form>
-										<div className="row">
-											<div className="form-group col-lg-5 col-md-12 col-sm-12">
-												<span className="icon flaticon-search-1"></span>
-												<input type="text" name="field_name" placeholder="Job title, keywords, or company" />
-											</div>
-											<div className="form-group col-lg-4 col-md-12 col-sm-12 location">
-												<span className="icon flaticon-map-locator"></span>
-												<input type="text" name="field_name" placeholder="City or postcode" />
-											</div>
-											<div className="form-group col-lg-3 col-md-12 col-sm-12 btn-box">
-												<button type="submit" className="theme-btn btn-style-one">
-													<span className="btn-title">Find Jobs</span>
-												</button>
-											</div>
-										</div>
-									</form>
-								</div>
-								<div className="popular-searches aos-init aos-animate" data-aos="fade-up" data-aos-delay="1000">
-									<span className="title">Popular Searches : </span>
-									<a href="#">Designer</a>, <a href="#">Developer</a>, <a href="#">Web</a>,<a href="#"> IOS</a>, <a href="#">PHP</a>,{" "}
-									<a href="#">Senior</a>,<a href="#"> Engineer</a>,
-								</div>
-								<div className="bottom-box wow fadeInUp" data-wow-delay="1500ms">
-									<div className="count-employers">
-										<span className="title">10k+ Candidates</span>
-										<img src="/images/resource/multi-peoples.png" alt="resource" />
-									</div>
-									<a className="upload-cv" href="/candidates-dashboard/cv-manager">
-										<span className="icon flaticon-file"></span> Upload your CV
-									</a>
-								</div>
-							</div>
-						</div>
-						<div className="image-column col-lg-5 col-md-12">
-							<div className="image-box">
-								<figure className="main-image aos-init aos-animate" data-aos="fade-in" data-aos-delay="1200">
-									<img src="/images/index-13/header/2.png" alt="hero image" />
-								</figure>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+			<AppBanner />
 			<section className="layout-pt-120 layout-pb-60">
 				<div className="auto-container">
 					<div className="row justify-content-between align-items-end">
