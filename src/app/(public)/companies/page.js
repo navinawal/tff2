@@ -1,70 +1,66 @@
 import AppBanner from "@/components/AppBanner";
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { CiBookmark } from "react-icons/ci";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CompanyCard from "@/components/Card/Company";
 
 export default function Companies() {
 	const companies = [
 		{
-			name: "sarahsatoshi.btc",
-			username: "vanillabean",
+			name: "Stripe",
+			username: "Open Jobs – 5",
 			description:
 				"To begin, prepare the aromatics for the chicken. Blanch the thyme in boiling water and refresh in iced water. Lay out a sheet of cling...",
 			coverImage: "/images/resource/about-img-3.jpg", // Replace with actual cover image URL
-			profileImage: "/images/resource/candidate-3.png", // Replace with actual profile image URL
+			profileImage: "/images/resource/company-5.png", // Replace with actual profile image URL
 			stats: {
 				stx: "15.3K STX",
 				followers: "1,284",
 			},
 		},
 		{
-			name: "sarahsatoshi.btc",
-			username: "vanillabean",
+			name: "Dropbox",
+			username: "Open Jobs – 12",
 			description:
 				"To begin, prepare the aromatics for the chicken. Blanch the thyme in boiling water and refresh in iced water. Lay out a sheet of cling...",
 			coverImage: "/images/resource/about-img-3.jpg", // Replace with actual cover image URL
-			profileImage: "/images/resource/candidate-3.png", // Replace with actual profile image URL
+			profileImage: "/images/resource/company-5.png", // Replace with actual profile image URL
 			stats: {
 				stx: "15.3K STX",
 				followers: "1,284",
 			},
 		},
 		{
-			name: "user2.btc",
-			username: "user 2",
+			name: "Figma",
+			username: "Open Jobs – 2",
 			description:
 				"To begin, prepare the aromatics for the chicken. Blanch the thyme in boiling water and refresh in iced water. Lay out a sheet of cling...",
 			coverImage: "/images/resource/about-img-3.jpg", // Replace with actual cover image URL
-			profileImage: "/images/resource/candidate-3.png", // Replace with actual profile image URL
+			profileImage: "/images/resource/company-5.png", // Replace with actual profile image URL
 			stats: {
 				stx: "15.3K STX",
 				followers: "1,284",
 			},
 		},
 		{
-			name: "user3.btc",
-			username: "User 3",
+			name: "Udemy",
+			username: "Open Jobs – 29",
 			description:
 				"To begin, prepare the aromatics for the chicken. Blanch the thyme in boiling water and refresh in iced water. Lay out a sheet of cling prepare the aromatics for the chicken. Blanch the thyme in boiling water and refresh in iced water. Lay out a sheet of cling. prepare the aromatics for the chicken. Blanch the thyme in boiling water and refresh in iced water. Lay out a sheet of cling..",
 			coverImage: "/images/resource/about-img-3.jpg", // Replace with actual cover image URL
-			profileImage: "/images/resource/candidate-3.png", // Replace with actual profile image URL
+			profileImage: "/images/resource/company-5.png", // Replace with actual profile image URL
 			stats: {
 				stx: "15.3K STX",
 				followers: "1,284",
 			},
 		},
 		{
-			name: "user4.btc",
-			username: "User 4",
+			name: "Figma",
+			username: "Open Jobs – 22",
 			description: "To begin, prepare the aromatics for the chicken. Blanch ",
 			coverImage: "/images/resource/about-img-3.jpg", // Replace with actual cover image URL
-			profileImage: "/images/resource/candidate-3.png", // Replace with actual profile image URL
+			profileImage: "/images/resource/company-5.png", // Replace with actual profile image URL
 			stats: {
 				stx: "15.3K STX",
 				followers: "1,284",

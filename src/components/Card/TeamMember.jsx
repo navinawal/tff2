@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function TeamMemberCard({ teamMember }) {
 	return (
@@ -26,7 +28,9 @@ export default function TeamMemberCard({ teamMember }) {
 						<div className="text-lg font-bold">{teamMember.stats.followers}</div>
 						<div className="text-gray-500 text-sm">Followers</div>
 					</div>
-					<button className="bg-black text-white rounded px-6 py-2">View</button>
+					<Button asChild style={{ backgroundColor: "black", color: "white" }}>
+						<Link href="/team-members/1">Details</Link>
+					</Button>
 				</div>
 			</div>
 		</div>
