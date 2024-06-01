@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function AppBanner() {
 	return (
 		<>
-			<section className="banner-section -type-13 relative block py-0 px-4 bg-no-repeat bg-center bg-cover bg-image rounded bg-[url(/images/index-13/header/test.png)]">
+			<section className="banner-section -type-13 relative block py-0 px-4 bg-no-repeat bg-center bg-cover bg-image bg-[url(/images/index-13/header/test.png)]">
 				<AppMaxWidthContainer>
 					<div className="flex flex-wrap">
 						<div className="relative flex flex-col max-w-[60%] pt-[260px] pb-[150px] px-0 gap-4">
