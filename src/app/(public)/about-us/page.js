@@ -1,261 +1,111 @@
+import AppMaxWidthContainer from "@/components/ui/max-width-container";
+
 export default function AboutUs() {
 	return (
 		<>
-			<div className="c">
-				<section class="page-title">
-					<div class="auto-container">
-						<div class="title-outer">
-							<h1>About Us</h1>
-							<ul class="page-breadcrumb">
-								<li>
-									<a href="/">Home</a>
-								</li>
-								<li>About TeamforFilm</li>
-							</ul>
+			<AppMaxWidthContainer>
+				<div className="flex flex-col lg:flex-row justify-between gap-5 py-20">
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+						<div className="text-lg font-bold">About</div>
+						<div className="text-4xl font-bold">TEAMFORFILM.COM</div>
+						<div className="text-base mt-4">
+							TeamForFilm aspires to become a common home for Nepali film professionals and aspires to serve as a comprehensive database for the film
+							industry. Recognizing the inherent challenges in locating suitable team members for film projects and the lack of platforms for emerging
+							talents to exhibit their abilities, we have attempted to develope a platform to address these issues.
 						</div>
 					</div>
-				</section>
-				<section class="about-section-three">
-					<div class="auto-container">
-						<div class="images-box">
-							<div class="row">
-								<div class="column col-lg-3 col-md-6 col-sm-6">
-									<figure class="image">
-										<img src="/images/resource/about-img-1.jpg" alt="about image" />
-									</figure>
-								</div>
-								<div class="column col-lg-3 col-md-6 col-sm-6">
-									<figure class="image">
-										<img src="/images/resource/about-img-2.jpg" alt="about image" />
-									</figure>
-									<figure class="image">
-										<img src="/images/resource/about-img-3.jpg" alt="about image" />
-									</figure>
-								</div>
-								<div class="column col-lg-3 col-md-6 col-sm-6">
-									<figure class="image">
-										<img src="/images/resource/about-img-4.jpg" alt="about image" />
-									</figure>
-									<figure class="image">
-										<img src="/images/resource/about-img-5.jpg" alt="about image" />
-									</figure>
-								</div>
-								<div class="column col-lg-3 col-md-6 col-sm-6">
-									<figure class="image">
-										<img src="/images/resource/about-img-6.jpg" alt="about image" />
-									</figure>
-								</div>
-							</div>
-						</div>
-						<div class="fun-fact-section">
-							<div class="row">
-								<div class="counter-column col-lg-4 col-md-4 col-sm-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
-									<div class="count-box">
-										<span class="count-text">
-											<span>
-												<span>4</span>
-											</span>
-										</span>
-										M
-									</div>
-									<h4 class="counter-title">4 million daily active users</h4>
-								</div>
-								<div class="counter-column col-lg-4 col-md-4 col-sm-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-									<div class="count-box">
-										<span class="count-text">
-											<span>
-												<span>12</span>
-											</span>
-										</span>
-										k
-									</div>
-									<h4 class="counter-title">Over 12k open job positions</h4>
-								</div>
-								<div class="counter-column col-lg-4 col-md-4 col-sm-12 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-									<div class="count-box">
-										<span class="count-text">
-											<span>
-												<span>20</span>
-											</span>
-										</span>
-										M
-									</div>
-									<h4 class="counter-title">Over 20 million stories shared</h4>
-								</div>
-							</div>
-						</div>
-						<div class="text-box">
-							<h4>About Superio</h4>
-							<p>
-								Far much that one rank beheld bluebird after outside ignobly allegedly more when oh arrogantly vehement irresistibly fussy penguin
-								insect additionally wow absolutely crud meretriciously hastily dalmatian a glowered inset one echidna cassowary some parrot and much
-								as goodness some froze the sullen much connected bat wonderfully on instantaneously eel valiantly petted this along across
-								highhandedly much.
-							</p>
-							<p>
-								Repeatedly dreamed alas opossum but dramatically despite expeditiously that jeepers loosely yikes that as or eel underneath kept and
-								slept compactly far purred sure abidingly up above fitting to strident wiped set waywardly far the and pangolin horse approving paid
-								chuckled cassowary oh above a much opposite far much hypnotically more therefore wasp less that hey apart well like while superbly
-								orca and far hence one.Far much that one rank beheld bluebird after outside ignobly allegedly more when oh arrogantly vehement
-								irresistibly fussy.
-							</p>
+					<div className="flex flex-col justify-center relative w-full lg:w-7/12 max-w-[700px]">
+						<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/search-popup-from-laptop.png" alt="" />
+					</div>
+				</div>
+
+				<div className="flex flex-col justify-between gap-4 py-20">
+					<div className="text-4xl font-bold">OUR OBJECTIVE</div>
+					<div className="text-base">
+						Our goal is to create a platform where aspiring individuals can be easily discovered by filmmakers seeking talent, making the process of
+						talent discovery effortless and efficient. Additionally, we facilitate the easy formation of film production teams, ensuring that
+						filmmakers can quickly assemble the right talent for their projects with our advanced features.
+					</div>
+				</div>
+
+				<div className="flex flex-col lg:flex-row justify-between gap-4 py-20">
+					<div className="flex flex-col justify-center relative w-full lg:w-7/12 gap-2 max-w-[700px]">
+						<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/COMPREHENSIVE-PROFILE-2.png" alt="" />
+					</div>
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+						<div className="text-4xl font-bold">Swift assessment with Comprehensive Profiles</div>
+						<div className="text-base mt-4">
+							Each candidate within our platform maintains a comprehensive profile that encapsulates their skills, experience, and work samples. This
+							feature enables filmmakers to evaluate a candidate’s details and skill levels efficiently.
 						</div>
 					</div>
-				</section>
-				<section
-					class="call-to-action-two"
-					style={{
-						backgroundImage: "/images/background/1.jpg",
-					}}
-				>
-					<div class="auto-container aos-init aos-animate" data-aos="fade-up">
-						<div class="sec-title light text-center">
-							<h2>Your Dream Jobs Are Waiting</h2>
-							<div class="text">Over 1 million interactions, 50,000 success stories Make yours now.</div>
-						</div>
-						<div class="btn-box">
-							<a class="theme-btn btn-style-three" href="/job-list-v6">
-								Search Job
-							</a>
-							<a class="theme-btn btn-style-two" href="/register">
-								Apply Job Now
-							</a>
+				</div>
+
+				<div className="flex flex-col lg:flex-row justify-between gap-4 py-20">
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+						<div className="text-4xl font-bold">Easy navigation through “ShowReels with Timestamps”</div>
+						<div className="text-base mt-4">
+							Candidates have the option to post video reels with timestamps, enabling filmmakers to swiftly navigate to the scenes featuring the
+							candidates. This feature eliminates the need for filmmakers to view the entire video, thereby saving time.
 						</div>
 					</div>
-				</section>
-				<section class="testimonial-section-two">
-					<div class="container-fluid">
-						<div class="testimonial-left">
-							<img src="/images/resource/testimonial-left.png" alt="testimonial" />
-						</div>
-						<div class="testimonial-right">
-							<img src="/images/resource/testimonial-right.png" alt="testimonial" />
-						</div>
-						<div class="sec-title text-center">
-							<h2>Testimonials From Our Customers</h2>
-							<div class="text">Lorem ipsum dolor sit amet elit, sed do eiusmod tempor</div>
-						</div>
-						<div class="carousel-outer aos-init aos-animate" data-aos="fade-up">
-							<div class="testimonial-carousel">
-								<div class="slick-slider slick-initialized" dir="ltr">
-									<div class="slick-list">
-										<div class="slick-track">
-											<div data-index="0" class="slick-slide slick-active slick-current" tabindex="-1" aria-hidden="false">
-												<div>
-													<div class="testimonial-block-two" tabindex="-1">
-														<div class="inner-box">
-															<div class="thumb">
-																<img src="/images/resource/testi-thumb-1.png" alt="testimonial" />
-															</div>
-															<h4 class="title">Great quality!</h4>
-															<div class="text">
-																Without JobHunt i’d be homeless, they found me a job and got me sorted out quickly with everything! Can’t quite… The
-																Mitech team works really hard to ensure high level of quality
-															</div>
-															<div class="info-box">
-																<h4 class="name">Brooklyn Simmons</h4>
-																<span class="designation">Web Developer</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div data-index="1" class="slick-slide" tabindex="-1" aria-hidden="true">
-												<div>
-													<div class="testimonial-block-two w-full inline-block" tabindex="-1">
-														<div class="inner-box">
-															<div class="thumb">
-																<img src="/images/resource/testi-thumb-2.png" alt="testimonial" />
-															</div>
-															<h4 class="title">Awesome Design!</h4>
-															<div class="text">
-																Without JobHunt i’d be homeless, they found me a job and got me sorted out quickly with everything! Can’t quite… The
-																Mitech team works really hard to ensure high level of quality
-															</div>
-															<div class="info-box">
-																<h4 class="name">Brooklyn Simmons</h4>
-																<span class="designation">Web Developer</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div data-index="2" class="slick-slide" tabindex="-1" aria-hidden="true">
-												<div>
-													<div class="testimonial-block-two" tabindex="-1">
-														<div class="inner-box">
-															<div class="thumb">
-																<img src="/images/resource/testi-thumb-3.png" alt="testimonial" />
-															</div>
-															<h4 class="title">Unique Design!</h4>
-															<div class="text">
-																Without JobHunt i’d be homeless, they found me a job and got me sorted out quickly with everything! Can’t quite… The
-																Mitech team works really hard to ensure high level of quality
-															</div>
-															<div class="info-box">
-																<h4 class="name">Brooklyn Simmons</h4>
-																<span class="designation">Web Developer</span>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<ul class="slick-dots block">
-										<li class="slick-active">
-											<button>1</button>
-										</li>
-										<li class="">
-											<button>2</button>
-										</li>
-										<li class="">
-											<button>3</button>
-										</li>
-									</ul>
-								</div>
-							</div>
+					<div className="flex flex-col justify-center relative w-full lg:w-7/12 max-w-[700px]">
+						<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/timestamps-opt-2.png" alt="" />
+					</div>
+				</div>
+
+				<div className="flex flex-col lg:flex-row justify-between gap-2 py-20">
+					<div className="flex flex-col justify-center relative w-full lg:w-7/12 gap-2 max-w-[600px]">
+						<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/CHARTS-2.png" alt="" />
+					</div>
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+						<div className="text-4xl font-bold">Quick analysis through “Career Summary Metrics”</div>
+						<div className="text-base mt-4">
+							The feature is designed to assist filmmakers in assessing a candidate’s level of experience and area of expertise. It also provides
+							candidates with a platform to display their career trajectory and accomplishments.
 						</div>
 					</div>
-				</section>
-				<section class="work-section style-two">
-					<div class="auto-container">
-						<div class="sec-title text-center">
-							<h2>How It Works?</h2>
-							<div class="text">Job for anyone, anywhere</div>
-						</div>
-						<div class="row aos-init aos-animate" data-aos="fade-up">
-							<div class="work-block col-lg-4 col-md-6 col-sm-12">
-								<div class="inner-box">
-									<figure class="image">
-										<img src="/images/resource/work-1.png" alt="how it works" />
-									</figure>
-									<h5>Free Resume Assessments</h5>
-									<p>Employers on average spend 31 seconds scanning resumes to identify potential matches.</p>
-								</div>
-							</div>
-							<div class="work-block col-lg-4 col-md-6 col-sm-12">
-								<div class="inner-box">
-									<figure class="image">
-										<img src="/images/resource/work-2.png" alt="how it works" />
-									</figure>
-									<h5>Job Fit Scoring</h5>
-									<p>Employers on average spend 31 seconds scanning resumes to identify potential matches.</p>
-								</div>
-							</div>
-							<div class="work-block col-lg-4 col-md-6 col-sm-12">
-								<div class="inner-box">
-									<figure class="image">
-										<img src="/images/resource/work-3.png" alt="how it works" />
-									</figure>
-									<h5>Help Every Step of the Way</h5>
-									<p>Employers on average spend 31 seconds scanning resumes to identify potential matches.</p>
-								</div>
-							</div>
-						</div>
+				</div>
+
+				<div className="flex flex-col gap-4 py-20">
+					<div className="text-4xl font-bold">Other Features</div>
+
+					<div className="text-2xl font-bold">Online Audition Applications:</div>
+					<div className="text-base mt-4">
+						Streamline the audition process by submitting audition tapes and materials online. Easily apply for roles and showcase your talent to
+						casting directors and production teams.
 					</div>
-				</section>
-			</div>
+
+					<div className="text-2xl font-bold">Post Online Call for Auditions:</div>
+					<div className="text-base mt-4">
+						Advertise casting calls and audition opportunities online. Invite aspiring actors and talents to submit their auditions digitally,
+						facilitating a more efficient and accessible casting process.
+					</div>
+
+					<div className="text-2xl font-bold">Save Your Favorite Members:</div>
+					<div className="text-base mt-4">
+						Save profiles of fellow members and collaborators whom you admire or wish to work with. Build connections, exchange messages, and foster
+						collaborations with ease.
+					</div>
+
+					<div className="text-2xl font-bold">Post Online About Your Required Team Members:</div>
+					<div className="text-base mt-4">
+						Broadcast your project requirements and collaboration opportunities online. Share details about your project, what you’re looking for in
+						team members, and what you can offer in return. Invite interested individuals to join your creative endeavors.
+					</div>
+
+					<div className="text-2xl font-bold">User-Generated Reels Showcase:</div>
+					<div className="text-base mt-4">
+						Newcomers and aspiring filmmakers can share their self-made reels to showcase their talent, even if they haven’t worked professionally
+						before. It’s an opportunity for budding artists to display their creativity and potential, gaining exposure and recognition within the
+						filmmaking community.
+					</div>
+					<div className="text-base mt-4">
+						Please note that while many features are fully functional, some are still in development. We’re continuously working to enhance your
+						experience and provide even more valuable tools for your filmmaking journey. Your suggestions and valuable feedback are highly welcome.
+					</div>
+				</div>
+			</AppMaxWidthContainer>
 		</>
 	);
 }

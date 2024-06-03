@@ -16,7 +16,7 @@ export default function SocialLoginButtons() {
 	return (
 		<>
 			<div className="flex h-5 items-center space-x-4 text-sm">
-				<Button className="w-full" variant="outline" onClick={() => socialLogin("github")}>
+				<Button className="w-full" variant="outline" onClick={() => socialLogin("google")}>
 					<FcGoogle className="mr-2 h-4 w-4" /> Log In with Google
 				</Button>
 				<Separator orientation="vertical" />

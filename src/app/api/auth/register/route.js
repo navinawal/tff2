@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import bcryptjs from "bcryptjs";
 import { registrationSchema } from "@/schemas/Schemas";
+import { auth } from "@/lib/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export async function POST(request) {
 	try {
@@ -13,25 +15,7 @@ export async function POST(request) {
 		}
 
 		const { name, email, password } = parsedResult.data;
-		const hashedPassword = await bcryptjs.hash(password, 10);
-
-		const existingUser = await db.user.findUnique({
-			where: {
-				email,
-			},
-		});
-
-		if (existingUser) {
-			return NextResponse.json({ error: "Email is already in use." }, { status: 401 });
-		}
-
-		const user = await db.user.create({
-			data: {
-				name,
-				email,
-				password: hashedPassword,
-			},
-		});
+		const user = await createUserWithEmailAndPassword(auth, email, password);
 		if (user) {
 			return NextResponse.json({ message: "Registration successfull", data: user }, { status: 200 });
 		} else {

@@ -71,7 +71,7 @@ export default function AppFooter() {
 						<div className="w-full text-start md:text-center">&copy; {currentYear} TeamForFilm. All rights reserved.</div>
 						<div className="w-full flex justify-end gap-4">
 							{socialLinks?.map((socialLink) => (
-								<Link key={socialLink.name} href={socialLink.href} target="_blank" rel="noopener norefer">
+								<Link key={socialLink.name} href={socialLink.href} target="_blank" rel="noopener norefer" className="text-white">
 									{socialLink.icon}
 								</Link>
 							))}

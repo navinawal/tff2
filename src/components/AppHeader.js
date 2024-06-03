@@ -20,7 +20,7 @@ import { publicLinks } from "@/lib/app.config";
 export default async function AppHeader() {
 	const session = await auth();
 	return (
-		<header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+		<header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-[999]">
 			<nav className="w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
 				<Link href="/" className="flex items-center gap-2 text-lg font-semibold md:text-base">
 					<Image className="inline-block h-auto max-w-[376px]" alt="image" src="/logo_black.png" width="150" height="150" sizes="100vw"></Image>
@@ -86,11 +86,11 @@ export default async function AppHeader() {
 						</DropdownMenu>
 					) : (
 						<div className="flex h-5 items-center space-x-4 text-sm">
-							<Button asChild variant="ghost">
+							<Button asChild className="bg-violet-900 text-white">
 								<Link href="/login">Login</Link>
 							</Button>
 							<Separator orientation="vertical" />
-							<Button asChild variant="ghost">
+							<Button asChild className="bg-violet-900 text-white">
 								<Link href="/login">Register</Link>
 							</Button>
 						</div>
