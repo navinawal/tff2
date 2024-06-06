@@ -1,12 +1,13 @@
-import { FaFacebook, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedinIn, FaTwitter, FaGooglePlay, FaApple } from "react-icons/fa";
 
 export const basicInfo = {
 	siteName: "TeamForFilm",
 	description: "This is a description of my website.",
 	phoneNumber: "123-456-7890",
 	domain: "example.com",
-	address: "123 Street, City, Country",
+	address: "329 Queensberry Street, North Melbourne VIC	3051, Australia.",
 	title: "Welcome to My Website",
+	contactEmail: "email@example.com",
 };
 
 export const socialLinks = [
@@ -22,9 +23,21 @@ export const resources = {
 	multiPeopleImage: "/images/resource/multi-peoples.png",
 };
 
+export const headerNavMenus = [
+	{ id: "aboutTeamforFilm", name: "About TeamforFilm", href: "/about-us" },
+	{ id: "findJob", name: "Find Job", href: "/find-job" },
+	{ id: "companies", name: "Companies", href: "/companies" },
+	{ id: "teamMeambers", name: "Team Members", href: "/team-members" },
+];
+
 export const publicLinks = [
 	{ id: "aboutTeamforFilm", name: "About TeamforFilm", href: "/about-us" },
 	{ id: "findJob", name: "Find Job", href: "/find-job" },
 	{ id: "companies", name: "Companies", href: "/companies" },
 	{ id: "teamMeambers", name: "Team Members", href: "/team-members" },
+];
+
+export const downloadLinks = [
+	{ id: "AppStore", name: "App Store", href: "#", icon: <FaApple /> },
+	{ id: "GooglePlay", name: "Google Play", href: "#", icon: <FaGooglePlay /> },
 ];

@@ -68,14 +68,13 @@ export default function Companies() {
 		},
 	];
 	return (
-		<>
-			<AppBanner />
+		<div className="bg-white">
 			<AppMaxWidthContainer>
 				<div class="flex gap-4 py-20">
-					<div class="relative w-3/12" x-chunk="dashboard-03-chunk-0">
+					<div class="relative w-3/12">
 						<form className="grid w-full items-start gap-6">
-							<fieldset className="grid gap-6 rounded-lg border p-4">
-								<legend className="-ml-1 px-1 text-sm font-medium">Settings</legend>
+							<div className="grid gap-6">
+								<h2 className="text-3xl font-bold">Settings</h2>
 								<div className="grid gap-3">
 									<Label htmlFor="temperature">Search by Keywords</Label>
 									<Input id="temperature" type="text" placeholder="Job title, keywords, or company" />
@@ -110,24 +109,12 @@ export default function Companies() {
 									<Label htmlFor="temperature">Temperature</Label>
 									<Input id="temperature" type="number" placeholder="0.4" />
 								</div>
-								<div className="grid gap-3">
-									<Label htmlFor="temperature">Temperature</Label>
-									<Input id="temperature" type="number" placeholder="0.4" />
-								</div>
-								<div className="grid gap-3">
-									<Label htmlFor="temperature">Temperature</Label>
-									<Input id="temperature" type="number" placeholder="0.4" />
-								</div>
-								<div className="grid gap-3">
-									<Label htmlFor="temperature">Temperature</Label>
-									<Input id="temperature" type="number" placeholder="0.4" />
-								</div>
-							</fieldset>
+							</div>
 						</form>
 					</div>
 					<div class="relative w-9/12">
 						<div className="flex items-start gap-4">
-							<h2 className="font-bold">Companies</h2>
+							<h2 className="text-3xl font-bold">Companies</h2>
 							<span className="px-2 py-1 border rounded-full">386</span>
 							<div className="ml-auto gap-1.5 text-sm">
 								<Select>
@@ -149,6 +136,6 @@ export default function Companies() {
 					</div>
 				</div>
 			</AppMaxWidthContainer>
-		</>
+		</div>
 	);
 }

@@ -5,7 +5,7 @@ export default function AboutUs() {
 		<>
 			<AppMaxWidthContainer>
 				<div className="flex flex-col lg:flex-row justify-between gap-5 py-20">
-					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2 text-primary-foreground">
 						<div className="text-lg font-bold">About</div>
 						<div className="text-4xl font-bold">TEAMFORFILM.COM</div>
 						<div className="text-base mt-4">
@@ -19,7 +19,7 @@ export default function AboutUs() {
 					</div>
 				</div>
 
-				<div className="flex flex-col justify-between gap-4 py-20">
+				<div className="flex flex-col justify-between gap-4 py-20 text-primary-foreground">
 					<div className="text-4xl font-bold">OUR OBJECTIVE</div>
 					<div className="text-base">
 						Our goal is to create a platform where aspiring individuals can be easily discovered by filmmakers seeking talent, making the process of
@@ -32,7 +32,7 @@ export default function AboutUs() {
 					<div className="flex flex-col justify-center relative w-full lg:w-7/12 gap-2 max-w-[700px]">
 						<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/COMPREHENSIVE-PROFILE-2.png" alt="" />
 					</div>
-					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2 text-primary-foreground">
 						<div className="text-4xl font-bold">Swift assessment with Comprehensive Profiles</div>
 						<div className="text-base mt-4">
 							Each candidate within our platform maintains a comprehensive profile that encapsulates their skills, experience, and work samples. This
@@ -42,7 +42,7 @@ export default function AboutUs() {
 				</div>
 
 				<div className="flex flex-col lg:flex-row justify-between gap-4 py-20">
-					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2 text-primary-foreground">
 						<div className="text-4xl font-bold">Easy navigation through “ShowReels with Timestamps”</div>
 						<div className="text-base mt-4">
 							Candidates have the option to post video reels with timestamps, enabling filmmakers to swiftly navigate to the scenes featuring the
@@ -58,7 +58,7 @@ export default function AboutUs() {
 					<div className="flex flex-col justify-center relative w-full lg:w-7/12 gap-2 max-w-[600px]">
 						<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/CHARTS-2.png" alt="" />
 					</div>
-					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
+					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2 text-primary-foreground">
 						<div className="text-4xl font-bold">Quick analysis through “Career Summary Metrics”</div>
 						<div className="text-base mt-4">
 							The feature is designed to assist filmmakers in assessing a candidate’s level of experience and area of expertise. It also provides
@@ -67,7 +67,7 @@ export default function AboutUs() {
 					</div>
 				</div>
 
-				<div className="flex flex-col gap-4 py-20">
+				<div className="flex flex-col gap-4 py-20 text-primary-foreground">
 					<div className="text-4xl font-bold">Other Features</div>
 
 					<div className="text-2xl font-bold">Online Audition Applications:</div>

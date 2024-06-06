@@ -1,296 +1,117 @@
-"use client";
+import AppMaxWidthContainer from "@/components/ui/max-width-container";
+import Image from "next/image";
+import styles from "./styles.module.css";
 
-import { useParams } from "next/navigation";
-
-export default function ComplanyDetails() {
-	const { id } = useParams();
+export default function ComplanyDetails({ params }) {
+	console.log(params);
 	return (
-		<section className="job-detail-section">
-			<div className="upper-box">
-				<div className="auto-container">
-					<div className="job-block-seven">
-						<div className="inner-box mt-36">
-							<div className="content">
-								<span className="company-logo">
-									<img src="/images/resource/company-1.png" alt="logo" />
-								</span>
-								<h4>Udemy</h4>
-								<ul className="job-info">
-									<li>
-										<span className="icon flaticon-map-locator"></span>London, UK
-									</li>
-									<li>
-										<span className="icon flaticon-briefcase"></span>Accounting / Finance
-									</li>
-									<li>
-										<span className="icon flaticon-telephone-1"></span>123 456 7890
-									</li>
-									<li>
-										<span className="icon flaticon-mail"></span>info@udemy.com
-									</li>
-								</ul>
-								<ul className="job-other-info">
-									<li className="time">Open Jobs – 15</li>
-								</ul>
+		<div className="flex flex-col gap-24 py-12 md:py-24 bg-black text-[#ffffffcc]">
+			<AppMaxWidthContainer>
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-x-10">
+					<div className="flex flex-col justify-start gap-4">
+						<div className="flex flex-col justify-center items-center py-8">
+							<img src="https://mone.flatheme.net/assets/images/hero-avatar.jpg" width="150" height="150" alt="" className="rounded-full"></img>
+							<div className="pt-6">
+								<h1 className={`${styles.heading} text-2xl`}>
+									Software <span className={`${styles.textHGradient}`}>Company</span>
+								</h1>
 							</div>
-							<div className="btn-box">
-								<button className="theme-btn btn-style-one" data-bs-toggle="modal" data-bs-target="#privateMessage">
-									Private Message
-								</button>
-								<button className="bookmark-btn">
-									<i className="flaticon-bookmark"></i>
-								</button>
+						</div>
+					</div>
+					<div className="flex flex-col col-span-2 justify-start items-start gap-6">
+						<h1 className={`${styles.heading} text-2xl`}>
+							<span className={`${styles.textHGradient}`}>Company Name</span>
+						</h1>
+						<DetailBox
+							containerClass="flex flex-col gap-3"
+							heading="About Company"
+							subHeading="Very well thought out and articulate communication. Clear milestones, deadlines and fast work. Patience. Infinite patience. No
+								shortcuts. Even if the client is being careless. Some quick example text to build on the card title and bulk the card`s content Moltin
+								gives you platform. As a highly skilled and successfull product development and design specialist with more than 4 Years of My
+								experience lies in successfully conceptualizing, designing, and modifying consumer products specific to interior design and home
+								furnishings.As a highly skilled and successfull product development and design specialist with more than 4 Years of My experience lies in successfully conceptualizing, designing, and modifying consumer products specific to interior design and home furnishings."
+						/>
+						<DetailBox containerClass="flex flex-col gap-3" heading="Category" subHeading="Editor, Producer, Actor" />
+						<div className="flex flex-col justify-start gap-4 w-full">
+							<h1 className={`${styles.heading} text-2xl`}>
+								Company <span className={`${styles.textHGradient}`}>Overview</span>
+							</h1>
+							<DetailBox containerClass="flex justify-between" heading="Owner" subHeading="Khorshed Islam" />
+							<DetailBox containerClass="flex justify-between" heading="Gender" subHeading="Male" />
+							<DetailBox containerClass="flex justify-between" heading="Number of Employees" subHeading="23" />
+							<DetailBox containerClass="flex justify-between" heading="Website" subHeading="www.example.com" />
+							<DetailBox containerClass="flex justify-between" heading="Email" subHeading="example@example.com" />
+							<DetailBox containerClass="flex justify-between" heading="Location" subHeading="USA" />
+						</div>
+					</div>
+				</div>
+			</AppMaxWidthContainer>
+			<AppMaxWidthContainer>
+				<div className="flex flex-col gap-y-5 md:gap-x-10">
+					<div className="flex flex-col">
+						<span className={`${styles.titleHeading}`}>GALLERY</span>
+						<h1 className={`${styles.heading} text-4xl`}>
+							Company <span className={`${styles.textHGradient}`}>GALLERY</span>
+						</h1>
+					</div>
+					<div className={`grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
+						<div className={"flex flex-col gap-2"}></div>
+					</div>
+				</div>
+			</AppMaxWidthContainer>
+			<AppMaxWidthContainer>
+				<div className="flex flex-col gap-y-5 md:gap-x-10">
+					<div className="flex flex-col">
+						<span className={`${styles.titleHeading}`}>Current Offering Positions</span>
+						<h1 className={`${styles.heading} text-4xl`}>
+							Job <span className={`${styles.textHGradient}`}>Posts</span>
+						</h1>
+					</div>
+					<div className={`grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
+						<div className={`${styles.fancyBorderedBox} flex gap-10`}>
+							<img
+								src="https://mone.flatheme.net/assets/images/hero-avatar.jpg"
+								width="100"
+								height="100"
+								alt=""
+								className="w-24 h-24 rounded-full"
+							></img>
+							<div className="flex flex-col gap-4">
+								<h6 className={`${styles.titleHeading}`}>Software Development Company</h6>
+								<div className="text-base leading-tight">
+									Small or big, your business will love our financial help and business consultations! We are happy when our clients are too…
+									Actually, this is quite simple to achieve – because each time we help them in sorting out
+								</div>
 							</div>
-							<div className="modal fade" id="privateMessage" tabindex="-1" aria-hidden="true">
-								<div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-									<div className="apply-modal-content modal-content">
-										<div className="text-center">
-											<h3 className="title">Send message to Udemy</h3>
-											<button type="button" className="closed-modal" data-bs-dismiss="modal" aria-label="Close"></button>
-										</div>
-										<form className="default-form">
-											<div className="row">
-												<div className="col-lg-12 col-md-12 col-sm-12 form-group">
-													<input type="text" name="username" placeholder="Your Name" required="" />
-												</div>
-												<div className="col-lg-12 col-md-12 col-sm-12 form-group">
-													<textarea className="darma" name="message" placeholder="Message" required=""></textarea>
-												</div>
-												<div className="col-lg-12 col-md-12 col-sm-12 form-group">
-													<button className="theme-btn btn-style-one w-100" type="submit" name="submit-form">
-														Send Message
-													</button>
-												</div>
-											</div>
-										</form>
-									</div>
+						</div>
+						<div className={`${styles.fancyBorderedBox} flex gap-10`}>
+							<img
+								src="https://mone.flatheme.net/assets/images/hero-avatar.jpg"
+								width="100"
+								height="100"
+								alt=""
+								className="w-24 h-24 rounded-full"
+							></img>
+							<div className="flex flex-col gap-4">
+								<h6 className={`${styles.titleHeading}`}>Software Development Company</h6>
+								<div className="text-base leading-tight">
+									Small or big, your business will love our financial help and business consultations! We are happy when our clients are too…
+									Actually, this is quite simple to achieve – because each time we help them in sorting out
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div className="job-detail-outer">
-				<div className="auto-container">
-					<div className="row">
-						<div className="content-column col-lg-8 col-md-12 col-sm-12">
-							<div className="job-detail">
-								<h4>About Company</h4>
-								<p>
-									Moody’s Corporation, often referred to as Moody’s, is an American business and financial services company. It is the holding company
-									for Moody’s Investors Service (MIS), an American credit rating agency, and Moody’s Analytics (MA), an American provider of financial
-									analysis software and services.
-								</p>
-								<p>
-									Moody’s was founded by John Moody in 1909 to produce manuals of statistics related to stocks and bonds and bond ratings. Moody’s was
-									acquired by Dun &amp; Bradstreet in 1962. In 2000, Dun &amp; Bradstreet spun off Moody’s Corporation as a separate company that was
-									listed on the NYSE under MCO. In 2007, Moody’s Corporation was split into two operating divisions, Moody’s Investors Service, the
-									rating agency, and Moody’s Analytics, with all of its other products.
-								</p>
-								<div className="row images-outer">
-									<div className="col-lg-3 col-md-3 col-sm-6">
-										<figure className="image" role="button">
-											<div className="lightbox-image">
-												<img src="/images/resource/employers-single-1.png" alt="resource" />
-											</div>
-										</figure>
-									</div>
-									<div className="col-lg-3 col-md-3 col-sm-6">
-										<figure className="image" role="button">
-											<div className="lightbox-image">
-												<img src="/images/resource/employers-single-2.png" alt="resource" />
-											</div>
-										</figure>
-									</div>
-									<div className="col-lg-3 col-md-3 col-sm-6">
-										<figure className="image" role="button">
-											<div className="lightbox-image">
-												<img src="/images/resource/employers-single-3.png" alt="resource" />
-											</div>
-										</figure>
-									</div>
-									<div className="col-lg-3 col-md-3 col-sm-6">
-										<figure className="image" role="button">
-											<div className="lightbox-image">
-												<img src="/images/resource/employers-single-4.png" alt="resource" />
-											</div>
-										</figure>
-									</div>
-								</div>
-								<p>
-									Moody’s Corporation, often referred to as Moody’s, is an American business and financial services company. It is the holding company
-									for Moody’s Investors Service (MIS), an American credit rating agency, and Moody’s Analytics (MA), an American provider of financial
-									analysis software and services.
-								</p>
-								<p>
-									Moody’s was founded by John Moody in 1909 to produce manuals of statistics related to stocks and bonds and bond ratings. Moody’s was
-									acquired by Dun &amp; Bradstreet in 1962. In 2000, Dun &amp; Bradstreet spun off Moody’s Corporation as a separate company that was
-									listed on the NYSE under MCO. In 2007, Moody’s Corporation was split into two operating divisions, Moody’s Investors Service, the
-									rating agency, and Moody’s Analytics, with all of its other products.
-								</p>
-							</div>
-							<div className="related-jobs">
-								<div className="title-box">
-									<h3>3 Others jobs available</h3>
-									<div className="text">2020 jobs live - 293 added today.</div>
-								</div>
-								<div className="job-block">
-									<div className="inner-box">
-										<div className="content">
-											<span className="company-logo">
-												<img src="/images/resource/company-logo/1-1.png" alt="resource" />
-											</span>
-											<h4>
-												<a href="/job-single-v1/1">Software Engineer (Android), Libraries</a>
-											</h4>
-											<ul className="job-info">
-												<li>
-													<span className="icon flaticon-briefcase"></span>Segment
-												</li>
-												<li>
-													<span className="icon flaticon-map-locator"></span>London, UK
-												</li>
-												<li>
-													<span className="icon flaticon-clock-3"></span> 11 hours ago
-												</li>
-												<li>
-													<span className="icon flaticon-money"></span> $35k - $45k
-												</li>
-											</ul>
-											<ul className="job-other-info">
-												<li className="time">Full Time</li>
-												<li className="privacy">Private</li>
-												<li className="required">Urgent</li>
-											</ul>
-											<button className="bookmark-btn">
-												<span className="flaticon-bookmark"></span>
-											</button>
-										</div>
-									</div>
-								</div>
-								<div className="job-block">
-									<div className="inner-box">
-										<div className="content">
-											<span className="company-logo">
-												<img src="/images/resource/company-logo/1-2.png" alt="resource" />
-											</span>
-											<h4>
-												<a href="/job-single-v1/2">Recruiting Coordinator</a>
-											</h4>
-											<ul className="job-info">
-												<li>
-													<span className="icon flaticon-briefcase"></span>Catalyst
-												</li>
-												<li>
-													<span className="icon flaticon-map-locator"></span>London, UK
-												</li>
-												<li>
-													<span className="icon flaticon-clock-3"></span> 11 hours ago
-												</li>
-												<li>
-													<span className="icon flaticon-money"></span> $35k - $45k
-												</li>
-											</ul>
-											<ul className="job-other-info">
-												<li className="time">Freelancer</li>
-												<li className="privacy">Private</li>
-												<li className="required">Urgent</li>
-											</ul>
-											<button className="bookmark-btn">
-												<span className="flaticon-bookmark"></span>
-											</button>
-										</div>
-									</div>
-								</div>
-								<div className="job-block">
-									<div className="inner-box">
-										<div className="content">
-											<span className="company-logo">
-												<img src="/images/resource/company-logo/1-3.png" alt="resource" />
-											</span>
-											<h4>
-												<a href="/job-single-v1/3">Product Manager, Studio</a>
-											</h4>
-											<ul className="job-info">
-												<li>
-													<span className="icon flaticon-briefcase"></span>Invision
-												</li>
-												<li>
-													<span className="icon flaticon-map-locator"></span>London, UK
-												</li>
-												<li>
-													<span className="icon flaticon-clock-3"></span> 11 hours ago
-												</li>
-												<li>
-													<span className="icon flaticon-money"></span> $35k - $45k
-												</li>
-											</ul>
-											<ul className="job-other-info">
-												<li className="time">Part Time</li>
-												<li className="privacy">Private</li>
-												<li className="required">Urgent</li>
-											</ul>
-											<button className="bookmark-btn">
-												<span className="flaticon-bookmark"></span>
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="sidebar-column col-lg-4 col-md-12 col-sm-12">
-							<aside className="sidebar">
-								<div className="sidebar-widget company-widget">
-									<div className="widget-content">
-										<ul className="company-info mt-0">
-											<li>
-												Primary industry: <span>Software</span>
-											</li>
-											<li>
-												Company size: <span>501-1,000</span>
-											</li>
-											<li>
-												Founded in: <span>2011</span>
-											</li>
-											<li>
-												Phone: <span>123 456 7890</span>
-											</li>
-											<li>
-												Email: <span>info@udemy.com</span>
-											</li>
-											<li>
-												Location: <span>London, UK</span>
-											</li>
-											<li>
-												Social media:
-												<div className="social-links">
-													<a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-														<i className="fab fa-facebook-f"></i>
-													</a>
-													<a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer">
-														<i className="fab fa-twitter"></i>
-													</a>
-													<a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-														<i className="fab fa-instagram"></i>
-													</a>
-													<a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
-														<i className="fab fa-linkedin-in"></i>
-													</a>
-												</div>
-											</li>
-										</ul>
-										<div className="btn-box">
-											<a href="#" className="theme-btn btn-style-three">
-												www.Udemy.com
-											</a>
-										</div>
-									</div>
-								</div>
-							</aside>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
+			</AppMaxWidthContainer>
+		</div>
+	);
+}
+
+function DetailBox({ containerClass, heading, subHeading }) {
+	return (
+		<div className={`${containerClass ? containerClass : "flex flex-col gap-3"}`}>
+			<h6 className={`${styles.smallHeading}`}>{heading}</h6>
+			<h5 className={`text-base leading-[1.2]`}>{subHeading}</h5>
+		</div>
 	);
 }
