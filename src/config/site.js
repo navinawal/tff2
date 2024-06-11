@@ -1,7 +1,8 @@
 import { FaFacebook, FaInstagram, FaLinkedinIn, FaTwitter, FaGooglePlay, FaApple } from "react-icons/fa";
 
 export const basicInfo = {
-	siteName: "TeamForFilm",
+	name: "TeamForFilm",
+	url: "https://ui.shadcn.com",
 	description: "This is a description of my website.",
 	phoneNumber: "123-456-7890",
 	domain: "example.com",

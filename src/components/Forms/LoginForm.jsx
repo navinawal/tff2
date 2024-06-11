@@ -10,30 +10,54 @@ import CustomSeparator from "@/components/ui/custom-separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SocialLoginButtons from "@/components/Auth/SocialLoginButtons";
-import LoginAction from "@/actions/login";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginForm() {
-	const loginForm = useForm({
+	const { loginWithEmail } = useAuth();
+	const router = useRouter();
+	const formHook = useForm({
 		resolver: zodResolver(LoginSchema),
-		defaultValues: {
-			email: "",
-			password: "",
-		},
 	});
 
 	const {
 		handleSubmit,
 		control,
 		formState: { isSubmitting },
-	} = loginForm;
+	} = formHook;
 
-	function onSubmit(formData) {
-		LoginAction(formData);
+	const [errorMessage, setErrorMessage] = useState("");
+
+	async function onSubmit(formData) {
+		const validatedFields = LoginSchema.safeParse(formData);
+
+		if (!validatedFields.success) {
+			return { error: "invalid fields" };
+		}
+
+		const { email, password } = validatedFields.data;
+
+		try {
+			const response = await loginWithEmail(email, password);
+			if (response.token && response.user) {
+				if (response.user.role && response.user.role !== "") {
+					router.push("/account/profile");
+				} else {
+					router.push("/choose-role");
+				}
+			} else {
+				setErrorMessage(response?.error || "An error occurred while registering.");
+			}
+		} catch (error) {
+			setErrorMessage("Error: " + error.message);
+		}
 	}
 
 	return (
 		<>
-			<Form {...loginForm}>
+			<Form {...formHook}>
 				<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 					<FormField
 						control={control}
@@ -49,7 +73,7 @@ export default function LoginForm() {
 						)}
 					/>
 					<FormField
-						control={loginForm.control}
+						control={control}
 						name="password"
 						render={({ field }) => (
 							<FormItem>
@@ -69,8 +93,15 @@ export default function LoginForm() {
 					</Button>
 				</form>
 			</Form>
+			{errorMessage && (
+				<div className="pt-5">
+					<Alert variant="destructive">
+						<AlertDescription className="text-center">{errorMessage}</AlertDescription>
+					</Alert>
+				</div>
+			)}
 			<CustomSeparator text="Or Sign In with" />
-			<SocialLoginButtons />
+			<SocialLoginButtons onError={(error) => setErrorMessage(error)} />
 		</>
 	);
 }

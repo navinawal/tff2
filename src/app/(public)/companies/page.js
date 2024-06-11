@@ -70,8 +70,8 @@ export default function Companies() {
 	return (
 		<div className="bg-white">
 			<AppMaxWidthContainer>
-				<div class="flex gap-4 py-20">
-					<div class="relative w-3/12">
+				<div className="flex gap-4 py-20">
+					<div className="relative w-3/12">
 						<form className="grid w-full items-start gap-6">
 							<div className="grid gap-6">
 								<h2 className="text-3xl font-bold">Settings</h2>
@@ -112,7 +112,7 @@ export default function Companies() {
 							</div>
 						</form>
 					</div>
-					<div class="relative w-9/12">
+					<div className="relative w-9/12">
 						<div className="flex items-start gap-4">
 							<h2 className="text-3xl font-bold">Companies</h2>
 							<span className="px-2 py-1 border rounded-full">386</span>

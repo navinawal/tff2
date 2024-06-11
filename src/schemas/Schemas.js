@@ -24,9 +24,11 @@ export const registrationSchema = z.object({
 		.email({
 			message: "Please provide a valid email",
 		}),
-	password: z.string({
-		message: "Please provide your password",
-	}),
+	password: z
+		.string({
+			message: "Please provide your password",
+		})
+		.min(6, "Password must be at least 6 characters"),
 });
 
 export const ForgotPasswordSchema = z.object({
@@ -37,4 +39,8 @@ export const ForgotPasswordSchema = z.object({
 		.email({
 			message: "Please enter a valid email",
 		}),
+});
+
+export const ChooseRoleSchema = z.object({
+	role: z.enum(["TeamMember", "Company"]),
 });

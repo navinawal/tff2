@@ -1,5 +1,5 @@
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
-import { resources } from "@/lib/app.config";
+import { resources } from "@/config/site";
 import Image from "next/image";
 
 export default function AppBanner() {

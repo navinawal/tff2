@@ -1,7 +1,7 @@
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import Image from "next/image";
 import Link from "next/link";
-import { basicInfo, socialLinks, publicLinks, downloadLinks } from "@/lib/app.config";
+import { basicInfo, socialLinks, publicLinks, downloadLinks } from "@/config/site";
 import { IoMail } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoHome } from "react-icons/io5";

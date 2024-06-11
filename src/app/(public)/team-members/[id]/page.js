@@ -17,7 +17,13 @@ export default function TeamMemberDetails({ params }) {
 			<AppMaxWidthContainer>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-x-10">
 					<div className="flex flex-col justify-center items-center gap-4">
-						<img src="https://mone.flatheme.net/assets/images/hero-avatar.jpg" width="320" height="320" alt="" className="rounded-full"></img>
+						<img
+							src="https://zahar.jwsuperthemes.com/model/wp-content/uploads/sites/18/2022/06/stephan-louis-L3s5QySz5UM-unsplash-408x570.jpg"
+							width="250"
+							height="600"
+							alt=""
+							className="rounded-sm"
+						></img>
 					</div>
 					<div className="flex flex-col col-span-2 justify-center items-start gap-6">
 						<DetailBox
@@ -49,7 +55,7 @@ export default function TeamMemberDetails({ params }) {
 								What I <span className={`${styles.textHGradient}`}>Did</span>
 							</h1>
 						</div>
-						<div class="grid grid-cols-3 md:grid-cols-7 place-content-center gap-10">
+						<div className="grid grid-cols-3 md:grid-cols-7 place-content-center gap-10">
 							<div className="flex flex-col items-center text-center gap-3">
 								<h6 className={`${styles.smallHeading}`}>Feature Films</h6>
 								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>2</h1>
@@ -92,7 +98,7 @@ export default function TeamMemberDetails({ params }) {
 								My <span className={`${styles.textHGradient}`}>Trainings</span>
 							</h1>
 						</div>
-						<div class="col-span-2 flex flex-col gap-10">
+						<div className="col-span-2 flex flex-col gap-10">
 							<div className={`${styles.fancyBorderedBox} grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
 								<div className={"flex flex-col gap-2"}>
 									<h6 className={`${styles.titleHeading}`}>Type Of Course Taken</h6>

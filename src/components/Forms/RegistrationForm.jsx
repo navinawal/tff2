@@ -11,9 +11,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import CustomSeparator from "@/components/ui/custom-separator";
 import { registrationSchema } from "@/schemas/Schemas";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import SocialLoginButtons from "../Auth/SocialLoginButtons";
+import SocialLoginButtons from "@/components/Auth/SocialLoginButtons";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function RegistrationForm() {
+	const { registerWithEmail } = useAuth();
 	const registrationForm = useForm({
 		resolver: zodResolver(registrationSchema),
 		defaultValues: {
@@ -31,32 +33,20 @@ export default function RegistrationForm() {
 	} = registrationForm;
 
 	const [errorMessage, setErrorMessage] = useState("");
-	const [successMessage, setSuccessMessage] = useState(false); // Use a boolean for success message
+	const [successMessage, setSuccessMessage] = useState(false);
 
 	async function onSubmit(formData) {
 		const { name, email, password } = formData;
 
 		try {
-			const response = await fetch("api/auth/register", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ name, email, password }),
-			});
-
-			const data = await response.json();
-
-			if (!response.ok) {
-				setErrorMessage(data.error || "An error occurred while registering.");
-				setSuccessMessage(false);
-				if (data.details) {
-					console.error("Details:", data.details);
-				}
-			} else {
+			const response = await registerWithEmail(name, email, password);
+			if (response.user) {
 				setSuccessMessage(true);
 				setErrorMessage("");
-				reset(); // Reset the form fields
+				reset();
+			} else {
+				setErrorMessage(response.error || "An error occurred while registering.");
+				setSuccessMessage(false);
 			}
 		} catch (error) {
 			setErrorMessage("An unexpected error occurred: " + error.message);
@@ -143,7 +133,7 @@ export default function RegistrationForm() {
 						</div>
 					)}
 					<CustomSeparator text="Or Sign In with" />
-					<SocialLoginButtons />
+					<SocialLoginButtons onError={(error) => setErrorMessage(error)} />
 				</>
 			)}
 		</>

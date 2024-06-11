@@ -47,8 +47,8 @@ export default function FindJob() {
 	return (
 		<div className="bg-white">
 			<AppMaxWidthContainer>
-				<div class="flex gap-4 py-20">
-					<div class="relative w-3/12 hidden lg:block">
+				<div className="flex gap-4 py-20">
+					<div className="relative w-3/12 hidden lg:block">
 						<form className="grid w-full items-start gap-6">
 							<div className="grid gap-6">
 								<h2 className="text-3xl font-bold">Settings</h2>
@@ -90,7 +90,7 @@ export default function FindJob() {
 						</form>
 					</div>
 
-					<div class="relative w-full lg:w-9/12">
+					<div className="relative w-full lg:w-9/12">
 						<div className="flex flex-col md:flex-row items-start gap-4">
 							<h2 className="text-3xl font-bold">Recommended Jobs</h2>
 							<span className="px-2 py-1 border rounded-full">386</span>
