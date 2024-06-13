@@ -3,6 +3,7 @@ import { basicInfo } from "@/config/site";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/hooks/useAuth";
+import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
 	subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({ children }) {
 			<head />
 			<body className={cn("min-h-screen bg-background font-sans antialiased dark", fontSans.variable)}>
 				<AuthProvider>{children}</AuthProvider>
+				<Toaster />
 			</body>
 		</html>
 	);

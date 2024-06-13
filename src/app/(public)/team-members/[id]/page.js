@@ -1,6 +1,7 @@
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import Image from "next/image";
 import styles from "./styles.module.css";
+import { CarrierSummaryChart } from "@/components/Account/TeamMember/CarrierSummaryChart";
 
 export default function TeamMemberDetails({ params }) {
 	console.log(params);
@@ -40,8 +41,11 @@ export default function TeamMemberDetails({ params }) {
 							<DetailBox containerClass="flex flex-col gap-3" heading="Nationality" subHeading="Nepalese" />
 							<DetailBox containerClass="flex flex-col gap-3" heading="Location" subHeading="Kathmandu" />
 						</div>
-						<DetailBox containerClass="flex flex-col gap-3" heading="Department" subHeading="Editor, Producer, Actor" />
-						<DetailBox containerClass="flex flex-col gap-3" heading="Skills" subHeading="English, Hindi, Maga" />
+						<div className="grid grid-cols-3 justify-between content-start w-full gap-6">
+							<DetailBox containerClass="flex flex-col gap-3" heading="Department" subHeading="Editor, Producer, Actor" />
+							<DetailBox containerClass="flex flex-col gap-3" heading="Skills" subHeading="English, Hindi, Maga" />
+							<CarrierSummaryChart />
+						</div>
 					</div>
 				</div>
 			</AppMaxWidthContainer>

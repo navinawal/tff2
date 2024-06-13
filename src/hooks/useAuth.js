@@ -33,7 +33,7 @@ function useProvideAuth() {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
 			if (authUser) {
 				const userData = await handleUser(authUser);
-				setUser(userData);
+				setUser(authUser);
 				await setAuthCookie(authUser);
 			} else {
 				setUser(null);
@@ -101,7 +101,7 @@ function useProvideAuth() {
 		try {
 			const userCredential = await signInWithEmailAndPassword(auth, email, password);
 			const userData = await handleUser(userCredential.user);
-			setUser(userData);
+			setUser(userCredential);
 			await setAuthCookie(userCredential.user);
 		} catch (error) {
 			throw error;
@@ -112,7 +112,7 @@ function useProvideAuth() {
 		try {
 			const userCredential = await signInWithPopup(auth, googleProvider);
 			const userData = await handleUser(userCredential.user);
-			setUser(userData);
+			setUser(userCredential);
 			await setAuthCookie(userCredential.user);
 		} catch (error) {
 			throw error;
@@ -123,7 +123,7 @@ function useProvideAuth() {
 		try {
 			const userCredential = await signInWithPopup(auth, facebookProvider);
 			const userData = await handleUser(userCredential.user);
-			setUser(userData);
+			setUser(userCredential);
 			await setAuthCookie(userCredential.user);
 		} catch (error) {
 			throw error;
