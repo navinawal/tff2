@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
-	const token = request.cookies.get("token");
-	// console.log("token:", token);
+	const authToken = request.cookies.get("authToken");
+	// console.log("authToken:", authToken);
 
-	if (!token) {
+	if (!authToken) {
 		return NextResponse.redirect(new URL("/login", request.url));
 	}
 	return NextResponse.next();
@@ -15,7 +15,7 @@ export async function middleware(request) {
 	// 		headers: {
 	// 			"Content-Type": "application/json",
 	// 		},
-	// 		body: JSON.stringify({ token }),
+	// 		body: JSON.stringify({ authToken }),
 	// 	});
 
 	// 	if (response.ok) {

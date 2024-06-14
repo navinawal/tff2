@@ -2,7 +2,7 @@
 
 import FacetedDropdownFilter from "@/components/ui/faceted-dropdown-filter";
 import { PaginationControls } from "@/components/Data/PaginationControls";
-import TeamMemberCard from "@/components/Card/TeamMember";
+import JobCard from "@/components/Card/Job";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -10,7 +10,7 @@ import { useFilter } from "@/hooks/useFilter";
 import { usePaginatedData } from "@/hooks/usePaginatedData";
 import { SortingDropdownMenu } from "./shorting-menu";
 
-export default function TeamMemberDataGrid() {
+export default function JobsDataGrid() {
 	const { selectedFilters, updateFilter, searchQuery, updateSearchQuery, sortField, sortDirection } = useFilter();
 	const { data, loading, error, page, pageSize, totalItems, setPage, setPageSize } = usePaginatedData(
 		"https://dummyjson.com/users",
@@ -107,9 +107,9 @@ export default function TeamMemberDataGrid() {
 					<SortingDropdownMenu />
 				</div>
 			</div>
-			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-				{data?.map((teamMember) => (
-					<TeamMemberCard key={teamMember.id} teamMember={teamMember}></TeamMemberCard>
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				{data?.map((job) => (
+					<JobCard key={job.id} job={job}></JobCard>
 				))}
 			</div>
 			<PaginationControls page={page} pageSize={pageSize} totalItems={totalItems} setPage={setPage} setPageSize={setPageSize} />

@@ -1,4 +1,5 @@
-import { initializeApp, cert } from "firebase-admin/app";
+import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
+import { getAuth as getAdminAuth } from "firebase-admin/auth";
 
 const firebaseAdminConfig = {
 	projectId: process.env.AUTH_FIREBASE_PROJECT_ID,
@@ -6,8 +7,12 @@ const firebaseAdminConfig = {
 	privateKey: process.env.AUTH_FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
 };
 
-const firebaseAdmin = initializeApp({
-	credential: cert(firebaseAdminConfig),
-});
+const adminApp = !getApps().length
+	? initializeApp({
+			credential: cert(firebaseAdminConfig),
+	  })
+	: getApp();
+
+const firebaseAdmin = getAdminAuth(adminApp);
 
 export { firebaseAdmin };
