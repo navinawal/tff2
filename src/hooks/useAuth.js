@@ -13,7 +13,8 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider, facebookProvider } from "@/lib/firebase";
-import { setCookie, deleteCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
+import { revokeAllSessions, setAuthCookie } from "@/app/actions/userAuth";
 
 const AuthContext = createContext();
 
@@ -32,28 +33,20 @@ function useProvideAuth() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
 			if (authUser) {
+				const authToken = await authUser.getIdToken();
 				const userData = await handleUser(authUser);
+				await setAuthCookie(authToken);
 				setUser(authUser);
-				await setAuthCookie(authUser);
 			} else {
 				setUser(null);
-				deleteCookie("token");
+				deleteCookie("authToken");
 			}
 		});
 		return () => unsubscribe();
 	}, []);
 
-	const setAuthCookie = async (user) => {
-		try {
-			const token = await user.getIdToken();
-			setCookie("token", token, { path: "/" });
-		} catch (error) {
-			throw error;
-		}
-	};
-
 	const handleUser = async (user) => {
-		const userDocRef = doc(db, "users", user.uid);
+		const userDocRef = doc(db, "users_profile", user.uid);
 		const userDoc = await getDoc(userDocRef);
 
 		if (!userDoc.exists()) {
@@ -69,17 +62,32 @@ function useProvideAuth() {
 		}
 	};
 
-	const registerWithEmail = async (name, email, password) => {
+	const handleUserProfile = async (uid) => {
+		const profileDocRef = doc(db, "users_profile", uid);
+		const profileDoc = await getDoc(profileDocRef);
+
+		if (!profileDoc.exists()) {
+			const profileDocData = {
+				uid: user.uid,
+				email: user.email,
+				createdAt: new Date(),
+			};
+			await setDoc(profileDocRef, profileDocData);
+			return profileDocData;
+		} else {
+			return profileDoc.data();
+		}
+	};
+
+	const registerWithEmail = async (firstName, lastName, email, password) => {
 		try {
 			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-			const user = userCredential.user;
+			const user = userCredential?.user;
 			if (user) {
-				await updateProfile(user, {
-					displayName: name,
-				});
-				const userData = await handleUser(userCredential.user);
+				const uid = userCredential?.user?.uid;
+				const profileData = await handleUserProfile(uid, firstName, lastName);
 				await sendEmailVerification(user);
-				return { user, userData };
+				return { user, profileData };
 			} else {
 				throw new Error("Error while registration");
 			}
@@ -100,9 +108,13 @@ function useProvideAuth() {
 	const loginWithEmail = async (email, password) => {
 		try {
 			const userCredential = await signInWithEmailAndPassword(auth, email, password);
-			const userData = await handleUser(userCredential.user);
+			const user = userCredential?.user;
+			const uid = user?.uid;
+			const authToken = await user?.getIdToken();
+			const profileData = await handleUserProfile(uid);
+			await setAuthCookie(authToken);
 			setUser(userCredential);
-			await setAuthCookie(userCredential.user);
+			console.log(profileData);
 		} catch (error) {
 			throw error;
 		}
@@ -111,9 +123,12 @@ function useProvideAuth() {
 	const loginWithGoogle = async () => {
 		try {
 			const userCredential = await signInWithPopup(auth, googleProvider);
-			const userData = await handleUser(userCredential.user);
-			setUser(userCredential);
-			await setAuthCookie(userCredential.user);
+			const user = userCredential.user;
+			const uid = user.uid;
+			const authToken = await user.getIdToken();
+			await setAuthCookie(authToken);
+			const profileData = await handleUserProfile(uid);
+			// /setUser(userCredential);
 		} catch (error) {
 			throw error;
 		}
@@ -122,9 +137,11 @@ function useProvideAuth() {
 	const loginWithFacebook = async () => {
 		try {
 			const userCredential = await signInWithPopup(auth, facebookProvider);
+			const user = userCredential.user;
+			const authToken = await user.getIdToken();
 			const userData = await handleUser(userCredential.user);
+			await setAuthCookie(authToken);
 			setUser(userCredential);
-			await setAuthCookie(userCredential.user);
 		} catch (error) {
 			throw error;
 		}
@@ -134,7 +151,8 @@ function useProvideAuth() {
 		try {
 			await signOut(auth);
 			setUser(null);
-			deleteCookie("token");
+			deleteCookie("authToken");
+			revokeAllSessions();
 		} catch (error) {
 			throw error;
 		}

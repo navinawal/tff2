@@ -20,6 +20,10 @@ export default function LoginForm() {
 	const router = useRouter();
 	const formHook = useForm({
 		resolver: zodResolver(LoginSchema),
+		defaultValues: {
+			email: "",
+			password: "",
+		},
 	});
 
 	const {
@@ -85,10 +89,10 @@ export default function LoginForm() {
 							</FormItem>
 						)}
 					/>
-					<div className="text-[#2f2cd8] font-medium">
+					<div className="text-muted-foreground font-medium">
 						<Link href="/forgot-password">Forgot Password?</Link>
 					</div>
-					<Button className="w-full bg-[#2f2cd8]" type="submit" disabled={isSubmitting}>
+					<Button className="w-full" type="submit" disabled={isSubmitting}>
 						{isSubmitting ? "Logging in ..." : "Submit"}
 					</Button>
 				</form>

@@ -1,75 +1,95 @@
 "use client";
 
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { cn } from "@/lib/utils";
-
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-import { Textarea } from "@/components/ui/textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-const profileFormSchema = z.object({
-	firstName: z.string().min(2, {
-		message: "firstName must be at least 2 characters.",
-	}),
-	lastName: z.string().min(2, {
-		message: "lastName must be at least 2 characters.",
-	}),
-	email: z
-		.string({
-			required_error: "Please enter your email.",
-		})
-		.email({ message: "Email must be valid" }),
-	alternateEmail: z.string().email({ message: "Email must be valid" }).optional(),
-	phone: z.string().optional(),
-	alternatePhone: z.string().optional(),
-	dob: z.date({
-		required_error: "A date of birth is required.",
-	}),
-	bio: z.string().max(200).min(4),
-	gender: z.enum(["male", "female"]),
-});
+import { useForm } from "react-hook-form";
+import { format } from "date-fns";
 
-const defaultValues = {};
+import { zodResolver } from "@hookform/resolvers/zod";
+import { profileFormSchema } from "@/schemas/Schemas";
+import { saveUserProfile } from "@/app/actions/userProfile";
+import { useToast } from "@/components/ui/use-toast";
 
-export function ProfileForm() {
-	const form = useForm({
+export function ProfileForm({ uid, defaultValues }) {
+	const { toast } = useToast();
+	const formHook = useForm({
 		resolver: zodResolver(profileFormSchema),
 		defaultValues,
-		mode: "onChange",
 	});
 
-	function onSubmit(data) {
-		console.log(data);
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting },
+	} = formHook;
+
+	async function onSubmit(formData) {
+		const response = await saveUserProfile(uid, formData);
+		if (response.success === true) {
+			toast({
+				title: "Success !",
+				description: "Profile saved successfully",
+			});
+		} else {
+			toast({
+				variant: "destructive",
+				title: "Error !",
+				description: "Something went wrong",
+			});
+		}
 	}
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-				{/* <div className="grid grid-cols-4">
-					<div className="overflow-hidden rounded-md">
-						<Image src={album.cover} alt={album.name} width={width} height={height} />
-						<img
-							src="https://zahar.jwsuperthemes.com/model/wp-content/uploads/sites/18/2022/06/stephanie-nakagawa-ADSKIn0ScDg-unsplash-408x570.jpg"
-							alt=""
-							className={cn("h-auto w-auto transition-all hover:scale-10")}
-						/>
-					</div>
-				</div> */}
+		<Form {...formHook}>
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+				<div className="grid grid-cols-4">
+					<FormField
+						control={control}
+						name="profileImage"
+						render={({ field: { onChange, value, ...rest } }) => (
+							<>
+								<FormItem>
+									<FormLabel>
+										<div className="overflow-hidden rounded-md">
+											{/* <Image src={album.cover} alt={album.name} width={width} height={height} /> */}
+											<img
+												src="https://zahar.jwsuperthemes.com/model/wp-content/uploads/sites/18/2022/06/stephanie-nakagawa-ADSKIn0ScDg-unsplash-408x570.jpg"
+												alt=""
+												className={cn("h-auto w-auto transition-all hover:scale-10")}
+											/>
+										</div>
+									</FormLabel>
+									<FormControl>
+										<Input
+											type="file"
+											accept="image/*"
+											className="hidden"
+											{...rest}
+											onChange={(event) => {
+												// const { files, displayUrl } = getImageData(event);
+												// setPreview(displayUrl);
+												// onChange(files);
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							</>
+						)}
+					/>
+				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
-						control={form.control}
+						control={control}
 						name="firstName"
 						render={({ field }) => (
 							<FormItem>
@@ -82,7 +102,7 @@ export function ProfileForm() {
 						)}
 					/>
 					<FormField
-						control={form.control}
+						control={control}
 						name="lastName"
 						render={({ field }) => (
 							<FormItem>
@@ -97,7 +117,7 @@ export function ProfileForm() {
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
-						control={form.control}
+						control={control}
 						name="email"
 						render={({ field }) => (
 							<FormItem>
@@ -110,7 +130,7 @@ export function ProfileForm() {
 						)}
 					/>
 					<FormField
-						control={form.control}
+						control={control}
 						name="alternateEmail"
 						render={({ field }) => (
 							<FormItem>
@@ -125,7 +145,7 @@ export function ProfileForm() {
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
-						control={form.control}
+						control={control}
 						name="phone"
 						render={({ field }) => (
 							<FormItem>
@@ -138,7 +158,7 @@ export function ProfileForm() {
 						)}
 					/>
 					<FormField
-						control={form.control}
+						control={control}
 						name="alternatePhone"
 						render={({ field }) => (
 							<FormItem>
@@ -153,7 +173,7 @@ export function ProfileForm() {
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
-						control={form.control}
+						control={control}
 						name="dob"
 						render={({ field }) => (
 							<FormItem className="flex flex-col justify-between w-full">
@@ -182,7 +202,7 @@ export function ProfileForm() {
 						)}
 					/>
 					<FormField
-						control={form.control}
+						control={control}
 						name="gender"
 						render={({ field }) => (
 							<FormItem>
@@ -204,8 +224,8 @@ export function ProfileForm() {
 					/>
 				</div>
 				<FormField
-					control={form.control}
-					name="about"
+					control={control}
+					name="bio"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Bio</FormLabel>
@@ -217,7 +237,7 @@ export function ProfileForm() {
 					)}
 				/>
 				<Button type="submit" size="sm">
-					Update profile
+					{isSubmitting ? "Updating profile..." : "Update profile"}
 				</Button>
 			</form>
 		</Form>

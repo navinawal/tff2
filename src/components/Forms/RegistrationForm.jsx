@@ -19,7 +19,8 @@ export default function RegistrationForm() {
 	const registrationForm = useForm({
 		resolver: zodResolver(registrationSchema),
 		defaultValues: {
-			name: "",
+			firstName: "",
+			lastName: "",
 			email: "",
 			password: "",
 		},
@@ -36,10 +37,10 @@ export default function RegistrationForm() {
 	const [successMessage, setSuccessMessage] = useState(false);
 
 	async function onSubmit(formData) {
-		const { name, email, password } = formData;
+		const { firstName, lastName, email, password } = formData;
 
 		try {
-			const response = await registerWithEmail(name, email, password);
+			const response = await registerWithEmail(firstName, lastName, email, password);
 			if (response.user) {
 				setSuccessMessage(true);
 				setErrorMessage("");
@@ -67,20 +68,35 @@ export default function RegistrationForm() {
 			) : (
 				<>
 					<Form {...registrationForm}>
-						<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-							<FormField
-								control={control}
-								name="name"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Full Name</FormLabel>
-										<FormControl>
-											<Input type="text" placeholder="Your Full Name" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
+						<form onSubmit={handleSubmit(onSubmit)} className="space-y-4" autoComplete="off">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<FormField
+									control={control}
+									name="firstName"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>First Name</FormLabel>
+											<FormControl>
+												<Input type="text" placeholder="Your First Name" {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={control}
+									name="lastName"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Last Name</FormLabel>
+											<FormControl>
+												<Input type="text" placeholder="Your Last Name" {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
 							<FormField
 								control={control}
 								name="email"
@@ -120,7 +136,7 @@ export default function RegistrationForm() {
 									</Link>
 								</label>
 							</div>
-							<Button className="w-full bg-[#2f2cd8]" type="submit" disabled={isSubmitting}>
+							<Button className="w-full" type="submit" disabled={isSubmitting}>
 								{isSubmitting ? "Submitting..." : "Submit"}
 							</Button>
 						</form>

@@ -32,7 +32,7 @@ export default function AuthContainer({ heading, subHeading, footerHeading, foot
 						</div>
 					</div>
 				</div>
-				<div className="bg-background text-foreground flex flex-col justify-center py-16 px-36 z-10">
+				<div className="bg-background text-foreground flex flex-col justify-center py-16 px-10 lg:px-24 z-10">
 					<div className="grid gap-2 mb-4">
 						<h1 className="text-3xl font-bold">{heading}</h1>
 						<p className="text-balance text-muted-foreground">{subHeading}</p>

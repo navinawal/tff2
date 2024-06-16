@@ -6,7 +6,7 @@ const CustomSeparator = ({ text }) => {
 			<div className="absolute inset-0 flex items-center">
 				<div className="w-full border-t border" />
 			</div>
-			<span className="relative px-3 text-foreground bg-background">{text}</span>
+			<span className="relative px-3 text-muted-foreground bg-background">{text}</span>
 		</div>
 	);
 };

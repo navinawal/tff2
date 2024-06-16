@@ -73,7 +73,7 @@ export default function ForgotPasswordForm() {
 								</FormItem>
 							)}
 						/>
-						<Button className="w-full bg-[#2f2cd8]" type="submit" disabled={isSubmitting}>
+						<Button className="w-full" type="submit" disabled={isSubmitting}>
 							{isSubmitting ? "Submitting..." : "Submit"}
 						</Button>
 					</form>
