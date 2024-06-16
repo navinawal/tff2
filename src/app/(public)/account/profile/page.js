@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default async function Home() {
 	const user = await getCurrentUser();
-	const uid = user.uid;
+	const uid = user?.uid;
 	const profile = await getUserProfile(uid);
 	const defaultValues = {
 		profileImage: profile.profileImage || "",
