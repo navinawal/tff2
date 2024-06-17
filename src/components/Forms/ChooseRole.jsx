@@ -15,10 +15,8 @@ import { saveRole } from "@/app/actions/userProfile";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function ChooseRoleForm() {
-	const { user } = useAuth();
 	const router = useRouter();
 	const { toast } = useToast();
-	const { uid } = user;
 	const formHook = useForm({
 		resolver: zodResolver(ChooseRoleSchema),
 	});
@@ -28,6 +26,14 @@ export default function ChooseRoleForm() {
 		control,
 		formState: { isSubmitting },
 	} = formHook;
+
+	const { user } = useAuth();
+
+	if (!user) {
+		return;
+	}
+
+	const { uid } = user;
 
 	async function onSubmit(formData) {
 		const response = await saveRole(uid, formData);
