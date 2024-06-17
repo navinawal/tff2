@@ -5,7 +5,7 @@ import { CarrierSummaryChart } from "@/components/Account/TeamMember/CarrierSumm
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function TeamMemberDetails({ params }) {
-	console.log(params);
+	const { id } = params;
 	return (
 		<div className="bg-black text-[#ffffffcc]">
 			<div className="py-12 md:py-24">
