@@ -4,28 +4,13 @@ import AppMaxWidthContainer from "@/components/ui/max-width-container";
 
 export const metadata = {
 	title: "Account Profile",
-	description: "Advanced form example using react-hook-form and Zod.",
+	description: ".",
 };
-
-const sidebarNavItems = [
-	{
-		title: "Profile",
-		href: "/account/profile",
-	},
-	{
-		title: "Account",
-		href: "/account/profile/change-password",
-	},
-	{
-		title: "Settings",
-		href: "/account/profile/settings",
-	},
-];
 
 export default function SettingsLayout({ children }) {
 	return (
 		<AppMaxWidthContainer>
-			<div className="space-y-6 px-10 py-28 md:block">
+			<div className="py-28">
 				<div className="space-y-0.5">
 					<h2 className="text-2xl font-bold tracking-tight">Settings</h2>
 					<p className="text-muted-foreground">Manage your account settings and set e-mail preferences.</p>
@@ -33,9 +18,9 @@ export default function SettingsLayout({ children }) {
 				<Separator className="my-6" />
 				<div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
 					<aside className="lg:w-1/5">
-						<SidebarNav items={sidebarNavItems} />
+						<SidebarNav />
 					</aside>
-					<div className="flex-1 lg:max-w-2xl">{children}</div>
+					<div className="flex-1">{children}</div>
 				</div>
 			</div>
 		</AppMaxWidthContainer>

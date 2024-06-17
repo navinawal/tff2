@@ -15,11 +15,15 @@ import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { commonNavMenus, userNavMenus } from "@/config/navMenus";
 
 export function UserNav() {
 	const router = useRouter();
 	const { toast } = useToast();
 	const { user, logout } = useAuth();
+	const { profileData } = user;
+	const displayName = `${profileData?.firstName} ${profileData?.lastName}`;
+	const roleMenus = userNavMenus[profileData?.role] || [];
 
 	const handleLogout = async () => {
 		try {
@@ -39,40 +43,42 @@ export function UserNav() {
 			<DropdownMenuTrigger asChild>
 				<Button variant="ghost" className="relative h-8 w-8 rounded-full">
 					<Avatar className="h-8 w-8">
-						<AvatarImage src={user?.photoURL} alt={user?.displayName} />
-						<AvatarFallback>{user?.displayName}</AvatarFallback>
+						<AvatarImage src={profileData?.profileImage} alt={displayName} />
+						<AvatarFallback>{displayName}</AvatarFallback>
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56" align="end" forceMount>
 				<DropdownMenuLabel className="font-normal">
 					<div className="flex flex-col space-y-1">
-						<p className="text-sm font-medium leading-none">{user?.displayName}</p>
-						<p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+						<p className="text-sm font-medium leading-none">{displayName}</p>
+						<p className="text-xs leading-none text-muted-foreground">{profileData?.email}</p>
 					</div>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<Link href="/account/profile">
-						<DropdownMenuItem>
-							Profile
-							<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-						</DropdownMenuItem>
-					</Link>
-					<Link href="/account/profile/change-password">
-						<DropdownMenuItem>
-							Account
-							<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-						</DropdownMenuItem>
-					</Link>
-					<Link href="/account/profile/settings">
-						<DropdownMenuItem>
-							Settings
-							<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-						</DropdownMenuItem>
-					</Link>
+					{commonNavMenus.map((menu) => (
+						<Link href={menu.url} key={menu.id}>
+							<DropdownMenuItem>
+								{menu.title}
+								<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+							</DropdownMenuItem>
+						</Link>
+					))}
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					{roleMenus.map((menu) => (
+						<Link href={menu.url} key={menu.id}>
+							<DropdownMenuItem>
+								{menu.title}
+								<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+							</DropdownMenuItem>
+						</Link>
+					))}
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+
 				<DropdownMenuItem onClick={handleLogout}>
 					Log out
 					<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

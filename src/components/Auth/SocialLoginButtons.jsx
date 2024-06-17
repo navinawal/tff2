@@ -13,7 +13,7 @@ export default function SocialLoginButtons({ onError }) {
 	const handleGoogleLogin = async () => {
 		try {
 			const response = await loginWithGoogle();
-			console.log(response);
+			// console.log(response);
 			router.push("/account/profile");
 		} catch (error) {
 			onError(error.message);
@@ -23,7 +23,7 @@ export default function SocialLoginButtons({ onError }) {
 	const handleFacebookLogin = async () => {
 		try {
 			const response = await loginWithFacebook();
-			console.log(response);
+			// console.log(response);
 			router.push("/account/profile");
 		} catch (error) {
 			onError(error.message);

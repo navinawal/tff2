@@ -9,9 +9,11 @@ import { headerNavMenus } from "@/config/site";
 import AuthButtons from "@/components/Auth/AuthButtons/AuthButton";
 import { UserNav } from "@/components/Account/user-nav";
 import { useAuth } from "@/hooks/useAuth";
+// import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AppHeader() {
 	const { user } = useAuth();
+
 	return (
 		<header className="sticky top-0 flex h-16 items-center gap-4 border-b border-primary-gray bg-[#181a1c] px-4 md:px-6 z-[9]">
 			<nav className="w-full hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center md:gap-5 md:text-sm lg:gap-6 whitespace-nowrap">
@@ -42,6 +44,7 @@ export default function AppHeader() {
 				</SheetContent>
 			</Sheet>
 			<div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+				{/* {!user && <Skeleton className="w-[100px] h-[20px] rounded-full" />} */}
 				<div className="ml-auto flex-initial">{user ? <UserNav /> : <AuthButtons />}</div>
 			</div>
 		</header>

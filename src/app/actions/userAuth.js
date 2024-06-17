@@ -1,6 +1,6 @@
 "use server";
 
-import { firebaseAdmin } from "@/lib/firebase-admin";
+import { adminDb, firebaseAdmin } from "@/lib/firebase-admin";
 import { cookies } from "next/headers";
 
 async function getAuthToken() {
@@ -23,17 +23,27 @@ export async function isUserAuthenticated(authToken) {
 	}
 }
 
-export async function getCurrentUser() {
-	const authToken = await getAuthToken();
+export async function getCurrentUser(authToken) {
+	const _authToken = authToken ?? (await getAuthToken());
+	if (!_authToken) return false;
 
-	if (!(await isUserAuthenticated(authToken))) {
+	if (!(await isUserAuthenticated(_authToken))) {
 		return null;
 	}
 
-	const decodedIdToken = await firebaseAdmin.verifySessionCookie(authToken);
+	const decodedIdToken = await firebaseAdmin.verifySessionCookie(_authToken);
 	const currentUser = await firebaseAdmin.getUser(decodedIdToken.uid);
 
-	return currentUser;
+	const profileDocRef = adminDb.collection("users_profile").doc(decodedIdToken.uid);
+	const profileDoc = await profileDocRef.get();
+
+	if (!profileDoc.exists) {
+		return { uid: currentUser.uid, profile: null };
+	}
+
+	const profileData = profileDoc.data();
+
+	return { uid: currentUser.uid, profile: profileData };
 }
 
 export async function setAuthCookie(authToken) {

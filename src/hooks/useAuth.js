@@ -9,12 +9,11 @@ import {
 	signInWithEmailAndPassword,
 	signInWithPopup,
 	signOut,
-	updateProfile,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider, facebookProvider } from "@/lib/firebase";
 import { deleteCookie } from "cookies-next";
-import { revokeAllSessions, setAuthCookie } from "@/app/actions/userAuth";
+import { setAuthCookie, revokeAllSessions } from "@/app/actions/userAuth";
 
 const AuthContext = createContext();
 
@@ -33,60 +32,73 @@ function useProvideAuth() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
 			if (authUser) {
+				const uid = authUser.uid;
 				const authToken = await authUser.getIdToken();
-				const userData = await handleUser(authUser);
+				const profileData = await handleUserProfile(uid, authUser.photoURL, authUser.displayName);
 				await setAuthCookie(authToken);
-				setUser(authUser);
+				setUser({ uid, profileData });
 			} else {
-				setUser(null);
-				deleteCookie("authToken");
+				await logout();
 			}
 		});
 		return () => unsubscribe();
 	}, []);
 
-	const handleUser = async (user) => {
-		const userDocRef = doc(db, "users_profile", user.uid);
-		const userDoc = await getDoc(userDocRef);
-
-		if (!userDoc.exists()) {
-			const userDocData = {
-				uid: user.uid,
-				email: user.email,
-				createdAt: new Date(),
-			};
-			await setDoc(userDocRef, userDocData);
-			return userDocData;
-		} else {
-			return userDoc.data();
-		}
-	};
-
-	const handleUserProfile = async (uid) => {
+	const handleUserProfile = async (uid, photoURL, displayName) => {
 		const profileDocRef = doc(db, "users_profile", uid);
 		const profileDoc = await getDoc(profileDocRef);
 
+		let firstName = "",
+			lastName = "";
+		if (displayName) {
+			[firstName, ...lastName] = displayName.split(" ");
+			lastName = lastName.join("");
+		}
+
 		if (!profileDoc.exists()) {
 			const profileDocData = {
-				uid: user.uid,
-				email: user.email,
+				email: auth.currentUser.email,
 				createdAt: new Date(),
+				profileImage: photoURL || "",
+				firstName: firstName || "",
+				lastName: lastName || "",
 			};
 			await setDoc(profileDocRef, profileDocData);
 			return profileDocData;
 		} else {
-			return profileDoc.data();
+			const existingProfileData = profileDoc.data();
+			const updatedFields = {};
+			if (!existingProfileData.profileImage && photoURL) {
+				updatedFields.profileImage = photoURL;
+			}
+			if (!existingProfileData.firstName && firstName) {
+				updatedFields.firstName = firstName;
+			}
+			if (!existingProfileData.lastName && lastName) {
+				updatedFields.lastName = lastName;
+			}
+			if (Object.keys(updatedFields).length > 0) {
+				await setDoc(profileDocRef, updatedFields, { merge: true });
+			}
+			return existingProfileData;
 		}
 	};
 
 	const registerWithEmail = async (firstName, lastName, email, password) => {
 		try {
 			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-			const user = userCredential?.user;
+			const user = userCredential.user;
 			if (user) {
-				const uid = userCredential?.user?.uid;
-				const profileData = await handleUserProfile(uid, firstName, lastName);
+				const uid = user.uid;
+				const profileData = {
+					firstName,
+					lastName,
+					email,
+					createdAt: new Date(),
+				};
+				await setDoc(doc(db, "users_profile", uid), profileData);
 				await sendEmailVerification(user);
+				// setUser({ uid, profileData });
 				return { user, profileData };
 			} else {
 				throw new Error("Error while registration");
@@ -108,13 +120,12 @@ function useProvideAuth() {
 	const loginWithEmail = async (email, password) => {
 		try {
 			const userCredential = await signInWithEmailAndPassword(auth, email, password);
-			const user = userCredential?.user;
-			const uid = user?.uid;
-			const authToken = await user?.getIdToken();
+			const user = userCredential.user;
+			const uid = user.uid;
+			const authToken = await user.getIdToken();
 			const profileData = await handleUserProfile(uid);
 			await setAuthCookie(authToken);
-			setUser(userCredential);
-			console.log(profileData);
+			setUser({ uid, profileData });
 		} catch (error) {
 			throw error;
 		}
@@ -126,9 +137,9 @@ function useProvideAuth() {
 			const user = userCredential.user;
 			const uid = user.uid;
 			const authToken = await user.getIdToken();
+			const profileData = await handleUserProfile(uid, user.photoURL, user.displayName);
 			await setAuthCookie(authToken);
-			const profileData = await handleUserProfile(uid);
-			// /setUser(userCredential);
+			setUser({ uid, profileData });
 		} catch (error) {
 			throw error;
 		}
@@ -138,10 +149,11 @@ function useProvideAuth() {
 		try {
 			const userCredential = await signInWithPopup(auth, facebookProvider);
 			const user = userCredential.user;
+			const uid = user.uid;
 			const authToken = await user.getIdToken();
-			const userData = await handleUser(userCredential.user);
+			const profileData = await handleUserProfile(uid, user.photoURL, user.displayName);
 			await setAuthCookie(authToken);
-			setUser(userCredential);
+			setUser({ uid, profileData });
 		} catch (error) {
 			throw error;
 		}
@@ -152,7 +164,7 @@ function useProvideAuth() {
 			await signOut(auth);
 			setUser(null);
 			deleteCookie("authToken");
-			revokeAllSessions();
+			await revokeAllSessions();
 		} catch (error) {
 			throw error;
 		}

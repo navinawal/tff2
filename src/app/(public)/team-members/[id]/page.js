@@ -2,6 +2,7 @@ import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import Image from "next/image";
 import styles from "./styles.module.css";
 import { CarrierSummaryChart } from "@/components/Account/TeamMember/CarrierSummaryChart";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function TeamMemberDetails({ params }) {
 	console.log(params);
@@ -44,105 +45,32 @@ export default function TeamMemberDetails({ params }) {
 						<div className="grid grid-cols-3 justify-between content-start w-full gap-6">
 							<DetailBox containerClass="flex flex-col gap-3" heading="Department" subHeading="Editor, Producer, Actor" />
 							<DetailBox containerClass="flex flex-col gap-3" heading="Skills" subHeading="English, Hindi, Maga" />
-							<CarrierSummaryChart />
 						</div>
+						<Accordion type="single" collapsible className="w-full">
+							<AccordionItem value="item-1">
+								<AccordionTrigger>
+									<h6 className={`${styles.smallHeading}`}>Carrier Summary</h6>
+								</AccordionTrigger>
+								<AccordionContent>
+									<CarrierSummaryChart />
+								</AccordionContent>
+							</AccordionItem>
+							<AccordionItem value="item-2">
+								<AccordionTrigger>
+									<h6 className={`${styles.smallHeading}`}>Trainings</h6>
+								</AccordionTrigger>
+								<AccordionContent>
+									<div className="grid grid-cols-3 justify-between w-full gap-6">
+										<DetailBox containerClass="flex flex-col gap-1" heading="Age" subHeading="35 Years old" />
+										<DetailBox containerClass="flex flex-col gap-1" heading="Nationality" subHeading="Nepalese" />
+										<DetailBox containerClass="flex flex-col gap-1" heading="Location" subHeading="Kathmandu" />
+									</div>
+								</AccordionContent>
+							</AccordionItem>
+						</Accordion>
 					</div>
 				</div>
 			</AppMaxWidthContainer>
-
-			<div className="py-12 md:py-20">
-				<AppMaxWidthContainer>
-					<div className="flex flex-col gap-y-5 md:gap-x-10">
-						<div className="flex flex-col">
-							<span className={`${styles.titleHeading}`}>Carrier Summary</span>
-							<h1 className={`${styles.heading} text-4xl`}>
-								What I <span className={`${styles.textHGradient}`}>Did</span>
-							</h1>
-						</div>
-						<div className="grid grid-cols-3 md:grid-cols-7 place-content-center gap-10">
-							<div className="flex flex-col items-center text-center gap-3">
-								<h6 className={`${styles.smallHeading}`}>Feature Films</h6>
-								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>2</h1>
-							</div>
-							<div className="flex flex-col items-center text-center gap-3">
-								<h6 className={`${styles.smallHeading}`}>Short Films</h6>
-								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>3</h1>
-							</div>
-							<div className="flex flex-col items-center text-center gap-3">
-								<h6 className={`${styles.smallHeading}`}>Music Videos</h6>
-								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>0</h1>
-							</div>
-							<div className="flex flex-col items-center text-center gap-3">
-								<h6 className={`${styles.smallHeading}`}>Documentaries</h6>
-								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>9</h1>
-							</div>
-							<div className="flex flex-col items-center text-center gap-3">
-								<h6 className={`${styles.smallHeading}`}>Tv ADS</h6>
-								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>0</h1>
-							</div>
-							<div className="flex flex-col items-center text-center gap-3">
-								<h6 className={`${styles.smallHeading}`}>Theatre Drama</h6>
-								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>33</h1>
-							</div>
-							<div className="flex flex-col items-center text-center gap-3">
-								<h6 className={`${styles.smallHeading}`}>TV/Web Series</h6>
-								<h1 className={`${styles.heading} ${styles.strokeHeading} text-3xl md:text-6xl`}>432</h1>
-							</div>
-						</div>
-					</div>
-				</AppMaxWidthContainer>
-			</div>
-
-			<div className="py-12 md:py-14">
-				<AppMaxWidthContainer>
-					<div className="grid grid-flow-row lg:grid-cols-3 gap-5">
-						<div className="flex flex-col">
-							<span className={`${styles.titleHeading}`}>Trainings And Affiliations</span>
-							<h1 className={`${styles.heading} text-4xl`}>
-								My <span className={`${styles.textHGradient}`}>Trainings</span>
-							</h1>
-						</div>
-						<div className="col-span-2 flex flex-col gap-10">
-							<div className={`${styles.fancyBorderedBox} grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Type Of Course Taken</h6>
-									<div className="text-base leading-tight">Course Taken</div>
-								</div>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Training Instituition</h6>
-									<div className="text-base leading-tight">Instituition</div>
-								</div>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Mentor (Trainer)</h6>
-									<div className="text-base leading-tight">Trainer</div>
-								</div>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Length Of The Course</h6>
-									<div className="text-base leading-tight">12</div>
-								</div>
-							</div>
-							<div className={`${styles.fancyBorderedBox} grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Type Of Course Taken</h6>
-									<div className="text-base leading-tight">Course Taken</div>
-								</div>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Training Instituition</h6>
-									<div className="text-base leading-tight">Instituition</div>
-								</div>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Mentor (Trainer)</h6>
-									<div className="text-base leading-tight">Trainer</div>
-								</div>
-								<div className={"flex flex-col gap-2"}>
-									<h6 className={`${styles.titleHeading}`}>Length Of The Course</h6>
-									<div className="text-base leading-tight">12</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</AppMaxWidthContainer>
-			</div>
 
 			<div className="px-8 py-32">
 				<AppMaxWidthContainer>
@@ -219,7 +147,7 @@ export default function TeamMemberDetails({ params }) {
 
 function DetailBox({ containerClass, heading, subHeading }) {
 	return (
-		<div className={containerClass && "flex flex-col gap-3"}>
+		<div className={containerClass && "flex flex-col gap-1"}>
 			<h6 className={`${styles.smallHeading}`}>{heading}</h6>
 			<div className="text-base leading-tight">{subHeading}</div>
 		</div>

@@ -19,7 +19,11 @@ export async function middleware(request) {
 		if (response.ok) {
 			const data = await response.json();
 
-			if (data.valid) {
+			if (data.currentUser) {
+				const { uid, profile } = data.currentUser;
+				if (uid && profile && !profile.role) {
+					return NextResponse.redirect(new URL("/choose-role", request.url));
+				}
 				return NextResponse.next();
 			}
 		}

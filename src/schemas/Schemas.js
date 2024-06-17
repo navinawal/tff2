@@ -45,7 +45,9 @@ export const ForgotPasswordSchema = z.object({
 });
 
 export const ChooseRoleSchema = z.object({
-	role: z.enum(["TeamMember", "Company"]),
+	role: z.enum(["TeamMember", "Company"], {
+		required_error: "You need to select your Role",
+	}),
 });
 
 export const profileFormSchema = z.object({
@@ -68,5 +70,17 @@ export const profileFormSchema = z.object({
 		required_error: "A date of birth is required.",
 	}),
 	bio: z.string().max(200).min(4),
-	gender: z.enum(["male", "female"]),
+	gender: z.enum(["male", "female"], {
+		required_error: "You need to select your gender",
+	}),
+});
+
+export const carrierSummarySchema = z.object({
+	featureFilms: z.optional(),
+	shortFilms: z.optional(),
+	musicVideos: z.optional(),
+	documentaries: z.optional(),
+	commercials: z.optional(),
+	theatreDrama: z.optional(),
+	webSeries: z.optional(),
 });

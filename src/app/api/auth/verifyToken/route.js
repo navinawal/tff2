@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isUserAuthenticated } from "@/app/actions/userAuth";
+import { getCurrentUser } from "@/app/actions/userAuth";
 
 export async function POST(request) {
 	const { authToken } = await request.json();
@@ -9,8 +9,11 @@ export async function POST(request) {
 	}
 
 	try {
-		const valid = await isUserAuthenticated(authToken);
-		return NextResponse.json({ valid }, { status: 200 });
+		const currentUser = await getCurrentUser(authToken);
+		if (currentUser) {
+			return NextResponse.json({ currentUser }, { status: 200 });
+		}
+		return NextResponse.json({ error: "token expired" }, { status: 401 });
 	} catch (error) {
 		return NextResponse.json({ error: error }, { status: 401 });
 	}

@@ -1,7 +1,7 @@
 "use server";
 
 import { adminDb } from "@/lib/firebase-admin";
-import { profileFormSchema } from "@/schemas/Schemas";
+import { ChooseRoleSchema, profileFormSchema } from "@/schemas/Schemas";
 
 export async function getUserProfile(uid) {
 	try {
@@ -29,6 +29,23 @@ export async function saveUserProfile(uid, profileData) {
 	try {
 		const profileDocRef = adminDb.collection("users_profile").doc(uid);
 		await profileDocRef.set(profileData, { merge: true });
+		return { success: true, message: "Profile saved" };
+	} catch (error) {
+		return { success: false, message: error.message };
+	}
+}
+
+export async function saveRole(uid, roleData) {
+	console.log(uid);
+	const validatedFields = ChooseRoleSchema.safeParse(roleData);
+
+	if (!validatedFields.success) {
+		return { success: false, message: "invalid fields" };
+	}
+
+	try {
+		const profileDocRef = adminDb.collection("users_profile").doc(uid);
+		await profileDocRef.set(validatedFields.data, { merge: true });
 		return { success: true, message: "Profile saved" };
 	} catch (error) {
 		return { success: false, message: error.message };
