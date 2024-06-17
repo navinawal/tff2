@@ -13,10 +13,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { saveRole } from "@/app/actions/userProfile";
 import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 export default function ChooseRoleForm() {
 	const router = useRouter();
 	const { toast } = useToast();
+	const [isLoading, setIsLoading] = useState(false);
 	const formHook = useForm({
 		resolver: zodResolver(ChooseRoleSchema),
 	});
@@ -36,7 +38,9 @@ export default function ChooseRoleForm() {
 	const { uid } = user;
 
 	async function onSubmit(formData) {
+		setIsLoading(true);
 		const response = await saveRole(uid, formData);
+		setIsLoading(false);
 		if (response.success === true) {
 			router.push("/account/profile");
 		} else {
@@ -91,6 +95,7 @@ export default function ChooseRoleForm() {
 					</Button>
 				</form>
 			</Form>
+			{isLoading && <div className="loading-indicator">Redirecting...</div>}
 		</>
 	);
 }

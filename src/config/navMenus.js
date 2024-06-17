@@ -11,7 +11,8 @@ export const userNavMenus = {
 		{ id: "filmography", title: "Filmography", url: "/account/profile/filmography" },
 	],
 	Company: [
-		{ id: "dashboard", title: "Admin Dashboard", url: "/account/profile" },
-		{ id: "users", title: "Manage Users", url: "/account/profile" },
+		{ id: "companyDetails", title: "Company Details", url: "/account/profile/company-details" },
+		{ id: "companyJobPosts", title: "Job Posts", url: "/account/profile/company-job-posts" },
+		{ id: "saveTeamMembers", title: "Save Team Members", url: "/account/profile/saved-team-members" },
 	],
 };

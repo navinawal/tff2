@@ -36,7 +36,6 @@ export async function saveUserProfile(uid, profileData) {
 }
 
 export async function saveRole(uid, roleData) {
-	console.log(uid);
 	const validatedFields = ChooseRoleSchema.safeParse(roleData);
 
 	if (!validatedFields.success) {
