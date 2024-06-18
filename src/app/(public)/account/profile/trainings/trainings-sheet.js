@@ -1,10 +1,16 @@
+import { getCurrentUser } from "@/app/actions/userAuth";
+import { TeamMemberTrainingForm } from "@/components/Forms/Account/TeamMemberTrainingForm";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 
-export function TrainingsSheet() {
+export async function TrainingsSheet() {
+	const user = await getCurrentUser();
+
+	if (!user) return;
+
+	const { uid } = user;
+
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -13,42 +19,14 @@ export function TrainingsSheet() {
 					<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Add New</span>
 				</Button>
 			</SheetTrigger>
-			<SheetContent className="!max-w-[600px] w-[600px]">
+			<SheetContent className="">
 				<SheetHeader>
 					<SheetTitle>Trainings</SheetTitle>
 					<SheetDescription>Trainings And Affiliations</SheetDescription>
 				</SheetHeader>
-				<div className="grid gap-4 py-4">
-					<div className="grid grid-cols-4 items-center gap-4">
-						<Label htmlFor="name" className="text-right text-nowrap">
-							Type Of Course Taken
-						</Label>
-						<Input id="name" value="" className="col-span-3" />
-					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
-						<Label htmlFor="username" className="text-right text-nowrap">
-							Training Instituition
-						</Label>
-						<Input id="username" value="" className="col-span-3" />
-					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
-						<Label htmlFor="username" className="text-right text-nowrap">
-							Mentor (Trainer)
-						</Label>
-						<Input id="username" value="" className="col-span-3" />
-					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
-						<Label htmlFor="username" className="text-right text-nowrap">
-							Length Of The Course
-						</Label>
-						<Input id="username" value="" className="col-span-3" />
-					</div>
+				<div className="py-6">
+					<TeamMemberTrainingForm uid={uid} />
 				</div>
-				<SheetFooter>
-					<SheetClose asChild>
-						<Button type="submit">Save</Button>
-					</SheetClose>
-				</SheetFooter>
 			</SheetContent>
 		</Sheet>
 	);

@@ -35,16 +35,28 @@ export async function saveUserProfile(uid, profileData) {
 	}
 }
 
-export async function saveRole(uid, roleData) {
-	const validatedFields = ChooseRoleSchema.safeParse(roleData);
+export async function saveRole(uid, data) {
+	const validatedFields = ChooseRoleSchema.safeParse(data);
 
 	if (!validatedFields.success) {
 		return { success: false, message: "invalid fields" };
 	}
 
 	try {
+		const { role } = validatedFields.data;
 		const profileDocRef = adminDb.collection("users_profile").doc(uid);
+		const profileDoc = await profileDocRef.get();
+		const profileData = profileDoc.data();
+
 		await profileDocRef.set(validatedFields.data, { merge: true });
+		if (role === "Company") {
+			const companyRef = adminDb.collection("companies").doc(uid);
+			await companyRef.set({}, { merge: true });
+		} else if (role === "TeamMember") {
+			const { firstName, lastName } = profileData;
+			const teamMemberRef = adminDb.collection("team_members").doc(uid);
+			await teamMemberRef.set({ firstName, lastName }, { merge: true });
+		}
 		return { success: true, message: "Profile saved" };
 	} catch (error) {
 		return { success: false, message: error.message };

@@ -1,8 +1,18 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { FilmographyDataTable } from "./filmography-data-table";
 import { FilmographySheet } from "./filmography-sheet";
+import { getCurrentUser } from "@/app/actions/userAuth";
+import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
 
-export default function Filmography() {
+export default async function Filmography() {
+	const user = await getCurrentUser();
+
+	if (!user) return;
+
+	const { uid } = user;
+
+	const filmographies = await getTeamMemberFilmographies(uid);
+
 	return (
 		<>
 			<div className="space-y-6">
@@ -14,7 +24,21 @@ export default function Filmography() {
 					<FilmographySheet />
 				</div>
 				<Separator />
-				<FilmographyDataTable />
+				<div className="flex flex-col flex-wrap gap-5">
+					{filmographies?.map((filmography) => (
+						<Card key={filmography.id}>
+							<CardHeader>
+								<CardTitle>{filmography.projectName}</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<p>{filmography.projectType}</p>
+								<p>{filmography.role}</p>
+								<p>{filmography.productionYear}</p>
+								<p>{filmography.projectLink}</p>
+							</CardContent>
+						</Card>
+					))}
+				</div>
 			</div>
 		</>
 	);

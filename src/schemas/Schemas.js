@@ -76,11 +76,39 @@ export const profileFormSchema = z.object({
 });
 
 export const carrierSummarySchema = z.object({
-	featureFilms: z.optional(),
-	shortFilms: z.optional(),
-	musicVideos: z.optional(),
-	documentaries: z.optional(),
-	commercials: z.optional(),
-	theatreDrama: z.optional(),
-	webSeries: z.optional(),
+	featureFilms: z.string(),
+	shortFilms: z.string(),
+	musicVideos: z.string(),
+	documentaries: z.string(),
+	commercials: z.string(),
+	theatreDrama: z.string(),
+	webSeries: z.string(),
+});
+
+export const TeamMemberBasicInfoFormSchema = z.object({
+	firstName: z.any(),
+	lastName: z.any(),
+	height: z.any(),
+	ethnicity: z.any(),
+	nationality: z.any(),
+	ageGroup: z.any(),
+	location: z.any(),
+	nationality: z.any(),
+	filmDepartments: z.any(),
+	about: z.any(),
+});
+
+export const TeamMemberTrainingFormSchema = z.object({
+	courseTaken: z.any(),
+	instituition: z.any(),
+	mentor: z.any(),
+	courseLength: z.any(),
+});
+
+export const TeamMemberFilmographyFormSchema = z.object({
+	projectName: z.any(),
+	projectType: z.any(),
+	role: z.any(),
+	productionYear: z.any(),
+	projectLink: z.any(),
 });

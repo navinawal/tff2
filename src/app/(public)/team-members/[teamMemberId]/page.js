@@ -3,15 +3,26 @@ import Image from "next/image";
 import styles from "./styles.module.css";
 import { CarrierSummaryChart } from "@/components/Account/TeamMember/CarrierSummaryChart";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { notFound } from "next/navigation";
+import { getTeamMemberDetails } from "@/app/actions/teamMembers";
+import { getTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
+import { Badge } from "@/components/ui/badge";
 
-export default function TeamMemberDetails({ params }) {
-	const { id } = params;
+export default async function TeamMemberDetails({ params }) {
+	const { teamMemberId } = params;
+	const teamMember = await getTeamMemberDetails(teamMemberId);
+	const trainings = await getTeamMemberTrainings(teamMemberId);
+
+	if (teamMember.error) return notFound();
+
 	return (
 		<div className="bg-black text-[#ffffffcc]">
 			<div className="py-12 md:py-24">
 				<AppMaxWidthContainer>
 					<div className="flex justify-center items-center">
-						<h1 className={`${styles.strokeHeading} text-5xl md:text-9xl text-white font-bold`}>Arthur Jackson</h1>
+						<h1 className={`${styles.strokeHeading} text-5xl md:text-9xl text-white font-bold`}>
+							{teamMember.firstName} {teamMember.lastName}
+						</h1>
 					</div>
 				</AppMaxWidthContainer>
 			</div>
@@ -28,23 +39,16 @@ export default function TeamMemberDetails({ params }) {
 						></img>
 					</div>
 					<div className="flex flex-col col-span-2 justify-center items-start gap-6">
-						<DetailBox
-							containerClass="flex flex-col gap-3"
-							heading="About Me"
-							subHeading="Very well thought out and articulate communication. Clear milestones, deadlines and fast work. Patience. Infinite patience. No
-								shortcuts. Even if the client is being careless. Some quick example text to build on the card title and bulk the card`s content Moltin
-								gives you platform. As a highly skilled and successfull product development and design specialist with more than 4 Years of My
-								experience lies in successfully conceptualizing, designing, and modifying consumer products specific to interior design and home
-								furnishings."
-						/>
-						<div className="grid grid-cols-3 justify-between w-full gap-6">
-							<DetailBox containerClass="flex flex-col gap-3" heading="Age" subHeading="35 Years old" />
-							<DetailBox containerClass="flex flex-col gap-3" heading="Nationality" subHeading="Nepalese" />
-							<DetailBox containerClass="flex flex-col gap-3" heading="Location" subHeading="Kathmandu" />
+						<DetailBox containerClass="flex flex-col gap-3" heading="About Me" subHeading={teamMember.about} />
+						<div className="flex flex-wrap justify-between md:justify-start w-full gap-6">
+							<DetailBox containerClass="flex flex-col gap-3" heading="Age" subHeading={teamMember.ageGroup} />
+							<DetailBox containerClass="flex flex-col gap-3" heading="Height" subHeading={teamMember.height} />
+							<DetailBox containerClass="flex flex-col gap-3" heading="Ethnicity" subHeading={teamMember.ethnicity} />
+							<DetailBox containerClass="flex flex-col gap-3" heading="Nationality" subHeading={teamMember.nationality} />
+							<DetailBox containerClass="flex flex-col gap-3" heading="Location" subHeading={teamMember.location} />
 						</div>
 						<div className="grid grid-cols-3 justify-between content-start w-full gap-6">
 							<DetailBox containerClass="flex flex-col gap-3" heading="Department" subHeading="Editor, Producer, Actor" />
-							<DetailBox containerClass="flex flex-col gap-3" heading="Skills" subHeading="English, Hindi, Maga" />
 						</div>
 						<Accordion type="single" collapsible className="w-full">
 							<AccordionItem value="item-1">
@@ -60,10 +64,34 @@ export default function TeamMemberDetails({ params }) {
 									<h6 className={`${styles.smallHeading}`}>Trainings</h6>
 								</AccordionTrigger>
 								<AccordionContent>
-									<div className="grid grid-cols-3 justify-between w-full gap-6">
-										<DetailBox containerClass="flex flex-col gap-1" heading="Age" subHeading="35 Years old" />
-										<DetailBox containerClass="flex flex-col gap-1" heading="Nationality" subHeading="Nepalese" />
-										<DetailBox containerClass="flex flex-col gap-1" heading="Location" subHeading="Kathmandu" />
+									<div className="flex flex-col gap-6 pl-5">
+										{trainings?.map((training) => (
+											<div className="flex flex-col" key={training.id}>
+												<div className="text-sm">Course : {training.courseTaken}</div>
+												<div className="text-sm">Length : {training.courseLength}</div>
+												<div className="text-sm">Mentor : {training.mentor}</div>
+												<div className="text-sm">Instituition : {training.instituition}</div>
+											</div>
+										))}
+									</div>
+								</AccordionContent>
+							</AccordionItem>
+							<AccordionItem value="item-3">
+								<AccordionTrigger>
+									<h6 className={`${styles.smallHeading}`}>Skills</h6>
+								</AccordionTrigger>
+								<AccordionContent>
+									<div className="flex flex-col gap-2 pl-5">
+										<h6 className={`text-sm`}>Language Skills</h6>
+										<div className="flex flex-wrap gap-2">
+											<Badge variant="secondary">Outline</Badge>
+											<Badge variant="secondary">Outline</Badge>
+											<Badge variant="secondary">Outline</Badge>
+										</div>
+										<h6 className={`test-sm`}>Additional Skills</h6>
+										<div>
+											<Badge variant="secondary">Outline</Badge>
+										</div>
 									</div>
 								</AccordionContent>
 							</AccordionItem>

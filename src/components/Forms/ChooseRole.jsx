@@ -9,16 +9,13 @@ import { Button } from "@/components/ui/button";
 import { ChooseRoleSchema } from "@/schemas/Schemas";
 import { Label } from "@/components/ui/label";
 import { FcFilm, FcManager } from "react-icons/fc";
-import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import { saveRole } from "@/app/actions/userProfile";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
 
-export default function ChooseRoleForm() {
+export default function ChooseRoleForm({ uid }) {
 	const router = useRouter();
 	const { toast } = useToast();
-	const [isLoading, setIsLoading] = useState(false);
 	const formHook = useForm({
 		resolver: zodResolver(ChooseRoleSchema),
 	});
@@ -29,20 +26,11 @@ export default function ChooseRoleForm() {
 		formState: { isSubmitting },
 	} = formHook;
 
-	const { user } = useAuth();
-
-	if (!user) {
-		return;
-	}
-
-	const { uid } = user;
-
 	async function onSubmit(formData) {
-		setIsLoading(true);
 		const response = await saveRole(uid, formData);
-		setIsLoading(false);
 		if (response.success === true) {
 			router.push("/account/profile");
+			router.refresh();
 		} else {
 			toast({
 				variant: "destructive",
@@ -95,7 +83,6 @@ export default function ChooseRoleForm() {
 					</Button>
 				</form>
 			</Form>
-			{isLoading && <div className="loading-indicator">Redirecting...</div>}
 		</>
 	);
 }

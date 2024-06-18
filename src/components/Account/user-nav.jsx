@@ -15,7 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
-import { commonNavMenus, userNavMenus } from "@/config/navMenus";
+import { commonNavMenus } from "@/config/navMenus";
 
 export function UserNav() {
 	const router = useRouter();
@@ -23,7 +23,6 @@ export function UserNav() {
 	const { user, logout } = useAuth();
 	const { profileData } = user;
 	const displayName = `${profileData?.firstName} ${profileData?.lastName}`;
-	const roleMenus = userNavMenus[profileData?.role] || [];
 
 	const handleLogout = async () => {
 		try {
@@ -67,18 +66,6 @@ export function UserNav() {
 					))}
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<DropdownMenuGroup>
-					{roleMenus.map((menu) => (
-						<Link href={menu.url} key={menu.id}>
-							<DropdownMenuItem>
-								{menu.title}
-								<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-							</DropdownMenuItem>
-						</Link>
-					))}
-				</DropdownMenuGroup>
-				<DropdownMenuSeparator />
-
 				<DropdownMenuItem onClick={handleLogout}>
 					Log out
 					<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

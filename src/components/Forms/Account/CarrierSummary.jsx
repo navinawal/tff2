@@ -6,19 +6,12 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { carrierSummarySchema } from "@/schemas/Schemas";
+import { saveTeamMemberDetails } from "@/app/actions/teamMembers";
 
-export function CarrierSummaryForm() {
+export function CarrierSummaryForm({ uid, defaultValues }) {
 	const formHook = useForm({
 		resolver: zodResolver(carrierSummarySchema),
-		defaultValues: {
-			featureFilms: 0,
-			shortFilms: 0,
-			musicVideos: 0,
-			documentaries: 0,
-			commercials: 0,
-			theatreDrama: 0,
-			webSeries: 0,
-		},
+		defaultValues: defaultValues,
 	});
 
 	const {
@@ -27,8 +20,13 @@ export function CarrierSummaryForm() {
 		formState: { isSubmitting },
 	} = formHook;
 
-	function onSubmit(data) {
-		console.log(data);
+	async function onSubmit(data) {
+		try {
+			const response = await saveTeamMemberDetails(uid, data);
+			console.log(response);
+		} catch (error) {
+			console.error("Error submitting form:", error);
+		}
 	}
 
 	return (
@@ -42,7 +40,7 @@ export function CarrierSummaryForm() {
 							<FormItem>
 								<FormLabel>Number of Feature Films</FormLabel>
 								<FormControl>
-									<Input type="number" placeholder="Number of Feature Films" {...field} min="0" />
+									<Input type="number" placeholder="Number of Feature Films" {...field} min="0" step="1" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -55,7 +53,7 @@ export function CarrierSummaryForm() {
 							<FormItem>
 								<FormLabel>Number of Short Films</FormLabel>
 								<FormControl>
-									<Input type="number" placeholder="Number of Feature Films" {...field} min="0" />
+									<Input type="number" placeholder="Number of Short Films" {...field} min="0" step="1" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -70,7 +68,7 @@ export function CarrierSummaryForm() {
 							<FormItem>
 								<FormLabel>Number of Music Videos</FormLabel>
 								<FormControl>
-									<Input type="number" placeholder="Number of Feature Films" {...field} min="0" />
+									<Input type="number" placeholder="Number of Music Videos" {...field} min="0" step="1" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -83,7 +81,7 @@ export function CarrierSummaryForm() {
 							<FormItem>
 								<FormLabel>Number of Documentaries</FormLabel>
 								<FormControl>
-									<Input type="number" placeholder="Number of Documentaries" {...field} min="0" />
+									<Input type="number" placeholder="Number of Documentaries" {...field} min="0" step="1" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -96,9 +94,9 @@ export function CarrierSummaryForm() {
 						name="commercials"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Number of Tv Commercials/Ads</FormLabel>
+								<FormLabel>Number of TV Commercials/Ads</FormLabel>
 								<FormControl>
-									<Input type="number" placeholder="Number of Feature Films" {...field} min="0" />
+									<Input type="number" placeholder="Number of TV Commercials/Ads" {...field} min="0" step="1" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -111,7 +109,7 @@ export function CarrierSummaryForm() {
 							<FormItem>
 								<FormLabel>Number of Theatre Drama</FormLabel>
 								<FormControl>
-									<Input type="number" placeholder="Number of Theatre Drama" {...field} min="0" />
+									<Input type="number" placeholder="Number of Theatre Drama" {...field} min="0" step="1" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -126,7 +124,7 @@ export function CarrierSummaryForm() {
 							<FormItem>
 								<FormLabel>Number of TV/Web-Series</FormLabel>
 								<FormControl>
-									<Input type="number" placeholder="Number of TV/Web-Series" {...field} min="0" />
+									<Input type="number" placeholder="Number of TV/Web-Series" {...field} min="0" step="1" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -134,7 +132,7 @@ export function CarrierSummaryForm() {
 					/>
 				</div>
 				<Button type="submit" size="sm" disabled={isSubmitting}>
-					{isSubmitting ? "Saving..." : "Update Carrier Summary"}
+					{isSubmitting ? "Saving..." : "Update"}
 				</Button>
 			</form>
 		</Form>

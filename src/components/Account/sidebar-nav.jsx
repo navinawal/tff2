@@ -21,11 +21,23 @@ export function SidebarNav({ className }) {
 
 	const { profileData } = user;
 	const roleMenus = userNavMenus[profileData?.role] || [];
-	const sidebarNavItems = [...commonNavMenus, ...roleMenus];
 
 	return (
 		<nav className={cn("flex flex-wrap space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1", className)}>
-			{sidebarNavItems.map((item) => (
+			{commonNavMenus.map((item) => (
+				<Link
+					key={item.id}
+					href={item.url}
+					className={cn(
+						buttonVariants({ variant: "ghost" }),
+						pathname === item.url ? "bg-muted hover:bg-muted" : "hover:bg-transparent hover:underline",
+						"justify-start"
+					)}
+				>
+					{item.title}
+				</Link>
+			))}
+			{roleMenus.map((item) => (
 				<Link
 					key={item.id}
 					href={item.url}

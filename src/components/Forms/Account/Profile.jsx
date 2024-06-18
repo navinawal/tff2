@@ -59,11 +59,13 @@ export function ProfileForm({ uid, defaultValues }) {
 							<>
 								<FormItem>
 									<FormLabel>
-										<div className="overflow-hidden rounded-md">
+										<div className="overflow-hidden rounded-full max-w-[150px] max-h-[150px]">
 											{/* <Image src={album.cover} alt={album.name} width={width} height={height} /> */}
 											<img
 												src="https://zahar.jwsuperthemes.com/model/wp-content/uploads/sites/18/2022/06/stephanie-nakagawa-ADSKIn0ScDg-unsplash-408x570.jpg"
 												alt=""
+												height="150"
+												width="150"
 												className={cn("h-auto w-auto transition-all hover:scale-10")}
 											/>
 										</div>

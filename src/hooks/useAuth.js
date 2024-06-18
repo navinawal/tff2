@@ -12,7 +12,6 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider, facebookProvider } from "@/lib/firebase";
-import { deleteCookie } from "cookies-next";
 import { setAuthCookie, revokeAllSessions } from "@/app/actions/userAuth";
 
 const AuthContext = createContext();
@@ -163,7 +162,6 @@ function useProvideAuth() {
 		try {
 			await signOut(auth);
 			setUser(null);
-			deleteCookie("authToken");
 			await revokeAllSessions();
 		} catch (error) {
 			throw error;

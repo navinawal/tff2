@@ -2,7 +2,6 @@ import { getCurrentUser } from "@/app/actions/userAuth";
 import { getUserProfile } from "@/app/actions/userProfile";
 import { ProfileForm } from "@/components/Forms/Account/Profile";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 
 export default async function Home() {
 	const user = await getCurrentUser();
@@ -27,9 +26,6 @@ export default async function Home() {
 					<h3 className="text-lg font-medium">Profile</h3>
 					<p className="text-sm text-muted-foreground">This is how others will see you on the site.</p>
 				</div>
-				<Link href={`/team-members/${uid}`} className="text-[#2f2cd8]">
-					View Public View
-				</Link>
 			</div>
 			<Separator />
 			<ProfileForm uid={uid} defaultValues={defaultValues} />

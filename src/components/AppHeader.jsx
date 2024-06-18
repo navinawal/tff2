@@ -2,12 +2,12 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
 import { headerNavMenus } from "@/config/site";
 import AuthButtons from "@/components/Auth/AuthButtons/AuthButton";
 import { UserNav } from "@/components/Account/user-nav";
+import { getCurrentUser } from "@/app/actions/userAuth";
 import { useAuth } from "@/hooks/useAuth";
 // import { Skeleton } from "@/components/ui/skeleton";
 
@@ -44,7 +44,6 @@ export default function AppHeader() {
 				</SheetContent>
 			</Sheet>
 			<div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-				{/* {!user && <Skeleton className="w-[100px] h-[20px] rounded-full" />} */}
 				<div className="ml-auto flex-initial">{user ? <UserNav /> : <AuthButtons />}</div>
 			</div>
 		</header>

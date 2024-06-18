@@ -63,6 +63,7 @@ export async function setAuthCookie(authToken) {
 
 export async function revokeAllSessions() {
 	const authToken = await getAuthToken();
+	if (!authToken) return;
 	const decodedIdToken = await firebaseAdmin.verifySessionCookie(authToken);
 	await firebaseAdmin.revokeRefreshTokens(decodedIdToken.sub);
 	cookies().delete("authToken");

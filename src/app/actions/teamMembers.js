@@ -12,13 +12,17 @@ export async function getTeamMemberDetails(uid) {
 		}
 
 		return teamMemberDoc.data();
-		// return { success: true, message: "Profile saved" };
 	} catch (error) {
 		return { error: error.message };
 	}
 }
 
-export async function saveTeamMemberDetails(uid, profileData) {
-	const teamMemberRef = adminDb.collection("team_members").doc(uid);
-	await teamMemberRef.set(profileData, { merge: true });
+export async function saveTeamMemberDetails(uid, data) {
+	try {
+		const teamMemberRef = adminDb.collection("team_members").doc(uid);
+		const response = await teamMemberRef.set(data, { merge: true });
+		return { response: true };
+	} catch (error) {
+		return { error: error.message };
+	}
 }
