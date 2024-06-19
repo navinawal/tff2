@@ -1,28 +1,22 @@
 "use client";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 import { useForm } from "react-hook-form";
-import { format } from "date-fns";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { profileFormSchema } from "@/schemas/Schemas";
-import { saveUserProfile } from "@/app/actions/userProfile";
+import { CompanyProfileFormSchema } from "@/schemas/Schemas";
 import { useToast } from "@/components/ui/use-toast";
+import { saveCompanyDetails } from "@/app/actions/companies";
 
 export function CompanyDetailsForm({ uid, defaultValues }) {
 	const { toast } = useToast();
 	const formHook = useForm({
-		resolver: zodResolver(profileFormSchema),
+		resolver: zodResolver(CompanyProfileFormSchema),
 		defaultValues,
 	});
 
@@ -33,7 +27,7 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 	} = formHook;
 
 	async function onSubmit(formData) {
-		const response = await saveUserProfile(uid, formData);
+		const response = await saveCompanyDetails(uid, formData);
 		if (response.success === true) {
 			toast({
 				title: "Success !",
@@ -95,9 +89,9 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 						name="companyName"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>First Name</FormLabel>
+								<FormLabel>Company Name</FormLabel>
 								<FormControl>
-									<Input placeholder="First Name" {...field} />
+									<Input placeholder="Company Name" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -178,9 +172,9 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 					name="aboutCompany"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>About</FormLabel>
+							<FormLabel>About Company</FormLabel>
 							<FormControl>
-								<Textarea placeholder="About" className="resize-none" {...field} />
+								<Textarea placeholder="About Company" className="resize-none" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

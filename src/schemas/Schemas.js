@@ -112,3 +112,13 @@ export const TeamMemberFilmographyFormSchema = z.object({
 	productionYear: z.any(),
 	projectLink: z.any(),
 });
+
+export const CompanyProfileFormSchema = z.object({
+	companyName: z.any(),
+	category: z.any(),
+	noOfEmployees: z.any(),
+	website: z.any(),
+	email: z.any(),
+	location: z.any(),
+	aboutCompany: z.any(),
+});

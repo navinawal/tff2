@@ -4,13 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { adminDb } from "@/lib/firebase-admin";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function TeamMemberBasicInfo() {
 	const user = await getCurrentUser();
 
-	if (!user) return;
+	if (!user) notFound();
 
-	const { uid } = user;
+	const { uid, profile } = user;
+
+	if (profile.role !== "TeamMember") notFound();
 
 	const carrierSummaryRef = adminDb.collection("team_members").doc(uid);
 	const carrierSummaryDoc = await carrierSummaryRef.get();

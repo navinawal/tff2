@@ -17,10 +17,10 @@ export default async function TeamMemberDetails({ params }) {
 
 	return (
 		<div className="bg-black text-[#ffffffcc]">
-			<div className="py-12 md:py-24">
+			<div className="py-12 md:py-20">
 				<AppMaxWidthContainer>
-					<div className="flex justify-center items-center">
-						<h1 className={`${styles.strokeHeading} text-5xl md:text-9xl text-white font-bold`}>
+					<div className="flex justify-start items-center">
+						<h1 className={`${styles.strokeHeading} text-5xl md:text-8xl text-white font-bold`}>
 							{teamMember.firstName} {teamMember.lastName}
 						</h1>
 					</div>
@@ -29,7 +29,7 @@ export default async function TeamMemberDetails({ params }) {
 
 			<AppMaxWidthContainer>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-x-10">
-					<div className="flex flex-col justify-center items-center gap-4">
+					<div className="flex flex-col justify-start items-start gap-4">
 						<img
 							src="https://zahar.jwsuperthemes.com/model/wp-content/uploads/sites/18/2022/06/stephan-louis-L3s5QySz5UM-unsplash-408x570.jpg"
 							width="250"
@@ -176,8 +176,8 @@ export default async function TeamMemberDetails({ params }) {
 function DetailBox({ containerClass, heading, subHeading }) {
 	return (
 		<div className={containerClass && "flex flex-col gap-1"}>
-			<h6 className={`${styles.smallHeading}`}>{heading}</h6>
-			<div className="text-base leading-tight">{subHeading}</div>
+			<h6 className={`${styles.smallHeading} text-white`}>{heading}</h6>
+			<div className="text-base leading-tight text-muted-foreground font-normal">{subHeading}</div>
 		</div>
 	);
 }

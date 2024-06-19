@@ -1,7 +1,20 @@
+import { getCompanyProfile } from "@/app/actions/companies";
+import { getCurrentUser } from "@/app/actions/userAuth";
 import { CompanyDetailsForm } from "@/components/Forms/Account/CompanyDetails";
 import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation";
 
-export default function CompanyDetails() {
+export default async function CompanyDetails() {
+	const user = await getCurrentUser();
+
+	if (!user) return;
+
+	const { uid, profile } = user;
+
+	if (profile.role !== "Company") return notFound();
+
+	const companyProfile = (await getCompanyProfile(uid)) ?? {};
+
 	return (
 		<>
 			<div className="space-y-6">
@@ -12,7 +25,7 @@ export default function CompanyDetails() {
 					</div>
 				</div>
 				<Separator />
-				<CompanyDetailsForm />
+				<CompanyDetailsForm uid={uid} defaultValues={companyProfile} />
 			</div>
 		</>
 	);
