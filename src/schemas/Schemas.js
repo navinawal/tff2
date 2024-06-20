@@ -122,3 +122,18 @@ export const CompanyProfileFormSchema = z.object({
 	location: z.any(),
 	aboutCompany: z.any(),
 });
+
+export const JobPostFormSchema = z.object({
+	projectTitle: z.any(),
+	projectGenre: z.any(),
+	projectDetails: z.any(),
+	companyName: z.any(),
+	auditionLocation: z.any(),
+	auditionDate: z.any(),
+	auditionTime: z.any(),
+	contactPerson: z.any(),
+	contactNumber: z.any(),
+	projectPoster: z.any(),
+	projectDocuments: z.any(),
+	applicationDeadline: z.any(),
+});

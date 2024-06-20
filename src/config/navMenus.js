@@ -14,6 +14,6 @@ export const userNavMenus = {
 	Company: [
 		{ id: "companyDetails", title: "Company Details", url: "/account/profile/company-details" },
 		{ id: "companyJobPosts", title: "Job Posts", url: "/account/profile/company-job-posts" },
-		{ id: "saveTeamMembers", title: "Save Team Members", url: "/account/profile/saved-team-members" },
+		{ id: "saveTeamMembers", title: "Saved Team Members", url: "/account/profile/saved-team-members" },
 	],
 };

@@ -1,0 +1,15 @@
+export const projectGenre = [
+	"Documentary films",
+	"Educational Videos",
+	"Feature Films",
+	"Music Videos",
+	"News Anchoring",
+	"Online Content",
+	"Public Service Announcements",
+	"Reality Shows",
+	"Short Films",
+	"Theater Art/Drama",
+	"TV Commercials/Adverts",
+	"TV/Web Series",
+	"Voice Over/Narration",
+];

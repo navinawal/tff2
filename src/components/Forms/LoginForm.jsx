@@ -44,16 +44,8 @@ export default function LoginForm() {
 		const { email, password } = validatedFields.data;
 
 		try {
-			const response = await loginWithEmail(email, password);
-			if (response.token && response.user) {
-				if (response.user.role && response.user.role !== "") {
-					router.push("/account/profile");
-				} else {
-					router.push("/choose-role");
-				}
-			} else {
-				setErrorMessage(response?.error || "An error occurred while registering.");
-			}
+			await loginWithEmail(email, password);
+			router.push("/account/profile");
 		} catch (error) {
 			setErrorMessage("Error: " + error.message);
 		}
