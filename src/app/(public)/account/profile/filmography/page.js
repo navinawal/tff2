@@ -25,19 +25,25 @@ export default async function Filmography() {
 				</div>
 				<Separator />
 				<div className="flex flex-col flex-wrap gap-5">
-					{filmographies?.map((filmography) => (
-						<Card key={filmography.id}>
-							<CardHeader>
-								<CardTitle>{filmography.projectName}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<p>{filmography.projectType}</p>
-								<p>{filmography.role}</p>
-								<p>{filmography.productionYear}</p>
-								<p>{filmography.projectLink}</p>
-							</CardContent>
-						</Card>
-					))}
+					{!filmographies ? (
+						filmographies?.map((filmography) => (
+							<Card key={filmography.id}>
+								<CardHeader>
+									<CardTitle>{filmography.projectName}</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<p>{filmography.projectType}</p>
+									<p>{filmography.role}</p>
+									<p>{filmography.productionYear}</p>
+									<p>{filmography.projectLink}</p>
+								</CardContent>
+							</Card>
+						))
+					) : (
+						<div className="flex justify-center items-center min-h-96">
+							<h1>No record</h1>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

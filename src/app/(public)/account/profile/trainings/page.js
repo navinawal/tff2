@@ -24,20 +24,26 @@ export default async function Trainings() {
 					<TrainingsSheet />
 				</div>
 				<Separator />
-				{trainings?.map((training) => (
-					<div className="de" key={training.id}>
-						<Card>
-							<CardHeader>
-								<CardTitle>{training.instituition}</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<p>{training.courseLength}</p>
-								<p>{training.mentor}</p>
-								<p>{training.courseTaken}</p>
-							</CardContent>
-						</Card>
+				{!trainings.error ? (
+					trainings?.map((training) => (
+						<div className="flex" key={training.id}>
+							<Card>
+								<CardHeader>
+									<CardTitle>{training.instituition}</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<p>{training.courseLength}</p>
+									<p>{training.mentor}</p>
+									<p>{training.courseTaken}</p>
+								</CardContent>
+							</Card>
+						</div>
+					))
+				) : (
+					<div className="flex justify-center items-center min-h-96">
+						<h1>No record</h1>
 					</div>
-				))}
+				)}
 			</div>
 		</>
 	);

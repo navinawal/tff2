@@ -65,14 +65,18 @@ export default async function TeamMemberDetails({ params }) {
 								</AccordionTrigger>
 								<AccordionContent>
 									<div className="flex flex-col gap-6 pl-5">
-										{trainings?.map((training) => (
-											<div className="flex flex-col" key={training.id}>
-												<div className="text-sm">Course : {training.courseTaken}</div>
-												<div className="text-sm">Length : {training.courseLength}</div>
-												<div className="text-sm">Mentor : {training.mentor}</div>
-												<div className="text-sm">Instituition : {training.instituition}</div>
-											</div>
-										))}
+										{!trainings ? (
+											trainings?.map((training) => (
+												<div className="flex flex-col" key={training.id}>
+													<div className="text-sm">Course : {training.courseTaken}</div>
+													<div className="text-sm">Length : {training.courseLength}</div>
+													<div className="text-sm">Mentor : {training.mentor}</div>
+													<div className="text-sm">Instituition : {training.instituition}</div>
+												</div>
+											))
+										) : (
+											<>No record</>
+										)}
 									</div>
 								</AccordionContent>
 							</AccordionItem>
