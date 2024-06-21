@@ -9,8 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
 import { TeamMemberFilmographyFormSchema } from "@/schemas/Schemas";
 import { saveTeamMemberFilmographies } from "@/app/actions/teamFilmography";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { projectGenre } from "@/config/companyData";
 
-export function TeamMemberFilmographyForm({ uid }) {
+export function TeamMemberFilmographyForm({ uid, onSuccess }) {
 	const { toast } = useToast();
 
 	const formHook = useForm({
@@ -37,6 +39,7 @@ export function TeamMemberFilmographyForm({ uid }) {
 				title: "Success !",
 				description: "Profile saved successfully",
 			});
+			onSuccess();
 		} else {
 			toast({
 				variant: "destructive",
@@ -69,7 +72,20 @@ export function TeamMemberFilmographyForm({ uid }) {
 						<FormItem>
 							<FormLabel>Project Type (Genre)</FormLabel>
 							<FormControl>
-								<Input placeholder="Project Type (Genre)" {...field} />
+								<Select onValueChange={field.onChange} defaultValue={field.value}>
+									<FormControl>
+										<SelectTrigger>
+											<SelectValue placeholder="Select Project Type (Genre)" />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										{projectGenre?.map((item) => (
+											<SelectItem key={item} value={item}>
+												{item}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

@@ -8,12 +8,14 @@ import { Button } from "@/components/ui/button";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { saveUserProfile } from "@/app/actions/userProfile";
 import { useToast } from "@/components/ui/use-toast";
 import { ethnicity, nationalities } from "@/config/teamMemberData";
 import { TeamMemberBasicInfoFormSchema } from "@/schemas/Schemas";
 import { saveTeamMemberDetails } from "@/app/actions/teamMembers";
 import { useRouter } from "next/navigation";
+import { MultiSelect } from "@/components/ui/multi-select";
+import { filmDepartments } from "@/config/companyData";
+import { additionalSkills, districts, languageSkills } from "@/config/data";
 
 export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 	const router = useRouter();
@@ -46,52 +48,6 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 			});
 		}
 	}
-
-	const filmDepartments = [
-		{ value: "actor", text: "Actor" },
-		{ value: "Acting coach", text: "Acting coach" },
-		{ value: "action-stunt-coordinator", text: "Action/Stunt Coordinator" },
-		{ value: "animal-trainer-handler", text: "Animal Trainer/Handler" },
-		{ value: "assistant-director", text: "Assistant Director" },
-		{ value: "art-director", text: "Art Director" },
-		{ value: "boom-operator-sound-recordist", text: "Boom Operator/Sound Recordist" },
-		{ value: "casting-director", text: "Casting Director" },
-		{ value: "catering-craft-service", text: "Catering/Craft Service" },
-		{ value: "cinematographer-director-of-photography-dp", text: "Cinematographer/Director of Photography (DP)" },
-		{ value: "colorist", text: "Colorist" },
-		{ value: "costume-designer-wardrobe", text: "Costume Designer/Wardrobe" },
-		{ value: "dialogue-editor", text: "Dialogue Editor" },
-		{ value: "digital-effects-artist", text: "Digital Effects Artist" },
-		{ value: "director", text: "Director" },
-		{ value: "distribution-coordinator", text: "Distribution Coordinator" },
-		{ value: "drone-operator-pilot", text: "Drone Operator/Pilot" },
-		{ value: "editor", text: "Editor" },
-		{ value: "film-critic", text: "Film Critic" },
-		{ value: "film-journalist", text: "Film Journalist" },
-		{ value: "foley-artist-sound-effects-editor", text: "Foley Artist/Sound Effects Editor" },
-		{ value: "lightman-gaffer-grip", text: "Lightman/Gaffer/Grip" },
-		{ value: "location-manager-scout", text: "Location Manager/Scout" },
-		{ value: "location-sound-mixer", text: "Location Sound Mixer" },
-		{ value: "makeup-artist-hair-stylist", text: "Makeup Artist/Hair Stylist" },
-		{ value: "marketing-publicity-coordinator", text: "Marketing/Publicity Coordinator" },
-		{ value: "music-producer-composer", text: "Music Producer/Composer" },
-		{ value: "post-production-supervisor", text: "Post-production Supervisor" },
-		{ value: "producer", text: "Producer" },
-		{ value: "production-designer", text: "Production Designer" },
-		{ value: "production-manager-line-producer", text: "Production Manager/Line Producer" },
-		{ value: "prosthetic-makeup-artist", text: "Prosthetic Makeup Artist" },
-		{ value: "screenwriter", text: "Screenwriter" },
-		{ value: "script-supervisor-continuity-supervisor", text: "Script Supervisor/Continuity Supervisor" },
-		{ value: "set-decorator", text: "Set Decorator" },
-		{ value: "sound-designer-mixer", text: "Sound Designer/Mixer" },
-		{ value: "special-effects-sfx-supervisor", text: "Special Effects (SFX) Supervisor" },
-		{ value: "storyboard-artist", text: "Storyboard Artist" },
-		{ value: "title-designer", text: "Title Designer" },
-		{ value: "visual-effects-vfx-artist", text: "Visual Effects (VFX) Artist" },
-		{ value: "vfx-supervisor", text: "Visual Effects (VFX) Supervisor" },
-		{ value: "voice-over-artist", text: "Voice-Over Artist" },
-		{ value: "Actor health trainer", text: "Actor health trainer" },
-	];
 
 	const ageGroups = [
 		{ label: "Mid-60s", range: "65-69" },
@@ -141,6 +97,19 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 						)}
 					/>
 				</div>
+				<FormField
+					control={control}
+					name="filmDepartments"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Film Departments</FormLabel>
+							<FormControl>
+								<MultiSelect options={filmDepartments} value={field.value} onValueChange={field.onChange} placeholder="Select Film Departments" />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
@@ -149,7 +118,7 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 							<FormItem>
 								<FormLabel>Height</FormLabel>
 								<FormControl>
-									<Input placeholder="Height" {...field} />
+									<Input type="number" placeholder="Height" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -183,6 +152,30 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
+						name="ageGroup"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Age Category</FormLabel>
+								<Select onValueChange={field.onChange} defaultValue={field.value}>
+									<FormControl>
+										<SelectTrigger>
+											<SelectValue placeholder="Please Choose your Age Category" />
+										</SelectTrigger>
+									</FormControl>
+									<SelectContent>
+										{ageGroups?.map((item) => (
+											<SelectItem key={item.range} value={item.range}>
+												{item.label}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={control}
 						name="nationality"
 						render={({ field }) => (
 							<FormItem>
@@ -205,21 +198,23 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 							</FormItem>
 						)}
 					/>
+				</div>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
-						name="ageGroup"
+						name="location"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Age Category</FormLabel>
+								<FormLabel>Location</FormLabel>
 								<Select onValueChange={field.onChange} defaultValue={field.value}>
 									<FormControl>
 										<SelectTrigger>
-											<SelectValue placeholder="Please Choose your Age Category" />
+											<SelectValue placeholder="Choose your Location" />
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
-										{ageGroups.map((item) => (
-											<SelectItem key={item.range} value={item.range}>
+										{districts?.map((item) => (
+											<SelectItem key={item.value} value={item.value}>
 												{item.label}
 											</SelectItem>
 										))}
@@ -233,54 +228,31 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
-						name="nationality"
+						name="languageSkills"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Nationality</FormLabel>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Please Choose your Nationality" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{nationalities?.map((item) => (
-											<SelectItem key={item} value={item}>
-												{item}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
+								<FormLabel>Language Skills</FormLabel>
+								<FormControl>
+									<MultiSelect options={languageSkills} value={field.value} onValueChange={field.onChange} placeholder="Select Language Skills" />
+								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 					<FormField
 						control={control}
-						name="filmDepartments"
-						render={(field) => (
+						name="additionalSkills"
+						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Film Departments</FormLabel>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Please Choose your Nationality" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{filmDepartments?.map((item) => (
-											<SelectItem key={item.value} value={item.value}>
-												{item.text}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
+								<FormLabel>Addtional Skills</FormLabel>
+								<FormControl>
+									<MultiSelect options={additionalSkills} value={field.value} onValueChange={field.onChange} placeholder="Select Addtional Skills" />
+								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 				</div>
-				{/* todo skills  */}
 				<FormField
 					control={control}
 					name="about"

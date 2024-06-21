@@ -15,5 +15,6 @@ export const userNavMenus = {
 		{ id: "companyDetails", title: "Company Details", url: "/account/profile/company-details" },
 		{ id: "companyJobPosts", title: "Job Posts", url: "/account/profile/company-job-posts" },
 		{ id: "saveTeamMembers", title: "Saved Team Members", url: "/account/profile/saved-team-members" },
+		{ id: "jobRecievedApplications", title: "Recieved Job Applications", url: "/account/profile/recieved-job-applications" },
 	],
 };

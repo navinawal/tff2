@@ -21,7 +21,7 @@ export default async function Filmography() {
 						<h3 className="text-lg font-medium">Filmography</h3>
 						<p className="text-sm text-muted-foreground">Add your Filmography (Work Experiences)</p>
 					</div>
-					<FilmographySheet />
+					<FilmographySheet uid={uid} />
 				</div>
 				<Separator />
 				<div className="flex flex-col flex-wrap gap-5">

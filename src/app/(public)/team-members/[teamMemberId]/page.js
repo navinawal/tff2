@@ -84,13 +84,19 @@ export default async function TeamMemberDetails({ params }) {
 									<div className="flex flex-col gap-2 pl-5">
 										<h6 className={`text-sm`}>Language Skills</h6>
 										<div className="flex flex-wrap gap-2">
-											<Badge variant="secondary">Outline</Badge>
-											<Badge variant="secondary">Outline</Badge>
-											<Badge variant="secondary">Outline</Badge>
+											{teamMember.languageSkills?.map((languageSkill) => (
+												<Badge key={languageSkill} variant="secondary" className="capitalize">
+													{languageSkill}
+												</Badge>
+											))}
 										</div>
 										<h6 className={`test-sm`}>Additional Skills</h6>
-										<div>
-											<Badge variant="secondary">Outline</Badge>
+										<div className="flex flex-wrap gap-2">
+											{teamMember.additionalSkills?.map((additionalSkill) => (
+												<Badge key={additionalSkill} variant="secondary" className="capitalize">
+													{additionalSkill}
+												</Badge>
+											))}
 										</div>
 									</div>
 								</AccordionContent>

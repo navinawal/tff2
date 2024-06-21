@@ -5,13 +5,18 @@ import { adminDb } from "@/lib/firebase-admin";
 export async function getTeamMemberDetails(uid) {
 	try {
 		const teamMemberRef = adminDb.collection("team_members").doc(uid);
-		const teamMemberDoc = await teamMemberRef.get();
+		const snapshot = await teamMemberRef.get();
 
-		if (!teamMemberDoc.exists) {
-			return { error: "Teammember not found" };
+		if (!snapshot.exists) {
+			return { error: "No company data found" };
 		}
 
-		return teamMemberDoc.data();
+		const teamMemberProfile = {
+			uid: snapshot.id,
+			...snapshot.data(),
+		};
+
+		return teamMemberProfile;
 	} catch (error) {
 		return { error: error.message };
 	}

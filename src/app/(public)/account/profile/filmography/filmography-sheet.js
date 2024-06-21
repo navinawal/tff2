@@ -1,18 +1,17 @@
-import { getCurrentUser } from "@/app/actions/userAuth";
+"use client";
 import { TeamMemberFilmographyForm } from "@/components/Forms/Account/TeamMemberFilmographyForm";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 
-export async function FilmographySheet() {
-	const user = await getCurrentUser();
+export function FilmographySheet({ uid }) {
+	const [isOpen, setIsOpen] = useState(false);
 
-	if (!user) return;
-
-	const { uid } = user;
-
+	const handleOpen = () => setIsOpen(true);
+	const handleClose = () => setIsOpen(false);
 	return (
-		<Sheet>
+		<Sheet open={isOpen} onOpenChange={setIsOpen}>
 			<SheetTrigger asChild>
 				<Button size="sm" className="border-dashed">
 					<PlusCircledIcon className="mr-2 h-4 w-4" />
@@ -25,7 +24,7 @@ export async function FilmographySheet() {
 					<SheetDescription>Add your Filmography (Work Experiences)</SheetDescription>
 				</SheetHeader>
 				<div className="py-6">
-					<TeamMemberFilmographyForm uid={uid} />
+					<TeamMemberFilmographyForm uid={uid} onSuccess={handleClose} />
 				</div>
 			</SheetContent>
 		</Sheet>

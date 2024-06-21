@@ -1,4 +1,3 @@
-// hooks/usePaginatedData.js
 import { useState, useEffect } from "react";
 
 export function usePaginatedData(apiEndpoint, filters, searchQuery, sortField, sortDirection) {

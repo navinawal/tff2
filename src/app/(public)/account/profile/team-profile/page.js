@@ -1,8 +1,8 @@
+import { getTeamMemberDetails } from "@/app/actions/teamMembers";
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { TeamMemberBasicInfoForm } from "@/components/Forms/Account/TeamMemberBasicInfoForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { adminDb } from "@/lib/firebase-admin";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -15,21 +15,7 @@ export default async function TeamMemberBasicInfo() {
 
 	if (profile.role !== "TeamMember") notFound();
 
-	const carrierSummaryRef = adminDb.collection("team_members").doc(uid);
-	const carrierSummaryDoc = await carrierSummaryRef.get();
-	const carrierSummary = carrierSummaryDoc.data();
-
-	const defaultValues = {
-		firstName: carrierSummary.firstName || "",
-		lastName: carrierSummary.lastName || "",
-		height: carrierSummary.height || "",
-		ethnicity: carrierSummary.ethnicity || "",
-		//nationality: carrierSummary.nationality || "",
-		location: carrierSummary.location || "",
-		nationality: carrierSummary.nationality || "",
-		filmDepartments: carrierSummary.filmDepartments || "",
-		about: carrierSummary.about || "",
-	};
+	const companyProfile = await getTeamMemberDetails(uid);
 
 	return (
 		<>
@@ -44,7 +30,7 @@ export default async function TeamMemberBasicInfo() {
 					</Button>
 				</div>
 				<Separator />
-				<TeamMemberBasicInfoForm uid={uid} defaultValues={defaultValues} />
+				<TeamMemberBasicInfoForm uid={uid} defaultValues={companyProfile} />
 			</div>
 		</>
 	);

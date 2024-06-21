@@ -30,7 +30,7 @@ export const MultiSelect = React.forwardRef(
 			onValueChange,
 			variant,
 			placeholder = "Select options",
-			maxCount = 3,
+			maxCount = 2,
 			className,
 			...props
 		},

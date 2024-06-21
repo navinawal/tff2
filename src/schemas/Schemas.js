@@ -88,13 +88,14 @@ export const carrierSummarySchema = z.object({
 export const TeamMemberBasicInfoFormSchema = z.object({
 	firstName: z.any(),
 	lastName: z.any(),
+	filmDepartments: z.any(),
 	height: z.any(),
 	ethnicity: z.any(),
-	nationality: z.any(),
 	ageGroup: z.any(),
-	location: z.any(),
 	nationality: z.any(),
-	filmDepartments: z.any(),
+	location: z.any(),
+	languageSkills: z.any(),
+	additionalSkills: z.any(),
 	about: z.any(),
 });
 

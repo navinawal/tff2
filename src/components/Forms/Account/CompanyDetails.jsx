@@ -13,28 +13,13 @@ import { CompanyProfileFormSchema } from "@/schemas/Schemas";
 import { useToast } from "@/components/ui/use-toast";
 import { saveCompanyDetails } from "@/app/actions/companies";
 import { MultiSelect } from "@/components/ui/multi-select";
-import { Cat, Dog, Fish, Rabbit, Turtle } from "lucide-react";
-import { useState } from "react";
+import { filmDepartments } from "@/config/companyData";
 
-const frameworksList = [
-	{ value: "react", label: "React", icon: Turtle },
-	{ value: "angular", label: "Angular", icon: Cat },
-	{ value: "vue", label: "Vue", icon: Dog },
-	{ value: "svelte", label: "Svelte", icon: Rabbit },
-	{ value: "ember", label: "Ember", icon: Fish },
-];
-
-const options = [
-	{ value: "option1", label: "Option 1" },
-	{ value: "option2", label: "Option 2" },
-	// ...more options
-];
 export function CompanyDetailsForm({ uid, defaultValues }) {
-	const [selectedFrameworks, setSelectedFrameworks] = useState(["react", "angular"]);
 	const { toast } = useToast();
 	const formHook = useForm({
-		// resolver: zodResolver(CompanyProfileFormSchema),
-		// defaultValues,
+		resolver: zodResolver(CompanyProfileFormSchema),
+		defaultValues,
 	});
 
 	const {
@@ -44,20 +29,19 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 	} = formHook;
 
 	async function onSubmit(formData) {
-		console.log(formData);
-		// const response = await saveCompanyDetails(uid, formData);
-		// if (response.success === true) {
-		// 	toast({
-		// 		title: "Success !",
-		// 		description: "Profile saved successfully",
-		// 	});
-		// } else {
-		// 	toast({
-		// 		variant: "destructive",
-		// 		title: "Error !",
-		// 		description: "Something went wrong",
-		// 	});
-		// }
+		const response = await saveCompanyDetails(uid, formData);
+		if (response.success === true) {
+			toast({
+				title: "Success !",
+				description: "Profile saved successfully",
+			});
+		} else {
+			toast({
+				variant: "destructive",
+				title: "Error !",
+				description: "Something went wrong",
+			});
+		}
 	}
 
 	return (
@@ -122,7 +106,7 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 							<FormItem>
 								<FormLabel>Category</FormLabel>
 								<FormControl>
-									<Input placeholder="Category" {...field} />
+									<MultiSelect options={filmDepartments} value={field.value} onValueChange={field.onChange} placeholder="Select Category" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -193,20 +177,6 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 							<FormLabel>About Company</FormLabel>
 							<FormControl>
 								<Textarea placeholder="About Company" className="resize-none" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
-				<FormField
-					control={control}
-					name="multiSelectField"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Multi Select Field</FormLabel>
-							<FormControl>
-								<MultiSelect options={options} value={field.value} onValueChange={field.onChange} placeholder="Select options" />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

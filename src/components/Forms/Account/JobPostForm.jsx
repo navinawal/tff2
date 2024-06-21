@@ -9,11 +9,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
 import { JobPostFormSchema } from "@/schemas/Schemas";
-import { saveTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
 import { Textarea } from "@/components/ui/textarea";
 import { projectGenre } from "@/config/companyData";
+import { saveJobPost } from "@/app/actions/jobPosts";
 
-export function JobPostForm({ uid }) {
+export function JobPostForm({ uid, onSuccess }) {
 	const { toast } = useToast();
 
 	const formHook = useForm({
@@ -41,12 +41,13 @@ export function JobPostForm({ uid }) {
 	} = formHook;
 
 	async function onSubmit(formData) {
-		const response = await saveTeamMemberTrainings(uid, formData);
+		const response = await saveJobPost(uid, formData);
 		if (!response.error) {
 			toast({
 				title: "Success !",
-				description: "Profile saved successfully",
+				description: "Job saved successfully",
 			});
+			onSuccess();
 		} else {
 			toast({
 				variant: "destructive",

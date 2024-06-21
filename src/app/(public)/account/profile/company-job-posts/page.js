@@ -2,14 +2,19 @@ import { getCurrentUser } from "@/app/actions/userAuth";
 import { Separator } from "@/components/ui/separator";
 import { notFound } from "next/navigation";
 import { JobPostSheet } from "./job-post-sheet";
+import { getCompanyJobPost } from "@/app/actions/jobPosts";
+import JobCard from "@/components/Card/Job";
 
 export default async function CompanyJobPosts() {
 	const user = await getCurrentUser();
+
 	if (!user) return notFound();
 
 	const { uid, profile } = user;
 
 	if (profile.role !== "Company") return notFound();
+
+	const jobPosts = await getCompanyJobPost(uid);
 
 	return (
 		<>
@@ -20,6 +25,11 @@ export default async function CompanyJobPosts() {
 						<p className="text-sm text-muted-foreground">Add Company Job Posts</p>
 					</div>
 					<JobPostSheet uid={uid} />
+				</div>
+				<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					{jobPosts?.map((job) => (
+						<JobCard key={job.id} job={job}></JobCard>
+					))}
 				</div>
 				<Separator />
 			</div>
