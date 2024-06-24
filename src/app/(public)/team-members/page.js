@@ -1,7 +1,7 @@
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import TeamMemberDataGrid from "./team-member-data-grid";
 
-export default function TeamMembers() {
+export default async function TeamMembers() {
 	return (
 		<div className="bg-black text-[#ffffffcc]">
 			<AppMaxWidthContainer>

@@ -136,5 +136,34 @@ export const JobPostFormSchema = z.object({
 	contactNumber: z.any(),
 	projectPoster: z.any(),
 	projectDocuments: z.any(),
+	actorRequirements: z.array(
+		z.object({
+			characterName: z.any(),
+			gender: z.any(),
+			age: z.any(),
+			requiredNumbers: z.any(),
+			eligibility: z.any(),
+			salaryRange: z.any(),
+		})
+	),
+	teamMemberRequirements: z.array(
+		z.object({
+			teamMember: z.any(),
+			eligibility: z.any(),
+			requiredNumbers: z.any(),
+			salary: z.any(),
+		})
+	),
 	applicationDeadline: z.any(),
+	projectDuration: z.any(),
+});
+
+export const JobApplicationFromSchema = z.object({
+	phoneNumber: z.any(),
+	email: z.any(),
+	coverLetter: z.any(),
+	projectGenre: z.any(),
+	applyingAs: z.any(),
+	resume: z.any(),
+	audtionReel: z.any(),
 });

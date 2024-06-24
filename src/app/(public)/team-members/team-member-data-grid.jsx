@@ -9,6 +9,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { useFilter } from "@/hooks/useFilter";
 import { usePaginatedData } from "@/hooks/usePaginatedData";
 import { SortingDropdownMenu } from "./shorting-menu";
+import Loading from "./loading";
 
 export default function TeamMemberDataGrid() {
 	const { selectedFilters, updateFilter, searchQuery, updateSearchQuery, sortField, sortDirection } = useFilter();
@@ -50,7 +51,7 @@ export default function TeamMemberDataGrid() {
 
 	const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
 
-	// if (loading) return <p>Loading...</p>;
+	if (loading) return Loading();
 	// if (error) return <p>Error: {error}</p>;
 	return (
 		<div className="space-y-10">

@@ -1,7 +1,11 @@
+import { getCurrentUser } from "@/app/actions/userAuth";
 import { Button } from "@/components/ui/button";
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
+import Link from "next/link";
 
-export default function FindJob() {
+export default async function FindJob({ params, searchParams }) {
+	const { companyId } = searchParams;
+	const { jobPostId } = params;
 	return (
 		<div className="bg-black text-[#ffffffcc]">
 			<AppMaxWidthContainer>
@@ -73,7 +77,11 @@ export default function FindJob() {
 								<div className="text-base font-normal">July 01, 2024</div>
 							</div>
 							<div className="flex flex-col gap-2 mt-5">
-								<Button className="w-full rounded-none">Apply Now</Button>
+								<Button asChild>
+									<Link className="w-full rounded-none" href={`/account/profile/apply-for-job?companyId=${companyId}&jobPostId=${jobPostId}`}>
+										Apply Now
+									</Link>
+								</Button>
 								<Button className="w-full rounded-none bg-background text-foreground hover:bg-foreground hover:text-background">Add Bookmark</Button>
 							</div>
 						</div>

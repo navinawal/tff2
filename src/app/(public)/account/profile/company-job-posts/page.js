@@ -1,9 +1,10 @@
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { Separator } from "@/components/ui/separator";
 import { notFound } from "next/navigation";
-import { JobPostSheet } from "./job-post-sheet";
 import { getCompanyJobPost } from "@/app/actions/jobPosts";
 import JobCard from "@/components/Card/Job";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function CompanyJobPosts() {
 	const user = await getCurrentUser();
@@ -24,7 +25,9 @@ export default async function CompanyJobPosts() {
 						<h3 className="text-lg font-medium">Job Posts</h3>
 						<p className="text-sm text-muted-foreground">Add Company Job Posts</p>
 					</div>
-					<JobPostSheet uid={uid} />
+					<Button asChild size="sm">
+						<Link href={`/account/profile/company-job-posts/post-new-job`}>Post New Job</Link>
+					</Button>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{jobPosts?.map((job) => (

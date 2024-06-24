@@ -10,6 +10,7 @@ export const userNavMenus = {
 		{ id: "carrierSummary", title: "Carrier Summary", url: "/account/profile/carrier-summary" },
 		{ id: "filmography", title: "Filmography", url: "/account/profile/filmography" },
 		{ id: "savedJobs", title: "Saved Jobs", url: "/account/profile/saved-jobs" },
+		{ id: "myApplications", title: "My Applications", url: "/account/profile/my-applications" },
 	],
 	Company: [
 		{ id: "companyDetails", title: "Company Details", url: "/account/profile/company-details" },

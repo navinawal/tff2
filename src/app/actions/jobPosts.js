@@ -3,7 +3,7 @@
 import { adminDb, FieldValue } from "@/lib/firebase-admin";
 import { JobPostFormSchema } from "@/schemas/Schemas";
 
-export async function getAllJobPost() {
+export async function getAllJobPosts() {
 	try {
 		const companiesRef = adminDb.collection("companies");
 		const companiesSnapshot = await companiesRef.get();

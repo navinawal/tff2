@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { profileFormSchema } from "@/schemas/Schemas";
 import { saveUserProfile } from "@/app/actions/userProfile";
 import { useToast } from "@/components/ui/use-toast";
+import { genders } from "@/config/data";
 
 export function ProfileForm({ uid, defaultValues }) {
 	const { toast } = useToast();
@@ -216,8 +217,11 @@ export function ProfileForm({ uid, defaultValues }) {
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
-										<SelectItem value="male">Male</SelectItem>
-										<SelectItem value="female">Female</SelectItem>
+										{genders?.map(({ value, label }) => (
+											<SelectItem key={value} value={value}>
+												{label}
+											</SelectItem>
+										))}
 									</SelectContent>
 								</Select>
 								<FormMessage />

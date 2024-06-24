@@ -13,7 +13,7 @@ import { CompanyProfileFormSchema } from "@/schemas/Schemas";
 import { useToast } from "@/components/ui/use-toast";
 import { saveCompanyDetails } from "@/app/actions/companies";
 import { MultiSelect } from "@/components/ui/multi-select";
-import { filmDepartments } from "@/config/companyData";
+import { companyTypes } from "@/config/data";
 
 export function CompanyDetailsForm({ uid, defaultValues }) {
 	const { toast } = useToast();
@@ -101,34 +101,6 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 					/>
 					<FormField
 						control={control}
-						name="category"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Category</FormLabel>
-								<FormControl>
-									<MultiSelect options={filmDepartments} value={field.value} onValueChange={field.onChange} placeholder="Select Category" />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<FormField
-						control={control}
-						name="noOfEmployees"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>No of Employess</FormLabel>
-								<FormControl>
-									<Input placeholder="example@example.com" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={control}
 						name="website"
 						render={({ field }) => (
 							<FormItem>
@@ -141,6 +113,19 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 						)}
 					/>
 				</div>
+				<FormField
+					control={control}
+					name="category"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Category</FormLabel>
+							<FormControl>
+								<MultiSelect options={companyTypes} value={field.value} onValueChange={field.onChange} placeholder="Select Category" />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}

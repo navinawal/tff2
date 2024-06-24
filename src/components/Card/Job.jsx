@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function JobCard({ job }) {
+	const companyId = job.uid;
 	return (
 		<div className="flex flex-col rounded-xl bg-muted p-2 gap-4 h-96 max-h-96">
 			<div className="flex flex-col gap-2 bg-black px-3 py-4 rounded">
@@ -38,7 +39,7 @@ export default function JobCard({ job }) {
 					<div className="text-xs">posted 10 days ago</div>
 				</div>
 				<Button asChild style={{ backgroundColor: "black", color: "white" }}>
-					<Link href="/find-job/1">Details</Link>
+					<Link href={`/find-job/${job.id}?companyId=${companyId}`}>Details</Link>
 				</Button>
 			</div>
 		</div>
