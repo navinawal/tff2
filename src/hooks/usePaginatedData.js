@@ -12,16 +12,21 @@ export function usePaginatedData(apiEndpoint, filters, searchQuery, sortField, s
 		setLoading(true);
 		setError(null);
 		try {
-			const response = await fetch(
-				`${apiEndpoint}?search?q=${encodeURIComponent(searchQuery)}&skip=${page}&limit=${pageSize}&filters=${JSON.stringify(
-					filters
-				)}&sortField=${sortField}&sortDirection=${sortDirection}`
-			);
+			const query = new URLSearchParams({
+				page,
+				pageSize,
+				searchQuery,
+				sortField,
+				sortDirection,
+				...filters,
+			}).toString();
+
+			const response = await fetch(`${apiEndpoint}?${query}`);
 			if (!response.ok) throw new Error("Failed to fetch data");
-			const items = await response.json();
-			const total = items.total;
-			setData(items.users);
-			setTotalItems(total);
+
+			const { items, totalItems } = await response.json();
+			setData(items);
+			setTotalItems(totalItems);
 		} catch (err) {
 			setError(err.message);
 		} finally {

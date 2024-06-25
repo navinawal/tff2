@@ -80,7 +80,7 @@ export default async function FindJob({ params, searchParams }) {
 							</div>
 							<div className="flex justify-between">
 								<div className="text-base font-semibold">Genre</div>
-								<div className="text-base font-normal">{job.projectGenre}</div>
+								<div className="text-base font-normal">{job.projectType}</div>
 							</div>
 							<div className="flex justify-between">
 								<div className="text-base font-semibold">Duration</div>

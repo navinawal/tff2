@@ -27,3 +27,26 @@ export async function savJobApplication(teamMemberId, companyId, jobPostId, appl
 		return { error: error.message };
 	}
 }
+
+export async function fetchJobApplicationsForCompany(companyId) {
+	const jobApplicationsRef = adminDb.collection("job_applications").where("companyId", "==", companyId);
+	const jobApplicationsSnapshot = await jobApplicationsRef.get();
+
+	if (jobApplicationsSnapshot.empty) {
+		return { error: "No Job applications found for company " + companyId };
+	}
+
+	const applications = jobApplicationsSnapshot.docs.map((doc) => ({
+		id: doc.id,
+		...doc.data(),
+	}));
+
+	return JSON.parse(JSON.stringify(applications));
+}
+
+// export async function fetchApplicationsForTeamMember(teamMemberId) {
+// 	const applicationsQuery = query(collection(firestore, "job_applications"), where("team_member_id", "==", teamMemberId));
+
+// 	const applicationsSnapshot = await getDocs(applicationsQuery);
+// 	return applicationsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+// }

@@ -25,7 +25,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
 			phoneNumber: "",
 			email: "",
 			coverLetter: "",
-			projectGenre: "",
+			projectType: "",
 			applyingAs: "",
 			resume: "",
 			audtionReel: "",
@@ -101,15 +101,15 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
 				/>
 				<FormField
 					control={control}
-					name="projectGenre"
+					name="projectType"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Project Genre</FormLabel>
+							<FormLabel>Project Type</FormLabel>
 							<FormControl>
 								<Select onValueChange={field.onChange} defaultValue={field.value}>
 									<FormControl>
 										<SelectTrigger>
-											<SelectValue placeholder="Please Choose Role" />
+											<SelectValue placeholder="Please Project Type" />
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>

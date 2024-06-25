@@ -21,7 +21,7 @@ const users = [
 export default function TeamMemberCard({ teamMember }) {
 	return (
 		<>
-			<Link key={teamMember.name} href="/team-members/1">
+			<Link key={teamMember.name} href={`/team-members/${teamMember.id}`}>
 				<div className={`${styles.userWrapper} relative overflow-hidden rounded-md`}>
 					<img
 						decoding="async"

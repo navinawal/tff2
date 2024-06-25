@@ -14,7 +14,7 @@ import Loading from "./loading";
 export default function TeamMemberDataGrid() {
 	const { selectedFilters, updateFilter, searchQuery, updateSearchQuery, sortField, sortDirection } = useFilter();
 	const { data, loading, error, page, pageSize, totalItems, setPage, setPageSize } = usePaginatedData(
-		"https://dummyjson.com/users",
+		"/api/teamMember",
 		selectedFilters,
 		searchQuery,
 		sortField,
@@ -51,8 +51,9 @@ export default function TeamMemberDataGrid() {
 
 	const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
 
-	if (loading) return Loading();
-	// if (error) return <p>Error: {error}</p>;
+	if (loading) return <Loading />;
+	if (error) return <p>Error: {error}</p>;
+
 	return (
 		<div className="space-y-10">
 			<div className="flex items-start md:items-center flex-wrap justify-between">
@@ -69,7 +70,7 @@ export default function TeamMemberDataGrid() {
 						title="Film Department"
 						options={filmDepartmentOptions}
 						filterKey="FilmDepartment"
-						selectedValues={selectedFilters.status || []}
+						selectedValues={selectedFilters.FilmDepartment || []}
 						onFilterChange={updateFilter}
 					/>
 
@@ -77,7 +78,7 @@ export default function TeamMemberDataGrid() {
 						title="Age Category"
 						options={ageCategoryOptions}
 						filterKey="AgeCategory"
-						selectedValues={selectedFilters.role || []}
+						selectedValues={selectedFilters.AgeCategory || []}
 						onFilterChange={updateFilter}
 					/>
 
@@ -85,7 +86,7 @@ export default function TeamMemberDataGrid() {
 						title="Language"
 						options={languageOptions}
 						filterKey="Language"
-						selectedValues={selectedFilters.role || []}
+						selectedValues={selectedFilters.Language || []}
 						onFilterChange={updateFilter}
 					/>
 
@@ -93,7 +94,7 @@ export default function TeamMemberDataGrid() {
 						title="Location"
 						options={locationOptions}
 						filterKey="Location"
-						selectedValues={selectedFilters.role || []}
+						selectedValues={selectedFilters.Location || []}
 						onFilterChange={updateFilter}
 					/>
 

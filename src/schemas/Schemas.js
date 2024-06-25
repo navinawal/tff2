@@ -126,7 +126,7 @@ export const CompanyProfileFormSchema = z.object({
 
 export const JobPostFormSchema = z.object({
 	projectTitle: z.any(),
-	projectGenre: z.any(),
+	projectType: z.any(),
 	projectDetails: z.any(),
 	companyName: z.any(),
 	auditionLocation: z.any(),
@@ -136,6 +136,7 @@ export const JobPostFormSchema = z.object({
 	contactNumber: z.any(),
 	projectPoster: z.any(),
 	projectDocuments: z.any(),
+	jobType: z.any(),
 	actorRequirements: z.array(
 		z.object({
 			characterName: z.any(),

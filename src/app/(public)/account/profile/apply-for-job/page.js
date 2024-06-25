@@ -10,7 +10,7 @@ export default async function ApplyForJob({ searchParams }) {
 
 	const { uid, profile } = user;
 
-	if (profile.role !== "TeamMember") return;
+	if (profile.role !== "TeamMember") return <>Please logged in as a TeamMember to apply for a job</>;
 
 	return (
 		<>

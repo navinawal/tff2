@@ -2,32 +2,38 @@
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+import { Separator } from "@/components/ui/separator";
+import { PlusCircledIcon } from "@radix-ui/react-icons";
+import { Trash2 } from "lucide-react";
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
 import { JobPostFormSchema } from "@/schemas/Schemas";
-import { Textarea } from "@/components/ui/textarea";
+
 import { projectGenre } from "@/config/companyData";
 import { saveJobPost } from "@/app/actions/jobPosts";
-import { Trash2 } from "lucide-react";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
-import { Separator } from "@/components/ui/separator";
+
 import { ageGroups, filmDepartments, genders } from "@/config/data";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function JobPostForm({ uid }) {
 	const { toast } = useToast();
 	const router = useRouter();
+	const [jobType, setJobType] = useState("");
 
 	const formHook = useForm({
 		resolver: zodResolver(JobPostFormSchema),
 		defaultValues: {
 			projectTitle: "",
 			projectDetails: "",
-			projectGenre: "",
+			projectType: "",
 			companyName: "",
 			auditionLocation: "",
 			auditionDate: "",
@@ -36,7 +42,8 @@ export function JobPostForm({ uid }) {
 			contactNumber: "",
 			projectPoster: "",
 			projectDocuments: "",
-			actorRequirements: [{ characterName: "", gender: "", age: "", requiredNumbers: "", eligibility: "", salaryRange: "" }],
+			jobType: "",
+			actorRequirements: [{ characterName: "", gender: "", requiredNumbers: "", eligibility: "", salaryRange: "" }],
 			teamMemberRequirements: [{ teamMember: "", eligibility: "", requiredNumbers: "", salary: "" }],
 			applicationDeadline: "",
 		},
@@ -102,15 +109,15 @@ export function JobPostForm({ uid }) {
 					/>
 					<FormField
 						control={control}
-						name="projectGenre"
+						name="projectType"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Project Genre</FormLabel>
+								<FormLabel>Project Type</FormLabel>
 								<FormControl>
 									<Select onValueChange={field.onChange} defaultValue={field.value}>
 										<FormControl>
 											<SelectTrigger>
-												<SelectValue placeholder="Please Choose Project Genre" />
+												<SelectValue placeholder="Please Choose Project Type" />
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
@@ -215,9 +222,9 @@ export function JobPostForm({ uid }) {
 						name="contactNumber"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Contact Date</FormLabel>
+								<FormLabel>Contact Number</FormLabel>
 								<FormControl>
-									<Input type="date" placeholder="Contact Date" {...field} />
+									<Input type="text" placeholder="Contact Number" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -252,222 +259,264 @@ export function JobPostForm({ uid }) {
 						)}
 					/>
 				</div>
+				<FormField
+					control={control}
+					name="jobType"
+					render={({ field }) => (
+						<FormItem className="space-y-3">
+							<FormLabel>Please Choose A Job Type</FormLabel>
+							<FormControl>
+								<RadioGroup
+									onValueChange={(value) => {
+										setJobType(value);
+										field.onChange;
+									}}
+									className="flex flex-col space-y-1"
+								>
+									<FormItem className="flex items-center space-x-3 space-y-0">
+										<FormControl>
+											<RadioGroupItem value="Casting Call" />
+										</FormControl>
+										<FormLabel className="font-normal">Casting Call</FormLabel>
+									</FormItem>
+									<FormItem className="flex items-center space-x-3 space-y-0">
+										<FormControl>
+											<RadioGroupItem value="Call for TeamMembers" />
+										</FormControl>
+										<FormLabel className="font-normal">Call for TeamMembers</FormLabel>
+									</FormItem>
+								</RadioGroup>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<Separator />
-				{actorRequirements.map((field, index) => (
-					<div className="space-y-4 border p-5 rounded-md" key={field.id}>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<FormField
-								control={control}
-								name={`actorRequirements.${index}.characterName`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Character Name</FormLabel>
-										<FormControl>
-											<Input type="text" placeholder="Character Name" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={control}
-								name={`actorRequirements.${index}.gender`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Gender</FormLabel>
-										<FormControl>
-											<Select onValueChange={field.onChange} defaultValue={field.value}>
+				{jobType === "Casting Call" && (
+					<>
+						{actorRequirements.map((field, index) => (
+							<div className="space-y-4 border p-5 rounded-md" key={field.id}>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<FormField
+										control={control}
+										name={`actorRequirements.${index}.characterName`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Character Name</FormLabel>
 												<FormControl>
-													<SelectTrigger>
-														<SelectValue placeholder="Select your gender" />
-													</SelectTrigger>
+													<Input type="text" placeholder="Character Name" {...field} />
 												</FormControl>
-												<SelectContent>
-													{genders?.map(({ value, label }) => (
-														<SelectItem key={value} value={value}>
-															{label}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<FormField
-								control={control}
-								name={`actorRequirements.${index}.age`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Age</FormLabel>
-										<FormControl>
-											<Select onValueChange={field.onChange} defaultValue={field.value}>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={control}
+										name={`actorRequirements.${index}.gender`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Gender</FormLabel>
 												<FormControl>
-													<SelectTrigger>
-														<SelectValue placeholder="Select Age Group" />
-													</SelectTrigger>
+													<Select onValueChange={field.onChange} defaultValue={field.value}>
+														<FormControl>
+															<SelectTrigger>
+																<SelectValue placeholder="Select your gender" />
+															</SelectTrigger>
+														</FormControl>
+														<SelectContent>
+															{genders?.map(({ value, label }) => (
+																<SelectItem key={value} value={value}>
+																	{label}
+																</SelectItem>
+															))}
+														</SelectContent>
+													</Select>
 												</FormControl>
-												<SelectContent>
-													{ageGroups?.map(({ value, label }) => (
-														<SelectItem key={value} value={value}>
-															{label}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={control}
-								name={`actorRequirements.${index}.requiredNumbers`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Required Numbers</FormLabel>
-										<FormControl>
-											<Input type="number" min="0" placeholder="Required Numbers" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<FormField
-								control={control}
-								name={`actorRequirements.${index}.salaryRange`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Salary Range</FormLabel>
-										<FormControl>
-											<Input type="number" min="0" placeholder="Salary Range" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<FormField
-							control={control}
-							name={`actorRequirements.${index}.eligibility`}
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Eligibility</FormLabel>
-									<FormControl>
-										<Textarea placeholder="Eligibility" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeActorRequirements(index)}>
-							<Trash2 className="h-4 w-4" />
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<FormField
+										control={control}
+										name={`actorRequirements.${index}.age`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Age</FormLabel>
+												<FormControl>
+													<Select onValueChange={field.onChange} defaultValue={field.value}>
+														<FormControl>
+															<SelectTrigger>
+																<SelectValue placeholder="Select Age Group" />
+															</SelectTrigger>
+														</FormControl>
+														<SelectContent>
+															{ageGroups?.map(({ value, label }) => (
+																<SelectItem key={value} value={value}>
+																	{label}
+																</SelectItem>
+															))}
+														</SelectContent>
+													</Select>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={control}
+										name={`actorRequirements.${index}.requiredNumbers`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Required Numbers</FormLabel>
+												<FormControl>
+													<Input type="number" min="0" placeholder="Required Numbers" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<FormField
+										control={control}
+										name={`actorRequirements.${index}.salaryRange`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Salary Range</FormLabel>
+												<FormControl>
+													<Input type="number" min="0" placeholder="Salary Range" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+								<FormField
+									control={control}
+									name={`actorRequirements.${index}.eligibility`}
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Eligibility</FormLabel>
+											<FormControl>
+												<Textarea placeholder="Eligibility" {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeActorRequirements(index)}>
+									<Trash2 className="h-4 w-4" />
+								</Button>
+							</div>
+						))}
+						<Button
+							type="button"
+							variant="outline"
+							size="sm"
+							className="mt-2"
+							onClick={() => appendActorRequirements({ characterName: "", gender: "", requiredNumbers: "", eligibility: "", salaryRange: "" })}
+						>
+							<PlusCircledIcon className="mr-2 h-4 w-4" />
+							Add Casting Call
 						</Button>
-					</div>
-				))}
-				<Button
-					type="button"
-					variant="outline"
-					size="sm"
-					className="mt-2"
-					onClick={() => appendActorRequirements({ characterName: "", gender: "", requiredNumbers: "", eligibility: "", salaryRange: "" })}
-				>
-					<PlusCircledIcon className="mr-2 h-4 w-4" />
-					Add Casting Call
-				</Button>
-				<Separator />
-				{teamMemberRequirements.map((field, index) => (
-					<div className="space-y-4 border p-5 rounded-md" key={field.id}>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<FormField
-								control={control}
-								name={`teamMemberRequirements.${index}.teamMember`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>TeamMember</FormLabel>
-										<FormControl>
-											<Select onValueChange={field.onChange} defaultValue={field.value}>
-												<FormControl>
-													<SelectTrigger>
-														<SelectValue placeholder="Select TeamMember" />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													{filmDepartments?.map(({ value, label }) => (
-														<SelectItem key={value} value={value}>
-															{label}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={control}
-								name={`teamMemberRequirements.${index}.eligibility`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Eligibility</FormLabel>
-										<FormControl>
-											<Input type="text" placeholder="Eligibility" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<FormField
-								control={control}
-								name={`teamMemberRequirements.${index}.requiredNumbers`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Required Numbers</FormLabel>
-										<FormControl>
-											<Input type="number" placeholder="Required Numbers" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={control}
-								name={`teamMemberRequirements.${index}.salary`}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Salary</FormLabel>
-										<FormControl>
-											<Input type="Salary" placeholder="Salary" {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeTeamMemberRequirements(index)}>
-							<Trash2 className="h-4 w-4" />
+						<Separator />
+					</>
+				)}
+				{jobType === "Call for TeamMembers" && (
+					<>
+						{teamMemberRequirements.map((field, index) => (
+							<>
+								<div className="space-y-4 border p-5 rounded-md" key={field.id}>
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+										<FormField
+											control={control}
+											name={`teamMemberRequirements.${index}.teamMember`}
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>TeamMember</FormLabel>
+													<FormControl>
+														<Select onValueChange={field.onChange} defaultValue={field.value}>
+															<FormControl>
+																<SelectTrigger>
+																	<SelectValue placeholder="Select TeamMember" />
+																</SelectTrigger>
+															</FormControl>
+															<SelectContent>
+																{filmDepartments?.map(({ value, label }) => (
+																	<SelectItem key={value} value={value}>
+																		{label}
+																	</SelectItem>
+																))}
+															</SelectContent>
+														</Select>
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={control}
+											name={`teamMemberRequirements.${index}.eligibility`}
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Eligibility</FormLabel>
+													<FormControl>
+														<Input type="text" placeholder="Eligibility" {...field} />
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</div>
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+										<FormField
+											control={control}
+											name={`teamMemberRequirements.${index}.requiredNumbers`}
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Required Numbers</FormLabel>
+													<FormControl>
+														<Input type="number" placeholder="Required Numbers" {...field} />
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<FormField
+											control={control}
+											name={`teamMemberRequirements.${index}.salary`}
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Salary</FormLabel>
+													<FormControl>
+														<Input type="Salary" placeholder="Salary" {...field} />
+													</FormControl>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+									</div>
+									<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeTeamMemberRequirements(index)}>
+										<Trash2 className="h-4 w-4" />
+									</Button>
+								</div>
+							</>
+						))}
+						<Button
+							type="button"
+							variant="outline"
+							size="sm"
+							className="mt-2"
+							onClick={() => appendTeamMemberRequirements({ teamMember: "", eligibility: "", requiredNumbers: "", salary: "" })}
+						>
+							<PlusCircledIcon className="mr-2 h-4 w-4" />
+							Add Call for Team Members
 						</Button>
-					</div>
-				))}
-				<Button
-					type="button"
-					variant="outline"
-					size="sm"
-					className="mt-2"
-					onClick={() => appendTeamMemberRequirements({ teamMember: "", eligibility: "", requiredNumbers: "", salary: "" })}
-				>
-					<PlusCircledIcon className="mr-2 h-4 w-4" />
-					Add Call for Team Members
-				</Button>
-				<Separator />
+						<Separator />
+					</>
+				)}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
