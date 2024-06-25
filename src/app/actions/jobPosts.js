@@ -50,6 +50,23 @@ export async function getCompanyJobPost(uid) {
 	}
 }
 
+export async function getJobPost(companyId, jobPostId) {
+	try {
+		const jobPostDocRef = adminDb.collection("companies").doc(companyId).collection("job_posts").doc(jobPostId);
+		const jobPostDoc = await jobPostDocRef.get();
+
+		if (!jobPostDoc.exists) {
+			return { error: "Job post not found" };
+		}
+
+		const jobPost = { id: jobPostDoc.id, ...jobPostDoc.data() };
+
+		return JSON.parse(JSON.stringify(jobPost));
+	} catch (error) {
+		return { error: error.message };
+	}
+}
+
 export async function saveJobPost(uid, jobData) {
 	try {
 		const parsedData = JobPostFormSchema.parse(jobData);

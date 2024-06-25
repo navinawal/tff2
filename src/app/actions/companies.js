@@ -2,6 +2,22 @@
 
 import { adminDb } from "@/lib/firebase-admin";
 
+export async function getAllCompanies() {
+	try {
+		const companiesRef = adminDb.collection("companies");
+		const snapshot = await companiesRef.get();
+
+		if (snapshot.empty) {
+			return { error: "No companies found" };
+		}
+
+		const companies = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+		return JSON.parse(JSON.stringify(companies));
+	} catch (error) {
+		return { error: error.message };
+	}
+}
+
 export async function getCompanyProfile(uid) {
 	try {
 		const companyRef = adminDb.collection("companies").doc(uid);
