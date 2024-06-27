@@ -30,13 +30,13 @@ export default async function TeamMemberDetails({ params }) {
 			<AppMaxWidthContainer>
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-x-10">
 					<div className="flex flex-col justify-start items-start gap-4">
-						<img
-							src="https://zahar.jwsuperthemes.com/model/wp-content/uploads/sites/18/2022/06/stephan-louis-L3s5QySz5UM-unsplash-408x570.jpg"
+						<Image
+							src={teamMember.profileImage || "/profile_pictures/placeholder.jpg"}
 							width="250"
 							height="600"
-							alt=""
+							alt="Profile Picture"
 							className="rounded-sm"
-						></img>
+						></Image>
 					</div>
 					<div className="flex flex-col col-span-2 justify-center items-start gap-6">
 						<DetailBox containerClass="flex flex-col gap-3" heading="About Me" subHeading={teamMember.about} />

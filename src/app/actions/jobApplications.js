@@ -44,9 +44,18 @@ export async function fetchJobApplicationsForCompany(companyId) {
 	return JSON.parse(JSON.stringify(applications));
 }
 
-// export async function fetchApplicationsForTeamMember(teamMemberId) {
-// 	const applicationsQuery = query(collection(firestore, "job_applications"), where("team_member_id", "==", teamMemberId));
+export async function fetchApplicationsForTeamMember(teamMemberId) {
+	const jobApplicationsRef = adminDb.collection("job_applications").where("teamMemberId", "==", teamMemberId);
+	const jobApplicationsSnapshot = await jobApplicationsRef.get();
 
-// 	const applicationsSnapshot = await getDocs(applicationsQuery);
-// 	return applicationsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-// }
+	if (jobApplicationsSnapshot.empty) {
+		return { error: "No Job applications found for TeamMember " + teamMemberId };
+	}
+
+	const applications = jobApplicationsSnapshot.docs.map((doc) => ({
+		id: doc.id,
+		...doc.data(),
+	}));
+
+	return JSON.parse(JSON.stringify(applications));
+}
