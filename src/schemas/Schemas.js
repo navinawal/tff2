@@ -70,7 +70,7 @@ export const profileFormSchema = z.object({
 		required_error: "A date of birth is required.",
 	}),
 	bio: z.string().max(200).min(4),
-	gender: z.enum(["male", "female"], {
+	gender: z.enum(["Male", "Female"], {
 		required_error: "You need to select your gender",
 	}),
 });
@@ -115,6 +115,7 @@ export const TeamMemberFilmographyFormSchema = z.object({
 });
 
 export const CompanyProfileFormSchema = z.object({
+	profileImage: z.any(),
 	companyName: z.any(),
 	category: z.any(),
 	noOfEmployees: z.any(),

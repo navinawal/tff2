@@ -12,7 +12,7 @@ import { SortingDropdownMenu } from "./shorting-menu";
 import Loading from "./loading";
 
 export default function TeamMemberDataGrid() {
-	const { selectedFilters, updateFilter, searchQuery, updateSearchQuery, sortField, sortDirection } = useFilter();
+	const { selectedFilters, updateFilter, searchQuery, updateSearchQuery, sortField, sortDirection, clearAllFilters } = useFilter();
 	const { data, loading, error, page, pageSize, totalItems, setPage, setPageSize } = usePaginatedData(
 		"/api/teamMember",
 		selectedFilters,
@@ -21,7 +21,7 @@ export default function TeamMemberDataGrid() {
 		sortDirection
 	);
 
-	const filmDepartmentOptions = [
+	const filmDepartments = [
 		{ value: "Actor", label: "Actor" },
 		{ value: "Acting coach", label: "Acting coach" },
 		{ value: "Action/Stunt Coordinator", label: "Action/Stunt Coordinator" },
@@ -68,7 +68,7 @@ export default function TeamMemberDataGrid() {
 
 					<FacetedDropdownFilter
 						title="Film Department"
-						options={filmDepartmentOptions}
+						options={filmDepartments}
 						filterKey="FilmDepartment"
 						selectedValues={selectedFilters.FilmDepartment || []}
 						onFilterChange={updateFilter}

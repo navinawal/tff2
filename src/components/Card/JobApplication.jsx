@@ -10,11 +10,6 @@ export default function JobApplication({ jobApplication }) {
 	return (
 		<div className="flex flex-col rounded-xl bg-muted p-2 max-h-96">
 			<div className="flex flex-col gap-2 bg-black px-3 py-4 rounded">
-				<div className="flex justify-between items-center">
-					<div className="rounded-full bg-muted p-2">
-						<CiBookmark />
-					</div>
-				</div>
 				<div className="flex flex-row gap-4 mt-4">
 					<div className="text-xs font-medium">{jobApplication?.email}</div>
 					<div className="text-xs">{formatDate(jobApplication.createdAt)}</div>
