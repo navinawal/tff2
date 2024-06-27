@@ -2,8 +2,8 @@ import { adminDb } from "@/lib/firebase-admin";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
+	const searchParams = request.nextUrl.searchParams;
 	try {
-		const searchParams = request.nextUrl.searchParams;
 		const { page = 0, pageSize = 10, filters = {}, searchQuery = "", sortField = "firstName", sortDirection = "desc" } = searchParams;
 		let collectionRef = adminDb.collection("team_members");
 

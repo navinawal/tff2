@@ -1,7 +1,7 @@
 // useFilter.js
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function useFilter() {
 	const [selectedFilters, setSelectedFilters] = useState({});
@@ -10,7 +10,6 @@ export function useFilter() {
 	const [sortDirection, setSortDirection] = useState("asc");
 
 	const router = useRouter();
-	const searchParams = useSearchParams();
 
 	const updateFilter = (filterKey, values) => {
 		setSelectedFilters((prev) => ({
@@ -54,7 +53,7 @@ export function useFilter() {
 	}, [selectedFilters, searchQuery, sortField, sortDirection]);
 
 	useEffect(() => {
-		const params = new URLSearchParams(searchParams);
+		const params = new URLSearchParams(window.location.search);
 		const filters = {};
 
 		for (const [key, value] of params.entries()) {
