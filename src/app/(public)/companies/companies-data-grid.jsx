@@ -26,7 +26,6 @@ export default function JobsDataGrid() {
 			setLoading(true);
 			try {
 				const companies = await getAllCompanies();
-				console.log(companies);
 
 				let filteredJobs = companies;
 

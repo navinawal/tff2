@@ -3,13 +3,16 @@ import { Separator } from "@/components/ui/separator";
 import { FilmographySheet } from "./filmography-sheet";
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
+import { notFound } from "next/navigation";
 
 export default async function Filmography() {
 	const user = await getCurrentUser();
 
-	if (!user) return;
+	if (!user || !user.profile) return notFound();
 
-	const { uid } = user;
+	const { uid, profile } = user;
+
+	if (profile.role !== "TeamMember") return notFound();
 
 	const filmographies = await getTeamMemberFilmographies(uid);
 
@@ -24,8 +27,8 @@ export default async function Filmography() {
 					<FilmographySheet uid={uid} />
 				</div>
 				<Separator />
-				<div className="flex flex-col flex-wrap gap-5">
-					{!filmographies ? (
+				<div className="grid grid-cols-4 gap-5">
+					{!filmographies?.error && filmographies?.length > 0 ? (
 						filmographies?.map((filmography) => (
 							<Card key={filmography.id}>
 								<CardHeader>

@@ -2,6 +2,7 @@
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MultiSelect } from "@/components/ui/multi-select";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,13 +12,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
 import { ethnicity, nationalities } from "@/config/teamMemberData";
 import { TeamMemberBasicInfoFormSchema } from "@/schemas/Schemas";
-import { saveTeamMemberDetails } from "@/app/actions/teamMembers";
+import { saveTeamMemberDetails } from "@/app/actions/team_members";
 import { useRouter } from "next/navigation";
-import { MultiSelect } from "@/components/ui/multi-select";
-import { filmDepartments } from "@/config/companyData";
-import { additionalSkills, districts, languageSkills } from "@/config/data";
+import { useState } from "react";
+
+import { additionalSkills, ageGroups, districts, filmDepartments, languageSkills } from "@/config/data";
+import Image from "next/image";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
+	const [preview, setPreview] = useState(defaultValues?.profileImage || "/profile_pictures/placeholder.jpg");
 	const router = useRouter();
 	const { toast } = useToast();
 
@@ -33,42 +37,84 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 	} = formHook;
 
 	async function onSubmit(formData) {
-		const response = await saveTeamMemberDetails(uid, formData);
-		if (!response.error) {
-			toast({
-				title: "Success !",
-				description: "Profile saved successfully",
+		try {
+			let profileImageUrl = formData.profileImage;
+
+			if (formData.profileImage instanceof File) {
+				const storage = getStorage();
+				const storageRef = ref(storage, `/team_members/profile_pictures/${uid}-${formData.profileImage.name}`);
+				const snapshot = await uploadBytes(storageRef, formData.profileImage);
+				profileImageUrl = await getDownloadURL(snapshot.ref);
+			}
+
+			const response = await saveTeamMemberDetails(uid, {
+				...formData,
+				profileImage: profileImageUrl,
 			});
-			router.refresh();
-		} else {
+
+			if (response.success === true) {
+				toast({
+					title: "Success !",
+					description: "Profile saved successfully",
+				});
+			} else {
+				toast({
+					variant: "destructive",
+					title: "Error !",
+					description: "Something went wrong",
+				});
+			}
+		} catch (error) {
 			toast({
 				variant: "destructive",
-				title: "Error !",
-				description: "Something went wrong",
+				title: "Error!",
+				description: error.message,
 			});
 		}
 	}
 
-	const ageGroups = [
-		{ label: "Mid-60s", range: "65-69" },
-		{ label: "Early 60s", range: "60-64" },
-		{ label: "Late 50s", range: "55-59" },
-		{ label: "Mid-50s", range: "50-54" },
-		{ label: "Early 50s", range: "45-49" },
-		{ label: "Mid-40s", range: "40-44" },
-		{ label: "Mid-30s", range: "35-39" },
-		{ label: "Early 30s", range: "30-34" },
-		{ label: "Mid-20s", range: "25-29" },
-		{ label: "Early 20s", range: "20-24" },
-		{ label: "Teenager", range: "16-19" },
-		{ label: "Pre-Teen", range: "13-15" },
-		{ label: "Child", range: "5-12" },
-		{ label: "Infant", range: "0-4" },
-	];
+	const handleImageChange = (event, onChange) => {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setPreview(reader.result);
+			};
+			reader.readAsDataURL(file);
+			onChange(file);
+		}
+	};
 
 	return (
 		<Form {...formHook}>
 			<form onSubmit={handleSubmit(onSubmit)} className="space-y-8" autoComplete="off">
+				<div className="grid grid-cols-4">
+					<FormField
+						control={control}
+						name="profileImage"
+						render={({ field: { onChange, value, ...rest } }) => (
+							<>
+								<FormItem>
+									<FormLabel>
+										<div className="relative overflow-hidden rounded-md w-[200px] h-[250px] bg-gray-200 flex items-center justify-center">
+											<Image
+												src={preview}
+												alt="Profile Image"
+												height="250"
+												width="200"
+												className="object-cover w-full h-full hover:scale-110 transition-transform duration-300"
+											/>
+										</div>
+									</FormLabel>
+									<FormControl>
+										<Input type="file" accept="image/*" className="hidden" {...rest} onChange={(event) => handleImageChange(event, onChange)} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							</>
+						)}
+					/>
+				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
@@ -163,9 +209,9 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
-										{ageGroups?.map((item) => (
-											<SelectItem key={item.range} value={item.range}>
-												{item.label}
+										{ageGroups?.map(({ value, label }) => (
+											<SelectItem key={value} value={value}>
+												{label}
 											</SelectItem>
 										))}
 									</SelectContent>
@@ -213,9 +259,9 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
-										{districts?.map((item) => (
-											<SelectItem key={item.value} value={item.value}>
-												{item.label}
+										{districts?.map(({ value, label }) => (
+											<SelectItem key={value} value={value}>
+												{label}
 											</SelectItem>
 										))}
 									</SelectContent>

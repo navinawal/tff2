@@ -10,7 +10,7 @@ import { ChooseRoleSchema } from "@/schemas/Schemas";
 import { Label } from "@/components/ui/label";
 import { FcFilm, FcManager } from "react-icons/fc";
 import { useRouter } from "next/navigation";
-import { saveRole } from "@/app/actions/userProfile";
+import { saveRole } from "@/app/actions/users_profile";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function ChooseRoleForm({ uid }) {

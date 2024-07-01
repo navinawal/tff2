@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { carrierSummarySchema } from "@/schemas/Schemas";
-import { saveTeamMemberDetails } from "@/app/actions/teamMembers";
+import { saveTeamMemberDetails } from "@/app/actions/team_members";
 
 export function CarrierSummaryForm({ uid, defaultValues }) {
 	const formHook = useForm({

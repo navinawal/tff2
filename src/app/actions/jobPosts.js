@@ -84,7 +84,6 @@ export async function saveJobPost(uid, jobData) {
 
 		return { success: true, jobId: jobDocRef.id };
 	} catch (error) {
-		console.error(error.message);
 		return { error: error.message };
 	}
 }

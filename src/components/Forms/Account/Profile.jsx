@@ -16,14 +16,14 @@ import { format } from "date-fns";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileFormSchema } from "@/schemas/Schemas";
-import { saveUserProfile } from "@/app/actions/userProfile";
+import { updateUserProfile } from "@/app/actions/users_profile";
 import { useToast } from "@/components/ui/use-toast";
 import { genders } from "@/config/data";
 import { useState } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export function ProfileForm({ uid, defaultValues }) {
-	const [preview, setPreview] = useState(defaultValues.profileImage || "/profile_pictures/placeholder.jpg");
+	const [preview, setPreview] = useState(defaultValues?.profileImage || "/profile_pictures/placeholder.jpg");
 	const { toast } = useToast();
 	const formHook = useForm({
 		resolver: zodResolver(profileFormSchema),
@@ -47,7 +47,7 @@ export function ProfileForm({ uid, defaultValues }) {
 				profileImageUrl = await getDownloadURL(snapshot.ref);
 			}
 
-			const response = await saveUserProfile(uid, {
+			const response = await updateUserProfile(uid, {
 				...formData,
 				profileImage: profileImageUrl,
 			});

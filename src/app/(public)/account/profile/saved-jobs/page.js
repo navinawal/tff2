@@ -1,6 +1,17 @@
+import { getCurrentUser } from "@/app/actions/userAuth";
 import { Separator } from "@/components/ui/separator";
+import { notFound } from "next/navigation";
+import SaveJobGrid from "./saved-job-grid";
 
-export default function SavedJobs() {
+export default async function SavedJobs() {
+	const user = await getCurrentUser();
+
+	if (!user || !user.profile) return notFound();
+
+	const { uid, profile } = user;
+
+	if (profile.role !== "TeamMember") return notFound();
+
 	return (
 		<>
 			<div className="space-y-6">
@@ -11,6 +22,7 @@ export default function SavedJobs() {
 					</div>
 				</div>
 				<Separator />
+				<SaveJobGrid uid={uid} />
 			</div>
 		</>
 	);

@@ -1,20 +1,78 @@
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
+"use client";
+
 import { CiBookmark } from "react-icons/ci";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { formatDate } from "@/lib/formatDate";
+import { addBookmarkToArray, getBookmarkedJobPosts, removeBookmarkFromArray } from "@/app/actions/team_members";
+import { getCurrentUser } from "@/app/actions/userAuth";
+import { useState, useEffect } from "react";
+import { FiLoader } from "react-icons/fi";
 
 export default function JobCard({ job }) {
+	const [savedJobs, setSavedJobs] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [isBookmarked, setIsBookmarked] = useState(false);
 	const companyId = job.uid;
+
+	// Fetch saved jobs and determine if this job is bookmarked
+	useEffect(() => {
+		async function fetchSavedJobs() {
+			const user = await getCurrentUser();
+			if (user) {
+				const { uid } = user;
+				const savedJobs = await getBookmarkedJobPosts(uid);
+				setSavedJobs(savedJobs);
+				setIsBookmarked(savedJobs.some((savedJob) => savedJob.id === job.id));
+			}
+		}
+		fetchSavedJobs();
+	}, [job.id]);
+
+	const handleSavedJobs = async () => {
+		setLoading(true);
+		const user = await getCurrentUser();
+
+		if (!user || !user.profile) {
+			setLoading(false);
+			return;
+		}
+
+		const { uid, profile } = user;
+
+		if (profile.role !== "TeamMember") {
+			setLoading(false);
+			return;
+		}
+
+		if (isBookmarked) {
+			// Remove bookmark
+			await removeBookmarkFromArray(uid, companyId, job.id);
+			setSavedJobs(savedJobs.filter((savedJob) => savedJob.id !== job.id));
+			setIsBookmarked(false);
+		} else {
+			// Add bookmark
+			await addBookmarkToArray(uid, companyId, job.id);
+			setSavedJobs([...savedJobs, { id: job.id }]); // Update state with new bookmark
+			setIsBookmarked(true);
+		}
+
+		setLoading(false);
+	};
+
 	return (
 		<div className="flex flex-col rounded-xl bg-muted p-2 max-h-96">
 			<div className="flex flex-col gap-2 bg-black px-3 py-4 rounded">
 				<div className="flex justify-between items-center">
-					<div className="rounded-full bg-muted p-2">
-						<CiBookmark />
-					</div>
+					<Button
+						variant="outline"
+						size="icon"
+						className={`rounded-full ${isBookmarked ? "bg-accent text-white" : ""}`}
+						onClick={handleSavedJobs}
+						disabled={loading}
+					>
+						{loading ? <FiLoader className="h-4 w-4 animate-spin" /> : <CiBookmark className="h-4 w-4" />}
+					</Button>
 				</div>
 				<div className="flex flex-row gap-4 mt-4">
 					<div className="text-xs font-medium">{job?.companyName}</div>
@@ -29,7 +87,7 @@ export default function JobCard({ job }) {
 					<div className="text-lg font-semibold">{job?.auditionDate}</div>
 					<div className="text-sm">{job?.auditionTime}</div>
 				</div>
-				<Button asChild style={{ backgroundColor: "black", color: "white" }}>
+				<Button asChild className="bg-black text-white">
 					<Link href={`/find-job/${job.id}?companyId=${companyId}`}>Details</Link>
 				</Button>
 			</div>

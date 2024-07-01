@@ -1,24 +1,24 @@
 import { getCurrentUser } from "@/app/actions/userAuth";
-import { getUserProfile } from "@/app/actions/userProfile";
+import { getUserProfile } from "@/app/actions/users_profile";
 import { ProfileForm } from "@/components/Forms/Account/Profile";
 import { Separator } from "@/components/ui/separator";
 
 export default async function Home() {
 	const user = await getCurrentUser();
-	const uid = user?.uid;
-	const profile = await getUserProfile(uid);
-	const defaultValues = {
-		profileImage: profile.profileImage || "",
-		firstName: profile.firstName || "",
-		lastName: profile.lastName || "",
-		email: profile.email || "",
-		alternateEmail: profile.alternateEmail || "",
-		phone: profile.phone || "",
-		alternatePhone: profile.alternatePhone || "",
-		dob: profile.dob ? new Date(profile.dob.seconds * 1000).toISOString().split("T")[0] : "",
-		bio: profile.bio || "",
-		gender: profile.gender || "",
-	};
+
+	if (!user) return;
+
+	const { uid } = user;
+
+	let defaultValues = {};
+
+	const response = await getUserProfile(uid);
+
+	if (response.success) {
+		defaultValues = response.data;
+		defaultValues.dob = defaultValues.dob ? new Date(defaultValues.dob._seconds * 1000).toISOString().split("T")[0] : "";
+	}
+
 	return (
 		<div className="space-y-6">
 			<div className="flex justify-between items-center gap-4">

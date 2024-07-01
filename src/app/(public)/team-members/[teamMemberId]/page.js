@@ -4,9 +4,13 @@ import styles from "./styles.module.css";
 import { CarrierSummaryChart } from "@/components/Account/TeamMember/CarrierSummaryChart";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { notFound } from "next/navigation";
-import { getTeamMemberDetails } from "@/app/actions/teamMembers";
+import { getTeamMemberDetails } from "@/app/actions/team_members";
 import { getTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
 import { Badge } from "@/components/ui/badge";
+import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
+import { CiStar } from "react-icons/ci";
+import Gallery from "./gallery";
 
 export default async function TeamMemberDetails({ params }) {
 	const { teamMemberId } = params;
@@ -32,13 +36,34 @@ export default async function TeamMemberDetails({ params }) {
 					<div className="flex flex-col justify-start items-start gap-4">
 						<Image
 							src={teamMember.profileImage || "/profile_pictures/placeholder.jpg"}
-							width="250"
-							height="600"
+							width="300"
+							height="800"
 							alt="Profile Picture"
 							className="rounded-sm"
 						></Image>
 					</div>
 					<div className="flex flex-col col-span-2 justify-center items-start gap-6">
+						<div className="flex gap-2">
+							<Button variant="link" className="p-0 m-0 mr-10">
+								Whatsapp
+								<FaWhatsapp className="h-5 w-5 ml-2" />
+							</Button>
+							<Button variant="link" className="p-0 m-0">
+								<FaWhatsapp className="h-5 w-5" />
+							</Button>
+							<Button variant="link" className="p-0 m-0">
+								<FaLinkedin className="h-5 w-5" />
+							</Button>
+							<Button variant="link" className="p-0 m-0">
+								<FaFacebook className="h-5 w-5" />
+							</Button>
+						</div>
+						<div className="flex gap-2">
+							<CiStar className="h-5 w-5" />
+							<CiStar className="h-5 w-5" />
+							<CiStar className="h-5 w-5" />
+							<CiStar className="h-5 w-5" />
+						</div>
 						<DetailBox containerClass="flex flex-col gap-3" heading="About Me" subHeading={teamMember.about} />
 						<div className="flex flex-wrap justify-between md:justify-start w-full gap-6">
 							<DetailBox containerClass="flex flex-col gap-3" heading="Age" subHeading={teamMember.ageGroup} />
@@ -137,11 +162,7 @@ export default async function TeamMemberDetails({ params }) {
 								My <span className={`${styles.textHGradient}`}>GALLERY</span>
 							</h1>
 						</div>
-						<div className={`${styles.fancyBorderedBox} grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
-							<div className={"flex flex-col gap-2"}>
-								<div className={"flex flex-col gap-2"}>No data</div>
-							</div>
-						</div>
+						<div className={`${styles.fancyBorderedBox} flex flex-col`}></div>
 					</div>
 				</AppMaxWidthContainer>
 			</div>

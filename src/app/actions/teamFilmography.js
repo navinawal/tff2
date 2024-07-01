@@ -4,15 +4,15 @@ import { adminDb } from "@/lib/firebase-admin";
 
 export async function getTeamMemberFilmographies(uid) {
 	try {
-		const trainingsRef = adminDb.collection("team_members").doc(uid).collection("Filmographies");
-		const snapshot = await trainingsRef.get();
+		const filmographiesRef = adminDb.collection("team_members").doc(uid).collection("Filmographies");
+		const snapshot = await filmographiesRef.get();
 
 		if (snapshot.empty) {
 			return { error: "No trainings found for this Filmographies" };
 		}
 
-		const trainings = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		return trainings;
+		const filmographies = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+		return filmographies;
 	} catch (error) {
 		return { error: error.message };
 	}

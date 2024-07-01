@@ -3,15 +3,21 @@ import { Separator } from "@/components/ui/separator";
 import { TrainingsSheet } from "../trainings/trainings-sheet";
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { getTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
+import Loading from "./loading";
+import { notFound } from "next/navigation";
 
 export default async function Trainings() {
 	const user = await getCurrentUser();
 
-	if (!user) return;
+	if (!user || !user.profile) return notFound();
 
-	const { uid } = user;
+	const { uid, profile } = user;
+
+	if (profile.role !== "TeamMember") return notFound();
 
 	const trainings = await getTeamMemberTrainings(uid);
+
+	if (!trainings) return Loading();
 
 	return (
 		<>
@@ -24,10 +30,10 @@ export default async function Trainings() {
 					<TrainingsSheet />
 				</div>
 				<Separator />
-				{!trainings.error ? (
-					trainings?.map((training) => (
-						<div className="flex" key={training.id}>
-							<Card>
+				<div className="grid grid-cols-4 gap-5">
+					{!trainings?.error && trainings?.length > 0 ? (
+						trainings?.map((training) => (
+							<Card key={training.id}>
 								<CardHeader>
 									<CardTitle>{training.instituition}</CardTitle>
 								</CardHeader>
@@ -37,13 +43,13 @@ export default async function Trainings() {
 									<p>{training.courseTaken}</p>
 								</CardContent>
 							</Card>
+						))
+					) : (
+						<div className="flex justify-center items-center min-h-96">
+							<h1>No record</h1>
 						</div>
-					))
-				) : (
-					<div className="flex justify-center items-center min-h-96">
-						<h1>No record</h1>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
 		</>
 	);

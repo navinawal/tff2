@@ -38,12 +38,14 @@ export async function getCurrentUser(authToken) {
 	const profileDoc = await profileDocRef.get();
 
 	if (!profileDoc.exists) {
-		return { uid: currentUser.uid, profile: null };
+		return JSON.parse(JSON.stringify({ uid: currentUser.uid, profile: null }));
+		// return { uid: currentUser.uid, profile: null };
 	}
 
 	const profileData = profileDoc.data();
 
-	return { uid: currentUser.uid, profile: profileData };
+	return JSON.parse(JSON.stringify({ uid: currentUser.uid, profile: profileData }));
+	// return { uid: currentUser.uid, profile: profileData };
 }
 
 export async function setAuthCookie(authToken) {

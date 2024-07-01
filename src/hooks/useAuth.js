@@ -10,9 +10,9 @@ import {
 	signInWithPopup,
 	signOut,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { auth, db, googleProvider, facebookProvider } from "@/lib/firebase";
+import { auth, googleProvider, facebookProvider } from "@/lib/firebase";
 import { setAuthCookie, revokeAllSessions } from "@/app/actions/userAuth";
+import { getUserProfile, createUserProfile, updateUserProfile } from "@/app/actions/users_profile";
 
 const AuthContext = createContext();
 
@@ -44,42 +44,42 @@ function useProvideAuth() {
 	}, []);
 
 	const handleUserProfile = async (uid, photoURL, displayName) => {
-		const profileDocRef = doc(db, "users_profile", uid);
-		const profileDoc = await getDoc(profileDocRef);
+		try {
+			let response = await getUserProfile(uid);
 
-		let firstName = "",
-			lastName = "";
-		if (displayName) {
-			[firstName, ...lastName] = displayName.split(" ");
-			lastName = lastName.join("");
-		}
-
-		if (!profileDoc.exists()) {
-			const profileDocData = {
-				email: auth.currentUser.email,
-				createdAt: new Date(),
-				profileImage: photoURL || "",
-				firstName: firstName || "",
-				lastName: lastName || "",
-			};
-			await setDoc(profileDocRef, profileDocData);
-			return profileDocData;
-		} else {
-			const existingProfileData = profileDoc.data();
-			const updatedFields = {};
-			if (!existingProfileData.profileImage && photoURL) {
-				updatedFields.profileImage = photoURL;
+			if (!response.success) {
+				const firstName = displayName?.split(" ")[0] || "";
+				const lastName = displayName?.split(" ").slice(1).join(" ") || "";
+				const profileData = {
+					uid,
+					email: auth.currentUser.email,
+					profileImage: photoURL || "",
+					firstName,
+					lastName,
+				};
+				response = await createUserProfile(uid, profileData);
+				if (!response.success) throw new Error(response.message);
+				return profileData;
+			} else {
+				const profileData = response.data;
+				const updatedFields = {};
+				if (!profileData.profileImage && photoURL) {
+					updatedFields.profileImage = photoURL;
+				}
+				if (!profileData.firstName && displayName) {
+					updatedFields.firstName = displayName.split(" ")[0];
+				}
+				if (!profileData.lastName && displayName) {
+					updatedFields.lastName = displayName.split(" ").slice(1).join(" ");
+				}
+				if (Object.keys(updatedFields).length > 0) {
+					await updateUserProfile(uid, updatedFields);
+				}
+				return profileData;
 			}
-			if (!existingProfileData.firstName && firstName) {
-				updatedFields.firstName = firstName;
-			}
-			if (!existingProfileData.lastName && lastName) {
-				updatedFields.lastName = lastName;
-			}
-			if (Object.keys(updatedFields).length > 0) {
-				await setDoc(profileDocRef, updatedFields, { merge: true });
-			}
-			return existingProfileData;
+		} catch (error) {
+			console.error("Error handling user profile:", error);
+			throw error;
 		}
 	};
 
@@ -90,28 +90,29 @@ function useProvideAuth() {
 			if (user) {
 				const uid = user.uid;
 				const profileData = {
+					//uid,
 					firstName,
 					lastName,
 					email,
-					createdAt: new Date(),
 				};
-				await setDoc(doc(db, "users_profile", uid), profileData);
+				const response = await createUserProfile(uid, profileData);
+				if (!response.success) throw new Error(response.message);
 				await sendEmailVerification(user);
-				// setUser({ uid, profileData });
 				return { user, profileData };
 			} else {
-				throw new Error("Error while registration");
+				throw new Error("Error during registration.");
 			}
 		} catch (error) {
+			console.error("Error registering user:", error);
 			throw error;
 		}
 	};
 
 	const forgotPassword = async (email) => {
 		try {
-			const response = await sendPasswordResetEmail(auth, email);
-			return response;
+			await sendPasswordResetEmail(auth, email);
 		} catch (error) {
+			console.error("Error sending password reset email:", error);
 			throw error;
 		}
 	};
@@ -126,6 +127,7 @@ function useProvideAuth() {
 			await setAuthCookie(authToken);
 			setUser({ uid, profileData });
 		} catch (error) {
+			console.error("Error logging in with email:", error);
 			throw error;
 		}
 	};
@@ -140,6 +142,7 @@ function useProvideAuth() {
 			await setAuthCookie(authToken);
 			setUser({ uid, profileData });
 		} catch (error) {
+			console.error("Error logging in with Google:", error);
 			throw error;
 		}
 	};
@@ -154,6 +157,7 @@ function useProvideAuth() {
 			await setAuthCookie(authToken);
 			setUser({ uid, profileData });
 		} catch (error) {
+			console.error("Error logging in with Facebook:", error);
 			throw error;
 		}
 	};
@@ -164,6 +168,7 @@ function useProvideAuth() {
 			setUser(null);
 			await revokeAllSessions();
 		} catch (error) {
+			console.error("Error logging out:", error);
 			throw error;
 		}
 	};
