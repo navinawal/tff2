@@ -10,20 +10,45 @@ import { Badge } from "@/components/ui/badge";
 import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { CiStar } from "react-icons/ci";
-import Gallery from "./gallery";
+import ImageGallery from "@/components/ImageGallery";
+import SocialShare from "@/components/ui/social-share";
+import TeamMemberMoreInfo from "./MoreInfo";
+import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
 
 export default async function TeamMemberDetails({ params }) {
 	const { teamMemberId } = params;
-	const teamMember = await getTeamMemberDetails(teamMemberId);
+	const teamMemberData = await getTeamMemberDetails(teamMemberId);
 	const trainings = await getTeamMemberTrainings(teamMemberId);
+	const filmographies = await getTeamMemberFilmographies(teamMemberId);
 
-	if (teamMember.error) return notFound();
+	if (!teamMemberData.success || !teamMemberData.data) return notFound();
+
+	const teamMember = teamMemberData.data;
+
+	const fetchImages = async () => {
+		try {
+			const response = await fetch(`https://picsum.photos/v2/list?limit=20&page=2`);
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			return error;
+		}
+	};
+
+	const images = await fetchImages();
 
 	return (
 		<div className="bg-black text-[#ffffffcc]">
 			<div className="py-12 md:py-20">
 				<AppMaxWidthContainer>
-					<div className="flex justify-start items-center">
+					<div className="flex flex-col justify-start items-start gap-4">
+						<div className="flex flex-wrap gap-2">
+							{teamMember.filmDepartments?.map((filmDepartment) => (
+								<Badge key={filmDepartment} variant="secondary" className={`capitalize`}>
+									{filmDepartment}
+								</Badge>
+							))}
+						</div>
 						<h1 className={`${styles.strokeHeading} text-5xl md:text-8xl text-white font-bold`}>
 							{teamMember.firstName} {teamMember.lastName}
 						</h1>
@@ -44,19 +69,11 @@ export default async function TeamMemberDetails({ params }) {
 					</div>
 					<div className="flex flex-col col-span-2 justify-center items-start gap-6">
 						<div className="flex gap-2">
-							<Button variant="link" className="p-0 m-0 mr-10">
+							<a href={`https://wa.me/12345678890`} target="_blank" rel="noopener noreferrer" variant="link" className="flex p-0 m-0 mr-10">
 								Whatsapp
 								<FaWhatsapp className="h-5 w-5 ml-2" />
-							</Button>
-							<Button variant="link" className="p-0 m-0">
-								<FaWhatsapp className="h-5 w-5" />
-							</Button>
-							<Button variant="link" className="p-0 m-0">
-								<FaLinkedin className="h-5 w-5" />
-							</Button>
-							<Button variant="link" className="p-0 m-0">
-								<FaFacebook className="h-5 w-5" />
-							</Button>
+							</a>
+							<SocialShare url="https://teamforfilm.vercel.app/" title={teamMember.firstName} hashtag="" />
 						</div>
 						<div className="flex gap-2">
 							<CiStar className="h-5 w-5" />
@@ -64,16 +81,12 @@ export default async function TeamMemberDetails({ params }) {
 							<CiStar className="h-5 w-5" />
 							<CiStar className="h-5 w-5" />
 						</div>
-						<DetailBox containerClass="flex flex-col gap-3" heading="About Me" subHeading={teamMember.about} />
 						<div className="flex flex-wrap justify-between md:justify-start w-full gap-6">
 							<DetailBox containerClass="flex flex-col gap-3" heading="Age" subHeading={teamMember.ageGroup} />
 							<DetailBox containerClass="flex flex-col gap-3" heading="Height" subHeading={teamMember.height} />
 							<DetailBox containerClass="flex flex-col gap-3" heading="Ethnicity" subHeading={teamMember.ethnicity} />
 							<DetailBox containerClass="flex flex-col gap-3" heading="Nationality" subHeading={teamMember.nationality} />
 							<DetailBox containerClass="flex flex-col gap-3" heading="Location" subHeading={teamMember.location} />
-						</div>
-						<div className="grid grid-cols-3 justify-between content-start w-full gap-6">
-							<DetailBox containerClass="flex flex-col gap-3" heading="Department" subHeading="Editor, Producer, Actor" />
 						</div>
 						<Accordion type="single" collapsible className="w-full">
 							<AccordionItem value="item-1">
@@ -131,6 +144,7 @@ export default async function TeamMemberDetails({ params }) {
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>
+						<TeamMemberMoreInfo teamMember={teamMember} filmographies={filmographies} />
 					</div>
 				</div>
 			</AppMaxWidthContainer>
@@ -162,7 +176,9 @@ export default async function TeamMemberDetails({ params }) {
 								My <span className={`${styles.textHGradient}`}>GALLERY</span>
 							</h1>
 						</div>
-						<div className={`${styles.fancyBorderedBox} flex flex-col`}></div>
+						<div className={`flex flex-col`}>
+							<ImageGallery images={images} />
+						</div>
 					</div>
 				</AppMaxWidthContainer>
 			</div>

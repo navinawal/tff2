@@ -15,7 +15,7 @@ export default async function TeamMemberBasicInfo() {
 
 	if (profile.role !== "TeamMember") notFound();
 
-	const companyProfile = await getTeamMemberDetails(uid);
+	const teamMemberProfile = await getTeamMemberDetails(uid);
 
 	return (
 		<>
@@ -30,7 +30,7 @@ export default async function TeamMemberBasicInfo() {
 					</Button>
 				</div>
 				<Separator />
-				<TeamMemberBasicInfoForm uid={uid} defaultValues={companyProfile} />
+				<TeamMemberBasicInfoForm uid={uid} defaultValues={teamMemberProfile.data} />
 			</div>
 		</>
 	);

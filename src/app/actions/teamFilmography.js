@@ -12,7 +12,7 @@ export async function getTeamMemberFilmographies(uid) {
 		}
 
 		const filmographies = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-		return filmographies;
+		return JSON.parse(JSON.stringify(filmographies));
 	} catch (error) {
 		return { error: error.message };
 	}

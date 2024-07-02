@@ -1,92 +1,141 @@
+// app/team_members/actions.js
+
 "use server";
 
 import { adminDb, FieldValue } from "@/lib/firebase-admin";
 
-export async function getAllTeamMembers() {
+// Utility function to convert Firestore Timestamps to JavaScript Dates
+const transformTimestamps = (doc) => {
+	const data = doc.data();
+	return {
+		...data,
+		createdAt: data.createdAt ? data.createdAt.toDate() : null,
+		updatedAt: data.updatedAt ? data.updatedAt.toDate() : null,
+	};
+};
+
+/**
+ * Fetches all team members from the "team_members" collection.
+ * Converts Firestore Timestamps to JavaScript Dates for client compatibility.
+ * @returns {Promise<{ success: boolean, data?: Array, message?: string }>}
+ */
+export const getAllTeamMembers = async () => {
 	try {
-		const teamMembersRef = adminDb.collection("teamMembers");
+		const teamMembersRef = adminDb.collection("team_members");
 		const teamMembersSnapshots = await teamMembersRef.get();
-		if (!teamMembersSnapshots.exists) {
-			return { error: "No TeamMember data found" };
+
+		if (teamMembersSnapshots.empty) {
+			return { success: false, message: "No TeamMember data found" };
 		}
 
-		let allTeamMembers = [];
-
-		const teamMembers = teamMembersSnapshots.docs.map((doc) => ({
+		const allTeamMembers = teamMembersSnapshots.docs.map((doc) => ({
 			uid: doc.id,
-			...doc.data(),
+			...transformTimestamps(doc),
 		}));
-		allTeamMembers = [...allTeamMembers, ...teamMembers];
 
-		return JSON.parse(JSON.stringify(allTeamMembers));
+		return { success: true, data: allTeamMembers };
 	} catch (error) {
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
-}
+};
 
-export async function getTeamMemberDetails(uid) {
+/**
+ * Fetches details of a specific team member by UID.
+ * Converts Firestore Timestamps to JavaScript Dates for client compatibility.
+ * @param {string} uid - The UID of the team member.
+ * @returns {Promise<{ success: boolean, data?: object, message?: string }>}
+ */
+export const getTeamMemberDetails = async (uid) => {
 	try {
 		const teamMemberRef = adminDb.collection("team_members").doc(uid);
 		const snapshot = await teamMemberRef.get();
 
 		if (!snapshot.exists) {
-			return { error: "No company data found" };
+			return { success: false, message: "No TeamMember data found" };
 		}
 
 		const teamMemberProfile = {
 			uid: snapshot.id,
-			...snapshot.data(),
+			...transformTimestamps(snapshot),
 		};
 
-		return JSON.parse(JSON.stringify(teamMemberProfile));
+		return { success: true, data: JSON.parse(JSON.stringify(teamMemberProfile)) };
 	} catch (error) {
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
-}
+};
 
-export async function saveTeamMemberDetails(uid, data) {
+/**
+ * Saves or updates a team member's profile details.
+ * Adds `updatedAt` field to track the update time.
+ * @param {string} uid - The UID of the team member.
+ * @param {object} data - The profile data to be saved.
+ * @returns {Promise<{ success: boolean, message: string }>}
+ */
+export const saveTeamMemberDetails = async (uid, data) => {
 	try {
 		const teamMemberRef = adminDb.collection("team_members").doc(uid);
-		const response = await teamMemberRef.set(data, { merge: true });
+		const profileWithTimestamps = {
+			...data,
+			updatedAt: new Date(),
+		};
+		await teamMemberRef.set(profileWithTimestamps, { merge: true });
 		return { success: true, message: "Profile saved successfully" };
 	} catch (error) {
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
-}
+};
 
-export async function addBookmarkToArray(teamMemberId, companyId, jobPostId) {
+/**
+ * Adds a bookmark to a team member's `bookmarkedJobPosts` array.
+ * @param {string} teamMemberId - The UID of the team member.
+ * @param {string} companyId - The company ID related to the job post.
+ * @param {string} jobPostId - The job post ID to be bookmarked.
+ * @returns {Promise<{ success: boolean, message?: string }>}
+ */
+export const addBookmarkToArray = async (teamMemberId, companyId, jobPostId) => {
 	try {
 		const teamMemberRef = adminDb.collection("team_members").doc(teamMemberId);
-
 		await teamMemberRef.update({
 			bookmarkedJobPosts: FieldValue.arrayUnion({ companyId, jobPostId }),
 		});
-		return true;
+		return { success: true };
 	} catch (error) {
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
-}
+};
 
-export async function removeBookmarkFromArray(teamMemberId, companyId, jobPostId) {
+/**
+ * Removes a bookmark from a team member's `bookmarkedJobPosts` array.
+ * @param {string} teamMemberId - The UID of the team member.
+ * @param {string} companyId - The company ID related to the job post.
+ * @param {string} jobPostId - The job post ID to be removed from bookmarks.
+ * @returns {Promise<{ success: boolean, message?: string }>}
+ */
+export const removeBookmarkFromArray = async (teamMemberId, companyId, jobPostId) => {
 	try {
 		const teamMemberRef = adminDb.collection("team_members").doc(teamMemberId);
-
 		await teamMemberRef.update({
 			bookmarkedJobPosts: FieldValue.arrayRemove({ companyId, jobPostId }),
 		});
-		return true;
+		return { success: true };
 	} catch (error) {
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
-}
+};
 
-export async function getBookmarkedJobPosts(teamMemberId) {
+/**
+ * Retrieves bookmarked job posts for a specific team member.
+ * @param {string} teamMemberId - The UID of the team member.
+ * @returns {Promise<{ success: boolean, data?: Array, message?: string }>}
+ */
+export const getBookmarkedJobPosts = async (teamMemberId) => {
 	try {
 		const teamMemberRef = adminDb.collection("team_members").doc(teamMemberId);
 		const doc = await teamMemberRef.get();
-
 		const bookmarkedJobPosts = doc.data()?.bookmarkedJobPosts || [];
-		if (bookmarkedJobPosts.length === 0) return [];
+
+		if (bookmarkedJobPosts.length === 0) return { success: true, data: [] };
 
 		const jobPostPromises = bookmarkedJobPosts.map(async ({ companyId, jobPostId }) => {
 			const jobPostRef = adminDb.collection(`companies/${companyId}/job_posts`).doc(jobPostId);
@@ -95,9 +144,8 @@ export async function getBookmarkedJobPosts(teamMemberId) {
 		});
 
 		const jobPosts = await Promise.all(jobPostPromises);
-		return JSON.parse(JSON.stringify(jobPosts));
+		return { success: true, data: jobPosts };
 	} catch (error) {
-		console.error("Error fetching bookmarked job posts:", error);
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
-}
+};

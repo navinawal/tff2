@@ -87,234 +87,241 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 
 	return (
 		<Form {...formHook}>
-			<form onSubmit={handleSubmit(onSubmit)} className="space-y-8" autoComplete="off">
-				<div className="grid grid-cols-4">
-					<FormField
-						control={control}
-						name="profileImage"
-						render={({ field: { onChange, value, ...rest } }) => (
-							<>
+			<form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+				<div className="grid grid-rows-1 md:grid-cols-4 gap-5">
+					<div className="flex justify-center">
+						<FormField
+							control={control}
+							name="profileImage"
+							render={({ field: { onChange, value, ...rest } }) => (
+								<>
+									<FormItem>
+										<FormLabel>
+											<div className="relative overflow-hidden rounded-md w-[200px] h-[250px] bg-gray-200 flex items-center justify-center">
+												<Image
+													src={preview}
+													alt="Profile Image"
+													height="250"
+													width="200"
+													className="object-cover w-full h-full hover:scale-110 transition-transform duration-300"
+												/>
+											</div>
+										</FormLabel>
+										<FormControl>
+											<Input type="file" accept="image/*" className="hidden" {...rest} onChange={(event) => handleImageChange(event, onChange)} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								</>
+							)}
+						/>
+					</div>
+					<div className="md:col-span-3 space-y-5">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormField
+								control={control}
+								name="firstName"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>First Name</FormLabel>
+										<FormControl>
+											<Input placeholder="First Name" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={control}
+								name="lastName"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Last Name</FormLabel>
+										<FormControl>
+											<Input placeholder="Last Name" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<FormField
+							control={control}
+							name="filmDepartments"
+							render={({ field }) => (
 								<FormItem>
-									<FormLabel>
-										<div className="relative overflow-hidden rounded-md w-[200px] h-[250px] bg-gray-200 flex items-center justify-center">
-											<Image
-												src={preview}
-												alt="Profile Image"
-												height="250"
-												width="200"
-												className="object-cover w-full h-full hover:scale-110 transition-transform duration-300"
-											/>
-										</div>
-									</FormLabel>
+									<FormLabel>Film Departments</FormLabel>
 									<FormControl>
-										<Input type="file" accept="image/*" className="hidden" {...rest} onChange={(event) => handleImageChange(event, onChange)} />
+										<MultiSelect options={filmDepartments} value={field.value} onValueChange={field.onChange} placeholder="Select Film Departments" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
-							</>
-						)}
-					/>
-				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<FormField
-						control={control}
-						name="firstName"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>First Name</FormLabel>
-								<FormControl>
-									<Input placeholder="First Name" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={control}
-						name="lastName"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Last Name</FormLabel>
-								<FormControl>
-									<Input placeholder="Last Name" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-				<FormField
-					control={control}
-					name="filmDepartments"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Film Departments</FormLabel>
-							<FormControl>
-								<MultiSelect options={filmDepartments} value={field.value} onValueChange={field.onChange} placeholder="Select Film Departments" />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<FormField
-						control={control}
-						name="height"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Height</FormLabel>
-								<FormControl>
-									<Input type="number" placeholder="Height" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={control}
-						name="ethnicity"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Ethnicity</FormLabel>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
+							)}
+						/>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormField
+								control={control}
+								name="height"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Height</FormLabel>
+										<FormControl>
+											<Input type="number" placeholder="Height" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={control}
+								name="ethnicity"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Ethnicity</FormLabel>
+										<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Please Choose your Ethnicity" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{ethnicity?.map((item) => (
+													<SelectItem key={item} value={item}>
+														{item}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormField
+								control={control}
+								name="ageGroup"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Age Category</FormLabel>
+										<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Please Choose your Age Category" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{ageGroups?.map(({ value, label }) => (
+													<SelectItem key={value} value={value}>
+														{label}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={control}
+								name="nationality"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Nationality</FormLabel>
+										<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Please Choose your Nationality" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{nationalities?.map((item) => (
+													<SelectItem key={item} value={item}>
+														{item}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormField
+								control={control}
+								name="location"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Location</FormLabel>
+										<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormControl>
+												<SelectTrigger>
+													<SelectValue placeholder="Choose your Location" />
+												</SelectTrigger>
+											</FormControl>
+											<SelectContent>
+												{districts?.map(({ value, label }) => (
+													<SelectItem key={value} value={value}>
+														{label}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<FormField
+								control={control}
+								name="languageSkills"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Language Skills</FormLabel>
+										<FormControl>
+											<MultiSelect options={languageSkills} value={field.value} onValueChange={field.onChange} placeholder="Select Language Skills" />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={control}
+								name="additionalSkills"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Addtional Skills</FormLabel>
+										<FormControl>
+											<MultiSelect
+												options={additionalSkills}
+												value={field.value}
+												onValueChange={field.onChange}
+												placeholder="Select Addtional Skills"
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+						<FormField
+							control={control}
+							name="about"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>About Yourself</FormLabel>
 									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Please Choose your Ethnicity" />
-										</SelectTrigger>
+										<Textarea placeholder="Tell us a little bit about yourself" className="resize-none" {...field} />
 									</FormControl>
-									<SelectContent>
-										{ethnicity?.map((item) => (
-											<SelectItem key={item} value={item}>
-												{item}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<Button type="submit">{isSubmitting ? "Updating profile..." : "Update profile"}</Button>
+					</div>
 				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<FormField
-						control={control}
-						name="ageGroup"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Age Category</FormLabel>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Please Choose your Age Category" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{ageGroups?.map(({ value, label }) => (
-											<SelectItem key={value} value={value}>
-												{label}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={control}
-						name="nationality"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Nationality</FormLabel>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Please Choose your Nationality" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{nationalities?.map((item) => (
-											<SelectItem key={item} value={item}>
-												{item}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<FormField
-						control={control}
-						name="location"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Location</FormLabel>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Choose your Location" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{districts?.map(({ value, label }) => (
-											<SelectItem key={value} value={value}>
-												{label}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<FormField
-						control={control}
-						name="languageSkills"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Language Skills</FormLabel>
-								<FormControl>
-									<MultiSelect options={languageSkills} value={field.value} onValueChange={field.onChange} placeholder="Select Language Skills" />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={control}
-						name="additionalSkills"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Addtional Skills</FormLabel>
-								<FormControl>
-									<MultiSelect options={additionalSkills} value={field.value} onValueChange={field.onChange} placeholder="Select Addtional Skills" />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
-				<FormField
-					control={control}
-					name="about"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>About Yourself</FormLabel>
-							<FormControl>
-								<Textarea placeholder="Tell us a little bit about yourself" className="resize-none" {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<Button type="submit" size="sm">
-					{isSubmitting ? "Updating profile..." : "Update profile"}
-				</Button>
 			</form>
 		</Form>
 	);

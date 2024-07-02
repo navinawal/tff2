@@ -106,8 +106,7 @@ export async function saveRole(uid, data) {
 			);
 		} else if (role === "TeamMember") {
 			const { firstName, lastName } = profileData;
-			const teamMemberRef = adminDb.collection("team_members").doc(uid);
-			await teamMemberRef.set({ firstName, lastName, createdAt: timestamp, updatedAt: timestamp }, { merge: true });
+			await saveTeamMemberDetails(uid, { firstName, lastName });
 		}
 
 		return { success: true, message: "Role saved successfully" };
