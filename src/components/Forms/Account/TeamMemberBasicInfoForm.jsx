@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/use-toast";
 import { ethnicity, nationalities } from "@/config/teamMemberData";
 import { TeamMemberBasicInfoFormSchema } from "@/schemas/Schemas";
 import { saveTeamMemberDetails } from "@/app/actions/team_members";
@@ -19,11 +18,11 @@ import { useState } from "react";
 import { additionalSkills, ageGroups, districts, filmDepartments, languageSkills } from "@/config/data";
 import Image from "next/image";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { toast } from "sonner";
 
 export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 	const [preview, setPreview] = useState(defaultValues?.profileImage || "/profile_pictures/placeholder.jpg");
 	const router = useRouter();
-	const { toast } = useToast();
 
 	const formHook = useForm({
 		resolver: zodResolver(TeamMemberBasicInfoFormSchema),
@@ -53,23 +52,14 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 			});
 
 			if (response.success === true) {
-				toast({
-					title: "Success !",
-					description: "Profile saved successfully",
-				});
+				toast.success("Profile saved successfully");
 			} else {
-				toast({
-					variant: "destructive",
-					title: "Error !",
-					description: "Something went wrong",
-				});
+				console.log(error.message);
+				toast.error("Something went wrong");
 			}
 		} catch (error) {
-			toast({
-				variant: "destructive",
-				title: "Error!",
-				description: error.message,
-			});
+			console.log(error.message);
+			toast.error("Something went wrong");
 		}
 	}
 
@@ -319,7 +309,9 @@ export function TeamMemberBasicInfoForm({ uid, defaultValues }) {
 								</FormItem>
 							)}
 						/>
-						<Button type="submit">{isSubmitting ? "Updating profile..." : "Update profile"}</Button>
+						<Button type="submit" disabled={isSubmitting}>
+							{isSubmitting ? "Updating profile..." : "Update profile"}
+						</Button>
 					</div>
 				</div>
 			</form>

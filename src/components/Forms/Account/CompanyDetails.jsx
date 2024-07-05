@@ -193,7 +193,7 @@ export function CompanyDetailsForm({ uid, defaultValues }) {
 					)}
 				/>
 
-				<Button type="submit" size="sm">
+				<Button type="submit" size="sm" disabled={isSubmitting}>
 					{isSubmitting ? "Updating profile..." : "Update profile"}
 				</Button>
 			</form>

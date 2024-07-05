@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/use-toast";
 import { TeamMemberTrainingFormSchema } from "@/schemas/Schemas";
 import { saveTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
+import { toast } from "sonner";
 
 export function TeamMemberTrainingForm({ uid, defaultValues }) {
-	const { toast } = useToast();
-
 	const formHook = useForm({
 		resolver: zodResolver(TeamMemberTrainingFormSchema),
 		defaultValues: {
@@ -31,17 +29,11 @@ export function TeamMemberTrainingForm({ uid, defaultValues }) {
 
 	async function onSubmit(formData) {
 		const response = await saveTeamMemberTrainings(uid, formData);
-		if (!response.error) {
-			toast({
-				title: "Success !",
-				description: "Profile saved successfully",
-			});
+		if (response.success === true) {
+			toast.success(response.message);
 		} else {
-			toast({
-				variant: "destructive",
-				title: "Error !",
-				description: "Something went wrong",
-			});
+			console.log(error.message);
+			toast.error("Something went wrong");
 		}
 	}
 
@@ -100,7 +92,7 @@ export function TeamMemberTrainingForm({ uid, defaultValues }) {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" size="sm">
+				<Button type="submit" disabled={isSubmitting}>
 					{isSubmitting ? "Saving..." : "Add New"}
 				</Button>
 			</form>

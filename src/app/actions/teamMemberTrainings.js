@@ -22,8 +22,8 @@ export async function saveTeamMemberTrainings(uid, data) {
 	try {
 		const trainingRef = adminDb.collection("team_members").doc(uid).collection("trainings").doc();
 		await trainingRef.set(data, { merge: true });
-		return true;
+		return { success: true, message: "Training added successfully." };
 	} catch (error) {
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
 }

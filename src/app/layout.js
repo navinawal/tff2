@@ -3,7 +3,7 @@ import { basicInfo } from "@/config/site";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/hooks/useAuth";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/components/ProgressBarProvider";
 
 const fontSans = FontSans({
@@ -70,7 +70,7 @@ export default function RootLayout({ children }) {
 				<Providers>
 					<AuthProvider>{children}</AuthProvider>
 				</Providers>
-				<Toaster />
+				<Toaster richColors position="top-right" />
 			</body>
 		</html>
 	);

@@ -14,8 +14,21 @@ import ImageGallery from "@/components/ImageGallery";
 import SocialShare from "@/components/ui/social-share";
 import TeamMemberMoreInfo from "./MoreInfo";
 import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
+import { getCurrentUser } from "@/app/actions/userAuth";
+import { UploadGalleryDialog } from "./UploadGalleryDialog";
+import { AudioReelsDialog } from "./AudioReelsDialog";
+import { ShowReelsDialog } from "./ShowReelsDialog";
+import { getAllGalleryImages } from "@/app/actions/teamMemberGalleryImages";
+import { AudioReels } from "./AudioReels";
+import { ShowReels } from "./ShowReels";
+import Loading from "./loading";
 
 export default async function TeamMemberDetails({ params }) {
+	const user = await getCurrentUser();
+	let uid;
+	if (user) {
+		uid = user.uid;
+	}
 	const { teamMemberId } = params;
 	const teamMemberData = await getTeamMemberDetails(teamMemberId);
 	const trainings = await getTeamMemberTrainings(teamMemberId);
@@ -25,21 +38,11 @@ export default async function TeamMemberDetails({ params }) {
 
 	const teamMember = teamMemberData.data;
 
-	const fetchImages = async () => {
-		try {
-			const response = await fetch(`https://picsum.photos/v2/list?limit=20&page=2`);
-			const data = await response.json();
-			return data;
-		} catch (error) {
-			return error;
-		}
-	};
-
-	const images = await fetchImages();
+	const images = await getAllGalleryImages(teamMemberId);
 
 	return (
 		<div className="bg-black text-[#ffffffcc]">
-			<div className="py-12 md:py-20">
+			<div className="py-12 md:pt-20 pb-10">
 				<AppMaxWidthContainer>
 					<div className="flex flex-col justify-start items-start gap-4">
 						<div className="flex flex-wrap gap-2">
@@ -57,8 +60,8 @@ export default async function TeamMemberDetails({ params }) {
 			</div>
 
 			<AppMaxWidthContainer>
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-x-10">
-					<div className="flex flex-col justify-start items-start gap-4">
+				<div className="flex flex-col lg:flex-row gap-10">
+					<div className="flex flex-col">
 						<Image
 							src={teamMember.profileImage || "/profile_pictures/placeholder.jpg"}
 							width="300"
@@ -67,7 +70,7 @@ export default async function TeamMemberDetails({ params }) {
 							className="rounded-sm"
 						></Image>
 					</div>
-					<div className="flex flex-col col-span-2 justify-center items-start gap-6">
+					<div className="flex flex-col flex-1 justify-center items-start gap-6">
 						<div className="flex gap-2">
 							<a href={`https://wa.me/12345678890`} target="_blank" rel="noopener noreferrer" variant="link" className="flex p-0 m-0 mr-10">
 								Whatsapp
@@ -152,16 +155,17 @@ export default async function TeamMemberDetails({ params }) {
 			<div className="px-8 py-32">
 				<AppMaxWidthContainer>
 					<div className="flex flex-col gap-y-5 md:gap-x-10">
-						<div className="flex flex-col">
-							<span className={`${styles.titleHeading}`}>Vocal/Music</span>
-							<h1 className={`${styles.heading} text-4xl`}>
-								My <span className={`${styles.textHGradient}`}>AUDIOREELS</span>
-							</h1>
-						</div>
-						<div className={`${styles.fancyBorderedBox} grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
-							<div className={"flex flex-col gap-2"}>
-								<div className={"flex flex-col gap-2"}>No data</div>
+						<div className="flex justify-between items-center">
+							<div className="flex flex-col">
+								<span className={`${styles.titleHeading}`}>Vocal/Music</span>
+								<h1 className={`${styles.heading} text-4xl`}>
+									My <span className={`${styles.textHGradient}`}>AUDIOREELS</span>
+								</h1>
 							</div>
+							{uid && uid === teamMemberId ? <AudioReelsDialog teamMemberId={teamMemberId} /> : null}
+						</div>
+						<div className={`flex justify-between gap-5`}>
+							<AudioReels teamMemberId={teamMemberId} />
 						</div>
 					</div>
 				</AppMaxWidthContainer>
@@ -170,11 +174,14 @@ export default async function TeamMemberDetails({ params }) {
 			<div className="px-8 py-32">
 				<AppMaxWidthContainer>
 					<div className="flex flex-col gap-y-5 md:gap-x-10">
-						<div className="flex flex-col">
-							<span className={`${styles.titleHeading}`}>GALLERY</span>
-							<h1 className={`${styles.heading} text-4xl`}>
-								My <span className={`${styles.textHGradient}`}>GALLERY</span>
-							</h1>
+						<div className="flex justify-between items-center">
+							<div className="flex flex-col">
+								<span className={`${styles.titleHeading}`}>GALLERY</span>
+								<h1 className={`${styles.heading} text-4xl`}>
+									My <span className={`${styles.textHGradient}`}>GALLERY</span>
+								</h1>
+							</div>
+							{uid && uid === teamMemberId ? <UploadGalleryDialog teamMemberId={teamMemberId} /> : null}
 						</div>
 						<div className={`flex flex-col`}>
 							<ImageGallery images={images} />
@@ -186,14 +193,17 @@ export default async function TeamMemberDetails({ params }) {
 			<div className="px-8 py-32">
 				<AppMaxWidthContainer>
 					<div className="flex flex-col gap-y-5 md:gap-x-10">
-						<div className="flex flex-col">
-							<span className={`${styles.titleHeading}`}>SHOWREELS</span>
-							<h1 className={`${styles.heading} text-4xl`}>
-								My <span className={`${styles.textHGradient}`}>SHOWREELS</span>
-							</h1>
+						<div className="flex justify-between items-center">
+							<div className="flex flex-col">
+								<span className={`${styles.titleHeading}`}>SHOWREELS</span>
+								<h1 className={`${styles.heading} text-4xl`}>
+									My <span className={`${styles.textHGradient}`}>SHOWREELS</span>
+								</h1>
+							</div>
+							{uid && uid === teamMemberId ? <ShowReelsDialog teamMemberId={teamMemberId} /> : null}
 						</div>
-						<div className={`${styles.fancyBorderedBox} grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
-							<div className={"flex flex-col gap-2"}>No data</div>
+						<div className={`flex justify-between gap-5`}>
+							<ShowReels teamMemberId={teamMemberId} />
 						</div>
 					</div>
 				</AppMaxWidthContainer>

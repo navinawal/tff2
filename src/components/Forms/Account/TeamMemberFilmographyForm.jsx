@@ -130,7 +130,7 @@ export function TeamMemberFilmographyForm({ uid, onSuccess }) {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" size="sm">
+				<Button type="submit" disabled={isSubmitting}>
 					{isSubmitting ? "Saving..." : "Add New"}
 				</Button>
 			</form>

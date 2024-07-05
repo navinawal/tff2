@@ -17,14 +17,13 @@ import { format } from "date-fns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileFormSchema } from "@/schemas/Schemas";
 import { updateUserProfile } from "@/app/actions/users_profile";
-import { useToast } from "@/components/ui/use-toast";
 import { genders } from "@/config/data";
 import { useState } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { toast } from "sonner";
 
 export function ProfileForm({ uid, defaultValues }) {
 	const [preview, setPreview] = useState(defaultValues?.profileImage || "/profile_pictures/placeholder.jpg");
-	const { toast } = useToast();
 	const formHook = useForm({
 		resolver: zodResolver(profileFormSchema),
 		defaultValues,
@@ -53,23 +52,14 @@ export function ProfileForm({ uid, defaultValues }) {
 			});
 
 			if (response.success === true) {
-				toast({
-					title: "Success !",
-					description: "Profile saved successfully",
-				});
+				toast.success("Profile saved successfully");
 			} else {
-				toast({
-					variant: "destructive",
-					title: "Error !",
-					description: "Something went wrong",
-				});
+				console.log(response.message);
+				toast.error("Something went wrong");
 			}
 		} catch (error) {
-			toast({
-				variant: "destructive",
-				title: "Error!",
-				description: error.message,
-			});
+			console.log(error.message);
+			toast.error("Profile saved successfully");
 		}
 	}
 
@@ -269,7 +259,9 @@ export function ProfileForm({ uid, defaultValues }) {
 								</FormItem>
 							)}
 						/>
-						<Button type="submit">{isSubmitting ? "Updating profile..." : "Update profile"}</Button>
+						<Button className="w-full" type="submit" disabled={isSubmitting}>
+							{isSubmitting ? "Updating profile..." : "Update profile"}
+						</Button>
 					</div>
 				</div>
 			</form>

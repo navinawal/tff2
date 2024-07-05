@@ -180,3 +180,23 @@ export const JobApplicationFromSchema = z.object({
 	resume: z.any(),
 	audtionReel: z.any(),
 });
+
+export const audioReelsFormSchema = z.object({
+	soundTrackTitle: z.string().min(4, {
+		message: "firstName must be at least 2 characters.",
+	}),
+	soundTrack: z.any(),
+	description: z.string().min(10, {
+		message: "firstName must be at least 10 characters.",
+	}),
+});
+
+export const showReelsFormSchema = z.object({
+	projectTitle: z.string().min(4, {
+		message: "firstName must be at least 2 characters.",
+	}),
+	projectDescription: z.string().min(10, {
+		message: "firstName must be at least 10 characters.",
+	}),
+	projectLink: z.string(),
+});

@@ -12,8 +12,8 @@ export default function ImageGallery({ images }) {
 	const lightGalleryRef = useRef(null);
 
 	const dynamicEl = images.map((image) => ({
-		src: image.download_url,
-		thumb: image.download_url,
+		src: image.imageUrl,
+		thumb: image.imageUrl,
 		subHtml: "",
 	}));
 
@@ -26,9 +26,9 @@ export default function ImageGallery({ images }) {
 	return (
 		<div>
 			<Masonry breakpointCols={{ default: 4, 1100: 3, 700: 2, 500: 1 }} className="masonry-grid" columnClassName="masonry-column">
-				{images.map((image, index) => (
-					<div key={image.id} className="masonry-item" onClick={() => handleOpenGallery(index)} style={{ cursor: "pointer" }}>
-						<img alt="layers of blue." className="img-responsive" src={image.download_url} />
+				{images.map(({ id, imageUrl }, index) => (
+					<div key={id} className="masonry-item" onClick={() => handleOpenGallery(index)} style={{ cursor: "pointer" }}>
+						<img alt="layers of blue." className="img-responsive" src={imageUrl} />
 					</div>
 				))}
 			</Masonry>

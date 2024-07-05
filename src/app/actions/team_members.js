@@ -1,5 +1,3 @@
-// app/team_members/actions.js
-
 "use server";
 
 import { adminDb, FieldValue } from "@/lib/firebase-admin";

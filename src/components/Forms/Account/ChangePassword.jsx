@@ -15,20 +15,26 @@ const changePasswordSchema = z.object({
 });
 
 export function ChangePasswordForm() {
-	const form = useForm({
+	const formHook = useForm({
 		resolver: zodResolver(changePasswordSchema),
 		mode: "onChange",
 	});
+
+	const {
+		handleSubmit,
+		control,
+		formState: { isSubmitting },
+	} = formHook;
 
 	function onSubmit(data) {
 		console.log(data);
 	}
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="max-w-sm space-y-8">
+		<Form {...formHook}>
+			<form onSubmit={handleSubmit(onSubmit)} className="max-w-sm space-y-8">
 				<FormField
-					control={form.control}
+					control={control}
 					name="oldPassword"
 					render={({ field }) => (
 						<FormItem>
@@ -41,7 +47,7 @@ export function ChangePasswordForm() {
 					)}
 				/>
 				<FormField
-					control={form.control}
+					control={control}
 					name="newPassword"
 					render={({ field }) => (
 						<FormItem>
@@ -54,7 +60,7 @@ export function ChangePasswordForm() {
 					)}
 				/>
 				<FormField
-					control={form.control}
+					control={control}
 					name="confirmNewPassword"
 					render={({ field }) => (
 						<FormItem>
@@ -66,7 +72,7 @@ export function ChangePasswordForm() {
 						</FormItem>
 					)}
 				/>
-				<Button type="submit" size="sm">
+				<Button type="submit" disabled={isSubmitting}>
 					Update Password
 				</Button>
 			</form>

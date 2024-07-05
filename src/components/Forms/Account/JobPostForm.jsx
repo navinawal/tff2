@@ -545,7 +545,7 @@ export function JobPostForm({ uid }) {
 						)}
 					/>
 				</div>
-				<Button type="submit" size="sm">
+				<Button type="submit" size="sm" disabled={isSubmitting}>
 					{isSubmitting ? "Saving..." : "Submit"}
 				</Button>
 			</form>

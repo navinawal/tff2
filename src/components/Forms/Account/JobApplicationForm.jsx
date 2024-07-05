@@ -153,7 +153,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
 						)}
 					/>
 				</div>
-				<Button type="submit" size="sm">
+				<Button type="submit" size="sm" disabled={isSubmitting}>
 					{isSubmitting ? "Saving..." : "Submit"}
 				</Button>
 			</form>
