@@ -19,6 +19,18 @@ export default function JobCard({ job }) {
 	useEffect(() => {
 		async function fetchSavedJobs() {
 			const user = await getCurrentUser();
+			if (!user || !user.profile) {
+				setLoading(false);
+				return;
+			}
+
+			const { uid, profile } = user;
+
+			if (profile.role !== "TeamMember") {
+				setLoading(false);
+				return;
+			}
+
 			if (user) {
 				const { uid } = user;
 				const savedJobs = await getBookmarkedJobPosts(uid);
@@ -87,9 +99,14 @@ export default function JobCard({ job }) {
 					<div className="text-lg font-semibold">{job?.auditionDate}</div>
 					<div className="text-sm">{job?.auditionTime}</div>
 				</div>
-				<Button asChild className="bg-black text-white">
-					<Link href={`/find-job/${job.id}?companyId=${companyId}`}>Details</Link>
-				</Button>
+				<div className="flex justify-between gap-2">
+					<Button asChild className="bg-black text-white">
+						<Link href={`/find-job/${job.id}?companyId=${companyId}`}>Details</Link>
+					</Button>
+					<Button asChild className="bg-black text-white">
+						<Link href={`/account/profile/company-job-posts/${job.id}`}>Edit</Link>
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

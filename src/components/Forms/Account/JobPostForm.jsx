@@ -13,45 +13,37 @@ import { Trash2 } from "lucide-react";
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/use-toast";
 import { JobPostFormSchema } from "@/schemas/Schemas";
 
 import { projectGenre } from "@/config/companyData";
-import { saveJobPost } from "@/app/actions/jobPosts";
+import { addJobPost, editJobPost } from "@/app/actions/jobPosts";
 
 import { ageGroups, filmDepartments, genders } from "@/config/data";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { toast } from "sonner";
 
-export function JobPostForm({ uid }) {
-	const { toast } = useToast();
+export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 	const router = useRouter();
 	const [jobType, setJobType] = useState("");
+	const [auditionType, setAuditionType] = useState("");
+
+	useEffect(() => {
+		if (defaultValues.jobType) {
+			setJobType(defaultValues.jobType);
+		}
+	}, [defaultValues.jobType]);
 
 	const formHook = useForm({
 		resolver: zodResolver(JobPostFormSchema),
-		defaultValues: {
-			projectTitle: "",
-			projectDetails: "",
-			projectType: "",
-			companyName: "",
-			auditionLocation: "",
-			auditionDate: "",
-			auditionTime: "",
-			contactPerson: "",
-			contactNumber: "",
-			projectPoster: "",
-			projectDocuments: "",
-			jobType: "",
-			actorRequirements: [{ characterName: "", gender: "", requiredNumbers: "", eligibility: "", salaryRange: "" }],
-			teamMemberRequirements: [{ teamMember: "", eligibility: "", requiredNumbers: "", salary: "" }],
-			applicationDeadline: "",
-		},
+		defaultValues: defaultValues,
 	});
 
 	const {
 		handleSubmit,
 		control,
+		setValue,
 		formState: { isSubmitting },
 	} = formHook;
 
@@ -73,26 +65,120 @@ export function JobPostForm({ uid }) {
 		name: "teamMemberRequirements",
 	});
 
+	const handleProfilePosterChange = (event, onChange) => {
+		const file = event.target.files[0];
+		if (file) {
+			// const reader = new FileReader();
+			// reader.onloadend = () => {
+			// 	setPreview(reader.result);
+			// };
+			// reader.readAsDataURL(file);
+			onChange(file);
+		}
+	};
+
+	const handleProjectDocumentsChange = (event, onChange) => {
+		const file = event.target.files[0];
+		if (file) {
+			// const reader = new FileReader();
+			// reader.onloadend = () => {
+			// 	setPreview(reader.result);
+			// };
+			// reader.readAsDataURL(file);
+			onChange(file);
+		}
+	};
+
 	async function onSubmit(formData) {
-		const response = await saveJobPost(uid, formData);
-		if (!response.error) {
-			toast({
-				title: "Success !",
-				description: "Job saved successfully",
-			});
-			router.push("/account/profile/company-job-posts");
-		} else {
-			toast({
-				variant: "destructive",
-				title: "Error !",
-				description: "Something went wrong",
-			});
+		try {
+			let projectPosterUrl = formData.projectPoster;
+			let projectDocumentUrl = formData.projectDocument;
+
+			if (formData.projectPoster instanceof File) {
+				const storage = getStorage();
+				const storageRef = ref(storage, `/companies/job_posts/project_posters/${formData.projectPoster.name}`);
+				const snapshot = await uploadBytes(storageRef, formData.projectPoster);
+				projectPosterUrl = await getDownloadURL(snapshot.ref);
+			}
+
+			if (formData.projectDocument instanceof File) {
+				const storage = getStorage();
+				const storageRef = ref(storage, `/companies/job_posts/projectDocuments/${formData.projectDocument.name}`);
+				const snapshot = await uploadBytes(storageRef, formData.projectDocument);
+				projectDocumentUrl = await getDownloadURL(snapshot.ref);
+			}
+
+			let response;
+
+			if (jobId) {
+				response = await editJobPost(companyId, jobId, {
+					...formData,
+					projectPoster: projectPosterUrl,
+					projectDocument: projectDocumentUrl,
+				});
+			} else {
+				response = await addJobPost(companyId, {
+					...formData,
+					projectPoster: projectPosterUrl,
+					projectDocument: projectDocumentUrl,
+				});
+			}
+
+			if (response.success) {
+				toast.success(response.message);
+				router.push("/account/profile/company-job-posts");
+			} else {
+				console.error(response.message);
+				toast.error("something went wrong!");
+			}
+		} catch (error) {
+			console.error(error.message);
+			toast.error("something went wrong!");
 		}
 	}
 
 	return (
 		<Form {...formHook}>
 			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4" autoComplete="off">
+				<FormField
+					control={control}
+					name="jobType"
+					render={({ field }) => (
+						<FormItem className="space-y-3">
+							<FormLabel>Job Type</FormLabel>
+							<FormControl>
+								<RadioGroup
+									onValueChange={(value) => {
+										setJobType(value);
+										field.onChange(value);
+									}}
+									className="grid grid-cols-2 gap-4"
+									defaultValue={field.value}
+								>
+									<div>
+										<RadioGroupItem value="Casting Call" id="CastingCall" className="peer sr-only" />
+										<FormLabel
+											htmlFor="CastingCall"
+											className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+										>
+											Casting Call
+										</FormLabel>
+									</div>
+									<div>
+										<RadioGroupItem value="Call for TeamMembers" id="CallforTeamMembers" className="peer sr-only" />
+										<FormLabel
+											htmlFor="CallforTeamMembers"
+											className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+										>
+											Call for TeamMembers
+										</FormLabel>
+									</div>
+								</RadioGroup>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
@@ -147,6 +233,45 @@ export function JobPostForm({ uid }) {
 						</FormItem>
 					)}
 				/>
+				<FormField
+					control={control}
+					name="auditionType"
+					render={({ field }) => (
+						<FormItem className="space-y-3">
+							<FormLabel>Audition Type</FormLabel>
+							<FormControl>
+								<RadioGroup
+									onValueChange={(value) => {
+										setAuditionType(value);
+										field.onChange;
+										setValue("auditionLocation", "");
+									}}
+									className="grid grid-cols-2 gap-4"
+								>
+									<div>
+										<RadioGroupItem value="Physical" id="Physical" className="peer sr-only" />
+										<FormLabel
+											htmlFor="Physical"
+											className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+										>
+											Physical
+										</FormLabel>
+									</div>
+									<div>
+										<RadioGroupItem value="Online" id="Online" className="peer sr-only" />
+										<FormLabel
+											htmlFor="Online"
+											className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+										>
+											Online
+										</FormLabel>
+									</div>
+								</RadioGroup>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
@@ -161,19 +286,21 @@ export function JobPostForm({ uid }) {
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={control}
-						name="auditionLocation"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Audition/Shoot Location</FormLabel>
-								<FormControl>
-									<Input placeholder="Audition Location" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					{auditionType === "Physical" && (
+						<FormField
+							control={control}
+							name="auditionLocation"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Audition/Shoot Location</FormLabel>
+									<FormControl>
+										<Input placeholder="Audition Location" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					)}
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
@@ -235,11 +362,11 @@ export function JobPostForm({ uid }) {
 					<FormField
 						control={control}
 						name="projectPoster"
-						render={({ field }) => (
+						render={({ field: { onChange, value, ...rest } }) => (
 							<FormItem>
 								<FormLabel>Project Poster</FormLabel>
 								<FormControl>
-									<Input type="file" {...field} />
+									<Input type="file" accept="image/*" onChange={(event) => handleProfilePosterChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -247,50 +374,18 @@ export function JobPostForm({ uid }) {
 					/>
 					<FormField
 						control={control}
-						name="projectDocuments"
-						render={({ field }) => (
+						name="projectDocument"
+						render={({ field: { onChange, value, ...rest } }) => (
 							<FormItem>
 								<FormLabel>Upload Document / Script-Snippets</FormLabel>
 								<FormControl>
-									<Input type="file" {...field} multiple />
+									<Input type="file" accept="application/pdf" onChange={(event) => handleProjectDocumentsChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 				</div>
-				<FormField
-					control={control}
-					name="jobType"
-					render={({ field }) => (
-						<FormItem className="space-y-3">
-							<FormLabel>Please Choose A Job Type</FormLabel>
-							<FormControl>
-								<RadioGroup
-									onValueChange={(value) => {
-										setJobType(value);
-										field.onChange;
-									}}
-									className="flex flex-col space-y-1"
-								>
-									<FormItem className="flex items-center space-x-3 space-y-0">
-										<FormControl>
-											<RadioGroupItem value="Casting Call" />
-										</FormControl>
-										<FormLabel className="font-normal">Casting Call</FormLabel>
-									</FormItem>
-									<FormItem className="flex items-center space-x-3 space-y-0">
-										<FormControl>
-											<RadioGroupItem value="Call for TeamMembers" />
-										</FormControl>
-										<FormLabel className="font-normal">Call for TeamMembers</FormLabel>
-									</FormItem>
-								</RadioGroup>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
 				<Separator />
 				{jobType === "Casting Call" && (
 					<>
@@ -392,20 +487,20 @@ export function JobPostForm({ uid }) {
 											</FormItem>
 										)}
 									/>
+									<FormField
+										control={control}
+										name={`actorRequirements.${index}.eligibility`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Eligibility</FormLabel>
+												<FormControl>
+													<Input type="text" placeholder="Eligibility" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
 								</div>
-								<FormField
-									control={control}
-									name={`actorRequirements.${index}.eligibility`}
-									render={({ field }) => (
-										<FormItem>
-											<FormLabel>Eligibility</FormLabel>
-											<FormControl>
-												<Textarea placeholder="Eligibility" {...field} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
 								<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeActorRequirements(index)}>
 									<Trash2 className="h-4 w-4" />
 								</Button>
@@ -427,82 +522,80 @@ export function JobPostForm({ uid }) {
 				{jobType === "Call for TeamMembers" && (
 					<>
 						{teamMemberRequirements.map((field, index) => (
-							<>
-								<div className="space-y-4 border p-5 rounded-md" key={field.id}>
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-										<FormField
-											control={control}
-											name={`teamMemberRequirements.${index}.teamMember`}
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>TeamMember</FormLabel>
-													<FormControl>
-														<Select onValueChange={field.onChange} defaultValue={field.value}>
-															<FormControl>
-																<SelectTrigger>
-																	<SelectValue placeholder="Select TeamMember" />
-																</SelectTrigger>
-															</FormControl>
-															<SelectContent>
-																{filmDepartments?.map(({ value, label }) => (
-																	<SelectItem key={value} value={value}>
-																		{label}
-																	</SelectItem>
-																))}
-															</SelectContent>
-														</Select>
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-										<FormField
-											control={control}
-											name={`teamMemberRequirements.${index}.eligibility`}
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>Eligibility</FormLabel>
-													<FormControl>
-														<Input type="text" placeholder="Eligibility" {...field} />
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-									</div>
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-										<FormField
-											control={control}
-											name={`teamMemberRequirements.${index}.requiredNumbers`}
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>Required Numbers</FormLabel>
-													<FormControl>
-														<Input type="number" placeholder="Required Numbers" {...field} />
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-										<FormField
-											control={control}
-											name={`teamMemberRequirements.${index}.salary`}
-											render={({ field }) => (
-												<FormItem>
-													<FormLabel>Salary</FormLabel>
-													<FormControl>
-														<Input type="Salary" placeholder="Salary" {...field} />
-													</FormControl>
-													<FormMessage />
-												</FormItem>
-											)}
-										/>
-									</div>
-									<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeTeamMemberRequirements(index)}>
-										<Trash2 className="h-4 w-4" />
-									</Button>
+							<div className="space-y-4 border p-5 rounded-md" key={field.id}>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<FormField
+										control={control}
+										name={`teamMemberRequirements.${index}.teamMember`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>TeamMember</FormLabel>
+												<FormControl>
+													<Select onValueChange={field.onChange} defaultValue={field.value}>
+														<FormControl>
+															<SelectTrigger>
+																<SelectValue placeholder="Select TeamMember" />
+															</SelectTrigger>
+														</FormControl>
+														<SelectContent>
+															{filmDepartments?.map(({ value, label }) => (
+																<SelectItem key={value} value={value}>
+																	{label}
+																</SelectItem>
+															))}
+														</SelectContent>
+													</Select>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={control}
+										name={`teamMemberRequirements.${index}.eligibility`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Eligibility</FormLabel>
+												<FormControl>
+													<Input type="text" placeholder="Eligibility" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
 								</div>
-							</>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<FormField
+										control={control}
+										name={`teamMemberRequirements.${index}.requiredNumbers`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Required Numbers</FormLabel>
+												<FormControl>
+													<Input type="number" placeholder="Required Numbers" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={control}
+										name={`teamMemberRequirements.${index}.salary`}
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Salary</FormLabel>
+												<FormControl>
+													<Input type="Salary" placeholder="Salary" {...field} />
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+								<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeTeamMemberRequirements(index)}>
+									<Trash2 className="h-4 w-4" />
+								</Button>
+							</div>
 						))}
 						<Button
 							type="button"
@@ -545,7 +638,7 @@ export function JobPostForm({ uid }) {
 						)}
 					/>
 				</div>
-				<Button type="submit" size="sm" disabled={isSubmitting}>
+				<Button type="submit" disabled={isSubmitting}>
 					{isSubmitting ? "Saving..." : "Submit"}
 				</Button>
 			</form>

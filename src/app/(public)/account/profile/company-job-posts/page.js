@@ -29,12 +29,12 @@ export default async function CompanyJobPosts() {
 						<Link href={`/account/profile/company-job-posts/post-new-job`}>Post New Job</Link>
 					</Button>
 				</div>
+				<Separator />
 				<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{jobPosts?.map((job) => (
 						<JobCard key={job.id} job={job}></JobCard>
 					))}
 				</div>
-				<Separator />
 			</div>
 		</>
 	);

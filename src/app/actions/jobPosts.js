@@ -22,6 +22,7 @@ export async function getAllJobPosts() {
 			}));
 			allJobPosts = [...allJobPosts, ...jobPosts];
 		}
+		console.log(allJobPosts);
 
 		return JSON.parse(JSON.stringify(allJobPosts));
 	} catch (error) {
@@ -67,7 +68,7 @@ export async function getJobPost(companyId, jobPostId) {
 	}
 }
 
-export async function saveJobPost(uid, jobData) {
+export async function addJobPost(uid, jobData) {
 	try {
 		const parsedData = JobPostFormSchema.parse(jobData);
 
@@ -82,8 +83,28 @@ export async function saveJobPost(uid, jobData) {
 
 		await jobDocRef.set(jobDataWithTimestamp);
 
-		return { success: true, jobId: jobDocRef.id };
+		return { success: true, jobId: jobDocRef.id, message: "Job Saved" };
 	} catch (error) {
-		return { error: error.message };
+		return { success: false, message: error.message };
+	}
+}
+
+export async function editJobPost(companyId, jobId, jobData) {
+	try {
+		const parsedData = JobPostFormSchema.parse(jobData);
+
+		await adminDb
+			.collection("companies")
+			.doc(companyId)
+			.collection("job_posts")
+			.doc(jobId)
+			.update({
+				...parsedData,
+				updatedAt: FieldValue.serverTimestamp(),
+			});
+
+		return { success: true, message: "Job Saved" };
+	} catch (error) {
+		return { success: false, message: error.message };
 	}
 }

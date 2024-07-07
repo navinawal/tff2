@@ -25,9 +25,6 @@ export default async function TeamMemberBasicInfo() {
 						<h3 className="text-lg font-medium">Basic Info</h3>
 						<p className="text-sm text-muted-foreground">Complete your basic TeamMember Basic Info.</p>
 					</div>
-					<Button asChild size="sm">
-						<Link href={`/team-members/${uid}`}>Public View</Link>
-					</Button>
 				</div>
 				<Separator />
 				<TeamMemberBasicInfoForm uid={uid} defaultValues={teamMemberProfile.data} />

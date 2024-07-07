@@ -142,7 +142,7 @@ export const getBookmarkedJobPosts = async (teamMemberId) => {
 		});
 
 		const jobPosts = await Promise.all(jobPostPromises);
-		return { success: true, data: jobPosts };
+		return JSON.parse(JSON.stringify(jobPosts));
 	} catch (error) {
 		return { success: false, message: error.message };
 	}

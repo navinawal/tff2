@@ -137,18 +137,21 @@ export const CompanyProfileFormSchema = z.object({
 });
 
 export const JobPostFormSchema = z.object({
-	projectTitle: z.any(),
-	projectType: z.any(),
+	jobType: z.enum(["Casting Call", "Call for TeamMembers"], {
+		message: "Job Type is required",
+	}),
+	projectTitle: z.string().min(1, "Project Title is required"),
+	projectType: z.string().min(1, "Project Type is required"),
 	projectDetails: z.any(),
 	companyName: z.any(),
+	auditionType: z.any(),
 	auditionLocation: z.any(),
 	auditionDate: z.any(),
 	auditionTime: z.any(),
 	contactPerson: z.any(),
 	contactNumber: z.any(),
 	projectPoster: z.any(),
-	projectDocuments: z.any(),
-	jobType: z.any(),
+	projectDocument: z.any(),
 	actorRequirements: z.array(
 		z.object({
 			characterName: z.any(),

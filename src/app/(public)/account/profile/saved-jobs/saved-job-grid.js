@@ -1,7 +1,7 @@
 "use client";
 
 import { getBookmarkedJobPosts, removeBookmarkFromArray } from "@/app/actions/team_members";
-import JobApplication from "@/components/Card/JobApplication";
+import JobCard from "@/components/Card/Job";
 import { useEffect, useState } from "react";
 
 export default function SaveJobGrid({ uid }) {
@@ -25,11 +25,7 @@ export default function SaveJobGrid({ uid }) {
 
 	return (
 		<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-			{savedJobs?.length > 0 ? (
-				savedJobs.map((job) => <JobApplication key={job.id} jobApplication={job} onRemove={() => handleRemove(job.companyId, job.id)} />)
-			) : (
-				<p>No saved jobs yet</p>
-			)}
+			{savedJobs?.length > 0 ? savedJobs.map((job) => <JobCard key={job.id} job={job}></JobCard>) : <p>No saved jobs yet</p>}
 		</div>
 	);
 }

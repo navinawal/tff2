@@ -49,7 +49,7 @@ export function useFilter() {
 		});
 
 		router.replace(`?${params.toString()}`, { shallow: true });
-	}, [selectedFilters, searchQuery, sortField, sortDirection]);
+	}, [selectedFilters, searchQuery, sortField, sortDirection, router]);
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
