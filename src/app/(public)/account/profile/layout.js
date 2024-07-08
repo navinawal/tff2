@@ -20,7 +20,7 @@ export default async function SettingsLayout({ children }) {
 	return (
 		<AppMaxWidthContainer>
 			<div className="py-28">
-				<div className="flex flex-col md:flex-row justify-between items-center space-y-0.5">
+				<div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-5">
 					<div>
 						<h2 className="text-2xl font-bold tracking-tight">Settings</h2>
 						<p className="text-muted-foreground">Manage your account settings and User Role settings.</p>

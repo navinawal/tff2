@@ -178,7 +178,7 @@ export const JobApplicationFromSchema = z.object({
 	phoneNumber: z.any(),
 	email: z.any(),
 	coverLetter: z.any(),
-	projectGenre: z.any(),
+	projectType: z.any(),
 	applyingAs: z.any(),
 	resume: z.any(),
 	audtionReel: z.any(),

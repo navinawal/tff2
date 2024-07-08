@@ -58,3 +58,41 @@ export async function fetchApplicationsForTeamMember(teamMemberId) {
 
 	return JSON.parse(JSON.stringify(applications));
 }
+
+export async function updateJobApplication(jobApplicationId, data) {
+	try {
+		if (!jobApplicationId) {
+			return { success: false, message: "Job application id is required" };
+		}
+
+		await adminDb
+			.collection("job_applications")
+			.doc(jobApplicationId)
+			.update({
+				...data,
+				updatedAt: FieldValue.serverTimestamp(),
+			});
+		return { success: true, message: "Application saved!" };
+	} catch (error) {
+		return { success: false, error: error.message };
+	}
+}
+
+export async function getJobApplication(jobApplicationId) {
+	try {
+		if (!jobApplicationId) {
+			return { error: "Job application id is required" };
+		}
+
+		const doc = await adminDb.collection("job_applications").doc(jobApplicationId).get();
+
+		if (!doc.exists) {
+			return { error: "Job application not found" };
+		}
+
+		return JSON.parse(JSON.stringify(doc.data()));
+	} catch (error) {
+		console.error("Error getting job application:", error);
+		return { error: error.message };
+	}
+}

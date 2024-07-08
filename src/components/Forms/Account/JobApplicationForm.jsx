@@ -13,23 +13,23 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { filmDepartments } from "@/config/data";
 import { useRouter } from "next/navigation";
-import { savJobApplication } from "@/app/actions/jobApplications";
+import { savJobApplication, updateJobApplication } from "@/app/actions/jobApplications";
 import { toast } from "sonner";
 
-export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
+export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobApplicationId, defaultValues }) {
 	const router = useRouter();
-
 	const formHook = useForm({
 		resolver: zodResolver(JobApplicationFromSchema),
-		defaultValues: {
-			phoneNumber: "",
-			email: "",
-			coverLetter: "",
-			projectType: "",
-			applyingAs: "",
-			resume: "",
-			audtionReel: "",
-		},
+		defaultValues,
+		// defaultValues: {
+		// 	phoneNumber: "",
+		// 	email: "",
+		// 	coverLetter: "",
+		// 	projectType: "",
+		// 	applyingAs: "",
+		// 	resume: "",
+		// 	audtionReel: "",
+		// },
 	});
 
 	const {
@@ -81,21 +81,31 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
 				audtionReelUrl = await getDownloadURL(snapshot.ref);
 			}
 
-			const response = await savJobApplication(teamMemberId, companyId, jobPostId, {
-				...formData,
-				resume: resumeUrl,
-				audtionReel: audtionReelUrl,
-			});
+			let response;
+
+			if (jobApplicationId) {
+				response = await updateJobApplication(jobApplicationId, {
+					...formData,
+					resume: resumeUrl,
+					audtionReel: audtionReelUrl,
+				});
+			} else {
+				response = await savJobApplication(teamMemberId, companyId, jobPostId, {
+					...formData,
+					resume: resumeUrl,
+					audtionReel: audtionReelUrl,
+				});
+			}
 
 			if (response.success) {
 				toast.success(response.message);
 				router.push("/account/profile/my-applications");
 			} else {
-				console.error(response.message);
+				console.log(response.message);
 				toast.error("something went wrong!");
 			}
 		} catch (error) {
-			console.error(error.message);
+			console.log(error.message);
 			toast.error("something went wrong!");
 		}
 	}
