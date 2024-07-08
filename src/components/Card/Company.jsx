@@ -21,7 +21,7 @@ export default function CompanyCard({ company }) {
 					<div className="text-gray-500">{company.noOfEmployees}</div>
 					<div>
 						<Button asChild variant="link" className="m-0 p-0 h-0">
-							<Link href="/companies/1">View Profile</Link>
+							<Link href={`/companies/${company.id}`}>View Profile</Link>
 						</Button>
 					</div>
 				</div>

@@ -155,7 +155,7 @@ export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 										setJobType(value);
 										field.onChange(value);
 									}}
-									className="grid grid-cols-2 gap-4"
+									className="grid grid-cols-1 md:grid-cols-2 gap-4"
 									defaultValue={field.value}
 								>
 									<div>
@@ -250,7 +250,7 @@ export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 										setValue("auditionLocation", "");
 									}}
 									defaultValue={field.value}
-									className="grid grid-cols-2 gap-4"
+									className="grid grid-cols-1 md:grid-cols-2 gap-4"
 								>
 									<div>
 										<RadioGroupItem value="Physical" id="Physical" className="peer sr-only" />

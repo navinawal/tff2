@@ -8,15 +8,15 @@ import { Button } from "@/components/ui/button";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/components/ui/use-toast";
 import { JobApplicationFromSchema } from "@/schemas/Schemas";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { filmDepartments } from "@/config/data";
 import { useRouter } from "next/navigation";
 import { savJobApplication } from "@/app/actions/jobApplications";
+import { toast } from "sonner";
 
 export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
-	const { toast } = useToast();
 	const router = useRouter();
 
 	const formHook = useForm({
@@ -38,20 +38,65 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
 		formState: { isSubmitting },
 	} = formHook;
 
+	const handleResumeChange = (event, onChange) => {
+		const file = event.target.files[0];
+		if (file) {
+			// const reader = new FileReader();
+			// reader.onloadend = () => {
+			// 	setPreview(reader.result);
+			// };
+			// reader.readAsDataURL(file);
+			onChange(file);
+		}
+	};
+
+	const handleReelChange = (event, onChange) => {
+		const file = event.target.files[0];
+		if (file) {
+			// const reader = new FileReader();
+			// reader.onloadend = () => {
+			// 	setPreview(reader.result);
+			// };
+			// reader.readAsDataURL(file);
+			onChange(file);
+		}
+	};
+
 	async function onSubmit(formData) {
-		const response = await savJobApplication(teamMemberId, companyId, jobPostId, formData);
-		if (!response.error) {
-			toast({
-				title: "Success !",
-				description: "Job saved successfully",
+		try {
+			let resumeUrl = formData.resume;
+			let audtionReelUrl = formData.audtionReel;
+
+			if (formData.resume instanceof File) {
+				const storage = getStorage();
+				const storageRef = ref(storage, `/job_applications/resume/${formData.resume.name}`);
+				const snapshot = await uploadBytes(storageRef, formData.resume);
+				resumeUrl = await getDownloadURL(snapshot.ref);
+			}
+
+			if (formData.audtionReel instanceof File) {
+				const storage = getStorage();
+				const storageRef = ref(storage, `/job_applications/audtionReel/${formData.audtionReel.name}`);
+				const snapshot = await uploadBytes(storageRef, formData.audtionReel);
+				audtionReelUrl = await getDownloadURL(snapshot.ref);
+			}
+
+			const response = await savJobApplication(teamMemberId, companyId, jobPostId, {
+				...formData,
+				resume: resumeUrl,
+				audtionReel: audtionReelUrl,
 			});
-			router.push("/account/profile/my-applications");
-		} else {
-			toast({
-				variant: "destructive",
-				title: "Error !",
-				description: "Something went wrong",
-			});
+
+			if (response.success) {
+				toast.success(response.message);
+				router.push("/account/profile/my-applications");
+			} else {
+				console.error(response.message);
+				toast.error("something went wrong!");
+			}
+		} catch (error) {
+			console.error(error.message);
+			toast.error("something went wrong!");
 		}
 	}
 
@@ -129,11 +174,11 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
 					<FormField
 						control={control}
 						name="resume"
-						render={({ field }) => (
+						render={({ field: { onChange, value, ...rest } }) => (
 							<FormItem>
 								<FormLabel>Resume</FormLabel>
 								<FormControl>
-									<Input type="file" placeholder="Resume" {...field} />
+									<Input type="file" accept="application/pdf" onChange={(event) => handleResumeChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -142,18 +187,18 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId }) {
 					<FormField
 						control={control}
 						name="audtionReel"
-						render={({ field }) => (
+						render={({ field: { onChange, value, ...rest } }) => (
 							<FormItem>
 								<FormLabel>Upload Your Audition Reel</FormLabel>
 								<FormControl>
-									<Input type="file" placeholder="Upload Your Audition Reel" {...field} />
+									<Input type="file" accept="video/mp4,video/x-m4v,video/*" onChange={(event) => handleReelChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 				</div>
-				<Button type="submit" size="sm" disabled={isSubmitting}>
+				<Button type="submit" disabled={isSubmitting}>
 					{isSubmitting ? "Saving..." : "Submit"}
 				</Button>
 			</form>

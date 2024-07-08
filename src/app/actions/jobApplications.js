@@ -21,10 +21,9 @@ export async function savJobApplication(teamMemberId, companyId, jobPostId, appl
 
 		await jobApplicationDocRef.set(jobApplicationDataWithTimestamp);
 
-		return { success: true, jobApplicationId: jobApplicationDocRef.id };
+		return { success: true, message: "Application Submit", jobApplicationId: jobApplicationDocRef.id };
 	} catch (error) {
-		console.error(error.message);
-		return { error: error.message };
+		return { success: false, message: error.message };
 	}
 }
 

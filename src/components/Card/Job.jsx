@@ -8,8 +8,11 @@ import { addBookmarkToArray, getBookmarkedJobPosts, removeBookmarkFromArray } fr
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { useState, useEffect } from "react";
 import { FiLoader } from "react-icons/fi";
+import { usePathname } from "next/navigation";
 
 export default function JobCard({ job }) {
+	const pathname = usePathname();
+	const [user, setUser] = useState(null);
 	const [savedJobs, setSavedJobs] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [isBookmarked, setIsBookmarked] = useState(false);
@@ -32,6 +35,7 @@ export default function JobCard({ job }) {
 			}
 
 			if (user) {
+				setUser(user);
 				const { uid } = user;
 				const savedJobs = await getBookmarkedJobPosts(uid);
 				setSavedJobs(savedJobs);
@@ -103,9 +107,11 @@ export default function JobCard({ job }) {
 					<Button asChild className="bg-black text-white">
 						<Link href={`/find-job/${job.id}?companyId=${companyId}`}>Details</Link>
 					</Button>
-					<Button asChild className="bg-black text-white">
-						<Link href={`/account/profile/company-job-posts/${job.id}`}>Edit</Link>
-					</Button>
+					{pathname === "/account/profile/company-job-posts" && (
+						<Button asChild className="bg-black text-white">
+							<Link href={`/account/profile/company-job-posts/${job.id}`}>Edit</Link>
+						</Button>
+					)}
 				</div>
 			</div>
 		</div>

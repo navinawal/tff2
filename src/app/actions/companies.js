@@ -18,18 +18,18 @@ export async function getAllCompanies() {
 	}
 }
 
-export async function getCompanyProfile(uid) {
+export async function getCompanyProfile(companyId) {
 	try {
-		const companyRef = adminDb.collection("companies").doc(uid);
+		const companyRef = adminDb.collection("companies").doc(companyId);
 		const companyDoc = await companyRef.get();
 
 		if (!companyDoc.exists) {
 			return { error: "Company Profile not found" };
 		}
 
-		// const profile = companyDoc.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+		const companyDetails = companyDoc.data();
 
-		return companyDoc.data();
+		return JSON.parse(JSON.stringify(companyDetails));
 	} catch (error) {
 		return { error: error.message };
 	}
