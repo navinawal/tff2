@@ -123,25 +123,51 @@ export const removeBookmarkFromArray = async (teamMemberId, companyId, jobPostId
 };
 
 /**
- * Retrieves bookmarked job posts for a specific team member.
- * @param {string} teamMemberId - The UID of the team member.
+ * Fetches bookmarked job posts for a given team member.
+ *
+ * @param {string} teamMemberId - The ID of the team member.
  * @returns {Promise<{ success: boolean, data?: Array, message?: string }>}
  */
 export const getBookmarkedJobPosts = async (teamMemberId) => {
+	if (!teamMemberId) {
+		return { success: false, message: "Team member ID is required." };
+	}
+
 	try {
 		const teamMemberRef = adminDb.collection("team_members").doc(teamMemberId);
-		const doc = await teamMemberRef.get();
-		const bookmarkedJobPosts = doc.data()?.bookmarkedJobPosts || [];
+		const teamMemberDoc = await teamMemberRef.get();
 
-		if (bookmarkedJobPosts.length === 0) return { success: true, data: [] };
+		if (!teamMemberDoc.exists) {
+			return { success: false, message: `Team member with ID ${teamMemberId} not found.` };
+		}
+
+		const bookmarkedJobPosts = teamMemberDoc.data()?.bookmarkedJobPosts || [];
+
+		if (!Array.isArray(bookmarkedJobPosts)) {
+			return { success: false, message: "Invalid format for bookmarked job posts." };
+		}
+
+		if (bookmarkedJobPosts.length === 0) {
+			return [];
+		}
 
 		const jobPostPromises = bookmarkedJobPosts.map(async ({ companyId, jobPostId }) => {
-			const jobPostRef = adminDb.collection(`companies/${companyId}/job_posts`).doc(jobPostId);
+			if (!companyId || !jobPostId) {
+				console.warn(`Invalid job post data for team member ${teamMemberId}: `, { companyId, jobPostId });
+				return null;
+			}
+
+			const jobPostRef = adminDb.doc(`companies/${companyId}/job_posts/${jobPostId}`);
 			const jobPostDoc = await jobPostRef.get();
+
+			if (!jobPostDoc.exists) {
+				return null;
+			}
+
 			return { id: jobPostId, companyId, ...jobPostDoc.data() };
 		});
 
-		const jobPosts = await Promise.all(jobPostPromises);
+		const jobPosts = (await Promise.all(jobPostPromises)).filter(Boolean);
 		return JSON.parse(JSON.stringify(jobPosts));
 	} catch (error) {
 		return { success: false, message: error.message };

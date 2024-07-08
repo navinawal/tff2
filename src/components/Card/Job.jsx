@@ -88,7 +88,7 @@ export default function JobCard({ job }) {
 				</div>
 				<div className="flex flex-row gap-4 mt-4">
 					<div className="text-xs font-medium">{job?.companyName}</div>
-					<div className="text-xs">{formatDate(job.createdAt)}</div>
+					{/* <div className="text-xs">{formatDate(job.createdAt)}</div> */}
 				</div>
 				<div className="text-2xl font-medium">{job?.projectTitle}</div>
 				<div className="text-xs font-medium">{job?.projectGenre}</div>

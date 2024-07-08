@@ -33,11 +33,14 @@ export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 		if (defaultValues.jobType) {
 			setJobType(defaultValues.jobType);
 		}
-	}, [defaultValues.jobType]);
+		if (defaultValues.auditionType) {
+			setAuditionType(defaultValues.auditionType);
+		}
+	}, [defaultValues.jobType, defaultValues.auditionType]);
 
 	const formHook = useForm({
 		resolver: zodResolver(JobPostFormSchema),
-		defaultValues: defaultValues,
+		defaultValues,
 	});
 
 	const {
@@ -243,9 +246,10 @@ export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 								<RadioGroup
 									onValueChange={(value) => {
 										setAuditionType(value);
-										field.onChange;
+										field.onChange(value);
 										setValue("auditionLocation", "");
 									}}
+									defaultValue={field.value}
 									className="grid grid-cols-2 gap-4"
 								>
 									<div>
@@ -302,34 +306,36 @@ export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 						/>
 					)}
 				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<FormField
-						control={control}
-						name="auditionDate"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Audition Date</FormLabel>
-								<FormControl>
-									<Input type="date" placeholder="Audition Date" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={control}
-						name="auditionTime"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Audition Time</FormLabel>
-								<FormControl>
-									<Input type="time" placeholder="Audition Time" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
+				{auditionType === "Physical" && (
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<FormField
+							control={control}
+							name="auditionDate"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Audition Date</FormLabel>
+									<FormControl>
+										<Input type="date" placeholder="Audition Date" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={control}
+							name="auditionTime"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Audition Time</FormLabel>
+									<FormControl>
+										<Input type="time" placeholder="Audition Time" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				)}
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}
@@ -514,7 +520,7 @@ export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 							onClick={() => appendActorRequirements({ characterName: "", gender: "", requiredNumbers: "", eligibility: "", salaryRange: "" })}
 						>
 							<PlusCircledIcon className="mr-2 h-4 w-4" />
-							Add Casting Call
+							Add New
 						</Button>
 						<Separator />
 					</>
@@ -605,7 +611,7 @@ export function JobPostForm({ companyId, defaultValues = {}, jobId = null }) {
 							onClick={() => appendTeamMemberRequirements({ teamMember: "", eligibility: "", requiredNumbers: "", salary: "" })}
 						>
 							<PlusCircledIcon className="mr-2 h-4 w-4" />
-							Add Call for Team Members
+							Add New
 						</Button>
 						<Separator />
 					</>

@@ -22,7 +22,6 @@ export async function getAllJobPosts() {
 			}));
 			allJobPosts = [...allJobPosts, ...jobPosts];
 		}
-		console.log(allJobPosts);
 
 		return JSON.parse(JSON.stringify(allJobPosts));
 	} catch (error) {

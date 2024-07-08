@@ -142,7 +142,7 @@ export const JobPostFormSchema = z.object({
 	}),
 	projectTitle: z.string().min(1, "Project Title is required"),
 	projectType: z.string().min(1, "Project Type is required"),
-	projectDetails: z.any(),
+	projectDetails: z.string().max(500),
 	companyName: z.any(),
 	auditionType: z.any(),
 	auditionLocation: z.any(),
