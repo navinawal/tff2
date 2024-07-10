@@ -69,7 +69,7 @@ export default async function ViewJobApplication({ params }) {
 					<div className="flex flex-col gap-2 justify-between">
 						<div className="text-xl">Audition Reel</div>
 						<div className="video-player-container" style={{ maxWidth: "100%", aspectRatio: "16/9" }}>
-							<VideoPlayer video={jobApplicationData.audtionReel} />
+							<VideoPlayer video={jobApplicationData.auditionReel} />
 						</div>
 					</div>
 				</div>
