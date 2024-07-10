@@ -3,7 +3,7 @@ import { JobApplicationFrom } from "@/components/Forms/Account/JobApplicationFor
 import { Separator } from "@/components/ui/separator";
 
 export default async function ApplyForJob({ searchParams }) {
-	const { companyId, jobPostId } = searchParams;
+	const { companyId, jobPostId, jobType } = searchParams;
 	const user = await getCurrentUser();
 
 	if (!user) return;
@@ -20,7 +20,7 @@ export default async function ApplyForJob({ searchParams }) {
 					<p className="text-sm text-muted-foreground">Please fill your details.</p>
 				</div>
 				<Separator />
-				<JobApplicationFrom teamMemberId={uid} companyId={companyId} jobPostId={jobPostId} />
+				<JobApplicationFrom teamMemberId={uid} companyId={companyId} jobPostId={jobPostId} jobType={jobType} />
 			</div>
 		</>
 	);

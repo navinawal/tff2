@@ -1,6 +1,9 @@
 "use client";
-import ReactPlayer from "react-player/lazy";
+
+import dynamic from "next/dynamic";
+
+const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
 export default function VideoPlayer({ video }) {
-	<ReactPlayer url={video} controls width="100%" className="aspect-video" />;
+	return <ReactPlayer url={video} controls width="100%" height="100%" />;
 }

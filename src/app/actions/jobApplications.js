@@ -84,15 +84,28 @@ export async function getJobApplication(jobApplicationId) {
 			return { error: "Job application id is required" };
 		}
 
-		const doc = await adminDb.collection("job_applications").doc(jobApplicationId).get();
+		const jobApplicationDoc = await adminDb.collection("job_applications").doc(jobApplicationId).get();
 
-		if (!doc.exists) {
+		if (!jobApplicationDoc.exists) {
 			return { error: "Job application not found" };
 		}
 
-		return JSON.parse(JSON.stringify(doc.data()));
+		const jobApplication = jobApplicationDoc.data();
+
+		let teamMemberDetails = {};
+		if (jobApplication.teamMemberId) {
+			const teamMemberDoc = await adminDb.collection("team_members").doc(jobApplication.teamMemberId).get();
+
+			if (teamMemberDoc.exists) {
+				teamMemberDetails = teamMemberDoc.data();
+			}
+		}
+
+		return {
+			...jobApplication,
+			teamMemberDetails,
+		};
 	} catch (error) {
-		console.error("Error getting job application:", error);
 		return { error: error.message };
 	}
 }

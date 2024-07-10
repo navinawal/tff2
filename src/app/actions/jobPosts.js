@@ -11,13 +11,13 @@ export async function getAllJobPosts() {
 		let allJobPosts = [];
 
 		for (const companyDoc of companiesSnapshot.docs) {
-			const uid = companyDoc.id;
-			const jobPostsRef = companiesRef.doc(uid).collection("job_posts");
+			const companyId = companyDoc.id;
+			const jobPostsRef = companiesRef.doc(companyId).collection("job_posts");
 			const jobPostsSnapshot = await jobPostsRef.get();
 
 			const jobPosts = jobPostsSnapshot.docs.map((doc) => ({
 				id: doc.id,
-				uid,
+				companyId,
 				...doc.data(),
 			}));
 			allJobPosts = [...allJobPosts, ...jobPosts];
@@ -29,16 +29,16 @@ export async function getAllJobPosts() {
 	}
 }
 
-export async function getCompanyJobPost(uid) {
+export async function getCompanyJobPost(companyId) {
 	try {
-		const jobPostsRef = adminDb.collection("companies").doc(uid).collection("job_posts");
+		const jobPostsRef = adminDb.collection("companies").doc(companyId).collection("job_posts");
 		const jobPostsSnapshot = await jobPostsRef.get();
 
 		let allJobPosts = [];
 
 		const jobPosts = jobPostsSnapshot.docs.map((doc) => ({
 			id: doc.id,
-			uid,
+			companyId,
 			...doc.data(),
 		}));
 

@@ -9,8 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TeamMemberTrainingFormSchema } from "@/schemas/Schemas";
 import { saveTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function TeamMemberTrainingForm({ uid, defaultValues }) {
+	const router = useRouter();
 	const formHook = useForm({
 		resolver: zodResolver(TeamMemberTrainingFormSchema),
 		defaultValues: {
@@ -31,6 +33,7 @@ export function TeamMemberTrainingForm({ uid, defaultValues }) {
 		const response = await saveTeamMemberTrainings(uid, formData);
 		if (response.success === true) {
 			toast.success(response.message);
+			router.refresh();
 		} else {
 			console.log(error.message);
 			toast.error("Something went wrong");

@@ -101,6 +101,10 @@ export default async function FindJob({ params, searchParams }) {
 									<div className="text-base font-normal">{job.projectType}</div>
 								</div>
 								<div className="flex justify-between">
+									<div className="text-base font-semibold">Job Type</div>
+									<div className="text-base font-normal">{job.jobType}</div>
+								</div>
+								<div className="flex justify-between">
 									<div className="text-base font-semibold">Duration</div>
 									<div className="text-base font-normal">{job.projectDuration}</div>
 								</div>
@@ -133,7 +137,10 @@ export default async function FindJob({ params, searchParams }) {
 							</CardContent>
 							<CardFooter className="flex flex-col gap-2 mt-5">
 								<Button asChild>
-									<Link className="w-full rounded-none" href={`/account/profile/apply-for-job?companyId=${companyId}&jobPostId=${jobPostId}`}>
+									<Link
+										className="w-full rounded-none"
+										href={`/account/profile/apply-for-job?companyId=${companyId}&jobPostId=${jobPostId}&jobType=${job.jobType}`}
+									>
 										Apply Now
 									</Link>
 								</Button>

@@ -181,7 +181,7 @@ export const JobApplicationFromSchema = z.object({
 	projectType: z.any(),
 	applyingAs: z.any(),
 	resume: z.any(),
-	audtionReel: z.any(),
+	auditionReel: z.any(),
 });
 
 export const audioReelsFormSchema = z.object({
@@ -202,4 +202,10 @@ export const showReelsFormSchema = z.object({
 		message: "firstName must be at least 10 characters.",
 	}),
 	projectLink: z.string(),
+	showReelTimeStamps: z.array(
+		z.object({
+			title: z.any(),
+			timestamp: z.any(),
+		})
+	),
 });

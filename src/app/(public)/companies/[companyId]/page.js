@@ -6,10 +6,13 @@ import styles from "./styles.module.css";
 import { Button } from "@/components/ui/button";
 import { getCompanyProfile } from "@/app/actions/companies";
 import { notFound } from "next/navigation";
+import JobCard from "@/components/Card/Job";
+import { getCompanyJobPost } from "@/app/actions/jobPosts";
 
 export default async function ComplanyDetails({ params }) {
 	const { companyId } = params;
 	const companyDetails = await getCompanyProfile(companyId);
+	const companyJobPosts = await getCompanyJobPost(companyId);
 
 	if (companyDetails.error) return notFound();
 
@@ -37,8 +40,17 @@ export default async function ComplanyDetails({ params }) {
 								<h3 className="text-2xl font-bold tracking-tight">Company Details</h3>
 								<div>{companyDetails.aboutCompany}</div>
 							</div>
-							<div className="flex flex-col gap-2">
+							<div className="flex flex-col gap-5">
 								<h3 className="text-2xl font-bold tracking-tight">Current Offering Positions</h3>
+								{companyJobPosts && companyJobPosts.length > 0 ? (
+									<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+										{companyJobPosts?.map((job) => (
+											<JobCard key={job.id} job={job}></JobCard>
+										))}
+									</div>
+								) : (
+									"NO job posts"
+								)}
 							</div>
 						</div>
 

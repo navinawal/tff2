@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { savJobApplication, updateJobApplication } from "@/app/actions/jobApplications";
 import { toast } from "sonner";
 
-export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobApplicationId, defaultValues }) {
+export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobApplicationId, jobType, defaultValues }) {
 	const router = useRouter();
 	const formHook = useForm({
 		resolver: zodResolver(JobApplicationFromSchema),
@@ -28,7 +28,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 		// 	projectType: "",
 		// 	applyingAs: "",
 		// 	resume: "",
-		// 	audtionReel: "",
+		// 	auditionReel: "",
 		// },
 	});
 
@@ -65,7 +65,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 	async function onSubmit(formData) {
 		try {
 			let resumeUrl = formData.resume;
-			let audtionReelUrl = formData.audtionReel;
+			let auditionReelUrl = formData.auditionReel;
 
 			if (formData.resume instanceof File) {
 				const storage = getStorage();
@@ -74,11 +74,11 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 				resumeUrl = await getDownloadURL(snapshot.ref);
 			}
 
-			if (formData.audtionReel instanceof File) {
+			if (formData.auditionReel instanceof File) {
 				const storage = getStorage();
-				const storageRef = ref(storage, `/job_applications/audtionReel/${formData.audtionReel.name}`);
-				const snapshot = await uploadBytes(storageRef, formData.audtionReel);
-				audtionReelUrl = await getDownloadURL(snapshot.ref);
+				const storageRef = ref(storage, `/job_applications/auditionReel/${formData.auditionReel.name}`);
+				const snapshot = await uploadBytes(storageRef, formData.auditionReel);
+				auditionReelUrl = await getDownloadURL(snapshot.ref);
 			}
 
 			let response;
@@ -87,13 +87,13 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 				response = await updateJobApplication(jobApplicationId, {
 					...formData,
 					resume: resumeUrl,
-					audtionReel: audtionReelUrl,
+					auditionReel: auditionReelUrl,
 				});
 			} else {
 				response = await savJobApplication(teamMemberId, companyId, jobPostId, {
 					...formData,
 					resume: resumeUrl,
-					audtionReel: audtionReelUrl,
+					auditionReel: auditionReelUrl,
 				});
 			}
 
@@ -159,20 +159,24 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 					name="projectType"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Project Type</FormLabel>
+							<FormLabel>Applying As</FormLabel>
 							<FormControl>
 								<Select onValueChange={field.onChange} defaultValue={field.value}>
 									<FormControl>
 										<SelectTrigger>
-											<SelectValue placeholder="Please Project Type" />
+											<SelectValue placeholder="Applying As" />
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
-										{filmDepartments?.map(({ value, label }) => (
-											<SelectItem key={value} value={value}>
-												{label}
-											</SelectItem>
-										))}
+										{jobType === "Casting Call" ? (
+											<SelectItem value="actor">Actor</SelectItem>
+										) : (
+											filmDepartments?.map(({ value, label }) => (
+												<SelectItem key={value} value={value}>
+													{label}
+												</SelectItem>
+											))
+										)}
 									</SelectContent>
 								</Select>
 							</FormControl>
@@ -196,7 +200,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 					/>
 					<FormField
 						control={control}
-						name="audtionReel"
+						name="auditionReel"
 						render={({ field: { onChange, value, ...rest } }) => (
 							<FormItem>
 								<FormLabel>Upload Your Audition Reel</FormLabel>

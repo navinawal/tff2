@@ -16,7 +16,7 @@ export default function JobCard({ job }) {
 	const [savedJobs, setSavedJobs] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [isBookmarked, setIsBookmarked] = useState(false);
-	const companyId = job.uid;
+	const companyId = job.companyId;
 
 	// Fetch saved jobs and determine if this job is bookmarked
 	useEffect(() => {

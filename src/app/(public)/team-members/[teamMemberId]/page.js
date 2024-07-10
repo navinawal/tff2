@@ -61,13 +61,13 @@ export default async function TeamMemberDetails({ params }) {
 
 			<AppMaxWidthContainer>
 				<div className="flex flex-col lg:flex-row gap-10">
-					<div className="flex flex-col">
+					<div className="overflow-hidden rounded-md">
 						<Image
 							src={teamMember.profileImage || "/profile_pictures/placeholder.jpg"}
-							width="300"
-							height="800"
+							width={300}
+							height={400}
 							alt="Profile Picture"
-							className="rounded-sm"
+							className="aspect-[3/4] object-cover"
 						></Image>
 					</div>
 					<div className="flex flex-col flex-1 justify-center items-start gap-6">
