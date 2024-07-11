@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,27 +10,22 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { JobApplicationFromSchema } from "@/schemas/Schemas";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import { filmDepartments } from "@/config/data";
 import { useRouter } from "next/navigation";
 import { savJobApplication, updateJobApplication } from "@/app/actions/jobApplications";
 import { toast } from "sonner";
+import { ProgressBar } from "@/components/ui/progress-bar";
 
 export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobApplicationId, jobType, defaultValues }) {
 	const router = useRouter();
+	const [resumeProgress, setResumeProgress] = useState(0);
+	const [reelProgress, setReelProgress] = useState(0);
+
 	const formHook = useForm({
 		resolver: zodResolver(JobApplicationFromSchema),
 		defaultValues,
-		// defaultValues: {
-		// 	phoneNumber: "",
-		// 	email: "",
-		// 	coverLetter: "",
-		// 	projectType: "",
-		// 	applyingAs: "",
-		// 	resume: "",
-		// 	auditionReel: "",
-		// },
 	});
 
 	const {
@@ -41,11 +37,6 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 	const handleResumeChange = (event, onChange) => {
 		const file = event.target.files[0];
 		if (file) {
-			// const reader = new FileReader();
-			// reader.onloadend = () => {
-			// 	setPreview(reader.result);
-			// };
-			// reader.readAsDataURL(file);
 			onChange(file);
 		}
 	};
@@ -53,13 +44,30 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 	const handleReelChange = (event, onChange) => {
 		const file = event.target.files[0];
 		if (file) {
-			// const reader = new FileReader();
-			// reader.onloadend = () => {
-			// 	setPreview(reader.result);
-			// };
-			// reader.readAsDataURL(file);
 			onChange(file);
 		}
+	};
+
+	const uploadFile = (file, path, setProgress) => {
+		const storage = getStorage();
+		const storageRef = ref(storage, path);
+		const uploadTask = uploadBytesResumable(storageRef, file);
+
+		return new Promise((resolve, reject) => {
+			uploadTask.on(
+				"state_changed",
+				(snapshot) => {
+					const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+					setProgress(progress);
+				},
+				(error) => reject(error),
+				() => {
+					getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+						resolve(downloadURL);
+					});
+				}
+			);
+		});
 	};
 
 	async function onSubmit(formData) {
@@ -68,17 +76,11 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 			let auditionReelUrl = formData.auditionReel;
 
 			if (formData.resume instanceof File) {
-				const storage = getStorage();
-				const storageRef = ref(storage, `/job_applications/resume/${formData.resume.name}`);
-				const snapshot = await uploadBytes(storageRef, formData.resume);
-				resumeUrl = await getDownloadURL(snapshot.ref);
+				resumeUrl = await uploadFile(formData.resume, `/job_applications/resume/${formData.resume.name}`, setResumeProgress);
 			}
 
 			if (formData.auditionReel instanceof File) {
-				const storage = getStorage();
-				const storageRef = ref(storage, `/job_applications/auditionReel/${formData.auditionReel.name}`);
-				const snapshot = await uploadBytes(storageRef, formData.auditionReel);
-				auditionReelUrl = await getDownloadURL(snapshot.ref);
+				auditionReelUrl = await uploadFile(formData.auditionReel, `/job_applications/auditionReel/${formData.auditionReel.name}`, setReelProgress);
 			}
 
 			let response;
@@ -210,6 +212,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 									<Input type="file" accept="application/pdf" onChange={(event) => handleResumeChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
+								{resumeProgress > 0 && <ProgressBar progress={resumeProgress} />}
 							</FormItem>
 						)}
 					/>
@@ -223,6 +226,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 									<Input type="file" accept="video/mp4,video/x-m4v,video/*" onChange={(event) => handleReelChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
+								{reelProgress > 0 && <ProgressBar progress={reelProgress} />}
 							</FormItem>
 						)}
 					/>
