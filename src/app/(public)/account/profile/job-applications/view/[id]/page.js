@@ -56,6 +56,10 @@ export default async function ViewJobApplication({ params }) {
 						<div className="text-sm">{jobApplicationData.coverLetter}</div>
 					</div>
 					<div className="flex gap-2 justify-between">
+						<div className="text-lg">Expected Salary</div>
+						<div className="text-sm">{jobApplicationData.expectedSalary}</div>
+					</div>
+					<div className="flex gap-2 justify-between">
 						<div className="text-lg">Resume</div>
 						<div className="text-sm">
 							<Button asChild>

@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { getJobPost } from "@/app/actions/jobPosts";
 import { Separator } from "@/components/ui/separator";
 import { notFound } from "next/navigation";
+import { Download } from "lucide-react";
 
 export default async function FindJob({ params, searchParams }) {
 	const user = await getCurrentUser();
@@ -24,21 +25,27 @@ export default async function FindJob({ params, searchParams }) {
 				<div className="py-12 md:py-24 flex-col space-y-10 md:flex">
 					<div className="flex flex-col lg:flex-row gap-10">
 						<div className="flex flex-col flex-1 gap-10">
-							<div className="w-full">
-								<img className="object-fill" src={job.projectPoster} alt="img" />
+							<div className="overflow-hidden rounded-md">
+								<Image src={job.projectPoster} alt={job.projectTitle} className="aspect-[3/4] h-fit w-fit object-cover" width={300} height={400} />
 							</div>
 							<div className="flex flex-row gap-5">
 								<div className="flex justify-start items-center">
-									<img src="https://jobslab-reactjs.netlify.app/assets/img/job/meta.png" alt="" width="100" height="100" />
+									<Image
+										src={job.companyDetails.profileImage}
+										alt={job.projectTitle}
+										className="aspect-auto h-fit w-fit object-cover"
+										width={100}
+										height={100}
+									/>
 								</div>
 								<div className="flex flex-col gap-1">
 									<h3 className="text-2xl font-bold tracking-tight">{job.projectTitle}</h3>
 									<h2 className="text-xl font-bold tracking-tight">{job.companyName}</h2>
-									<div className="flex flex-row">
+									{/* <div className="flex flex-row">
 										<div className="gooogel">Googele</div>
 										<div className="gooogel">Facebook</div>
 										<div className="gooogel">Twitter</div>
-									</div>
+									</div> */}
 								</div>
 							</div>
 							<div className="flex flex-col gap-2">
@@ -49,19 +56,26 @@ export default async function FindJob({ params, searchParams }) {
 							{job.jobType === "Casting Call" && (
 								<div className="flex flex-col gap-2">
 									<h3 className="text-2xl font-bold tracking-tight">Actor Requirements</h3>
-									<Separator />
-									{job.actorRequirements?.map((actorRequirement, index) => (
-										<div className="flex flex-col gap-2" key={index}>
-											{Object.entries(actorRequirement)
-												.sort((a, b) => b - a)
-												.map(([key, value]) => (
+									<Separator className="my-4" />
+									{job.actorRequirements?.map((actorRequirement, index) => {
+										const customOrder = ["gender", "characterName", "requiredNumbers", "eligibility", "age", "salaryRange"];
+
+										const sortedActorRequirement = Object.entries(actorRequirement).sort(([a], [b]) => {
+											return customOrder.indexOf(a) - customOrder.indexOf(b);
+										});
+
+										return (
+											<div className="flex flex-col gap-2" key={index}>
+												{sortedActorRequirement.map(([key, value]) => (
 													<div className="flex flex-row items-center gap-2" key={key}>
 														<div className="text-base font-semibold capitalize">{key}</div>
 														<div className="text-sm font-light">{value}</div>
 													</div>
 												))}
-										</div>
-									))}
+												<Separator className="my-5" />
+											</div>
+										);
+									})}
 								</div>
 							)}
 
@@ -79,9 +93,9 @@ export default async function FindJob({ params, searchParams }) {
 														<div className="text-sm font-light">{value}</div>
 													</div>
 												))}
-											<Separator />
 										</div>
 									))}
+									<Separator />
 								</div>
 							)}
 						</div>
@@ -144,15 +158,14 @@ export default async function FindJob({ params, searchParams }) {
 										Apply Now
 									</Link>
 								</Button>
-								<Button className="w-full rounded-none bg-background text-foreground hover:bg-foreground hover:text-background">Add Bookmark</Button>
+								<Button asChild className="w-full rounded-none bg-background text-foreground hover:bg-foreground hover:text-background">
+									<a href={job.projectDocument} alt="alt text" target="_blank" rel="noopener noreferrer">
+										<Download className="mr-2 h-4 w-4" />
+										Download Script/Snippet
+									</a>
+								</Button>
 							</CardFooter>
 						</Card>
-
-						{/* <div className="flex flex-col gap-2 bg-muted rounded-md p-6">
-							<h3 className="text-2xl font-bold tracking-tight">Project Overview</h3>
-
-							<div className="flex flex-col gap-2 mt-5"></div>
-						</div> */}
 					</div>
 				</div>
 			</AppMaxWidthContainer>

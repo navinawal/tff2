@@ -154,36 +154,51 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 						</FormItem>
 					)}
 				/>
-				<FormField
-					control={control}
-					name="projectType"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Applying As</FormLabel>
-							<FormControl>
-								<Select onValueChange={field.onChange} defaultValue={field.value}>
-									<FormControl>
-										<SelectTrigger>
-											<SelectValue placeholder="Applying As" />
-										</SelectTrigger>
-									</FormControl>
-									<SelectContent>
-										{jobType === "Casting Call" ? (
-											<SelectItem value="actor">Actor</SelectItem>
-										) : (
-											filmDepartments?.map(({ value, label }) => (
-												<SelectItem key={value} value={value}>
-													{label}
-												</SelectItem>
-											))
-										)}
-									</SelectContent>
-								</Select>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+					<FormField
+						control={control}
+						name="projectType"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Applying As</FormLabel>
+								<FormControl>
+									<Select onValueChange={field.onChange} defaultValue={field.value}>
+										<FormControl>
+											<SelectTrigger>
+												<SelectValue placeholder="Applying As" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											{jobType === "Casting Call" ? (
+												<SelectItem value="actor">Actor</SelectItem>
+											) : (
+												filmDepartments?.map(({ value, label }) => (
+													<SelectItem key={value} value={value}>
+														{label}
+													</SelectItem>
+												))
+											)}
+										</SelectContent>
+									</Select>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={control}
+						name="expectedSalary"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Expected Salary</FormLabel>
+								<FormControl>
+									<Input type="text" placeholder="Expected Salary" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField
 						control={control}

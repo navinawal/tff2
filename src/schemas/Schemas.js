@@ -179,6 +179,7 @@ export const JobApplicationFromSchema = z.object({
 	email: z.any(),
 	coverLetter: z.any(),
 	projectType: z.any(),
+	expectedSalary: z.any(),
 	applyingAs: z.any(),
 	resume: z.any(),
 	auditionReel: z.any(),

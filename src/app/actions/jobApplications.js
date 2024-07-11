@@ -109,3 +109,13 @@ export async function getJobApplication(jobApplicationId) {
 		return { error: error.message };
 	}
 }
+
+export async function deleteJobApplication(jobApplicationId) {
+	try {
+		const ref = adminDb.collection("job_applications").doc(jobApplicationId);
+		await ref.delete();
+		return { success: true, message: "Application removed successfully." };
+	} catch (error) {
+		return { success: false, message: error.message };
+	}
+}
