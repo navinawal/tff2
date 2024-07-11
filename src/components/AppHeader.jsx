@@ -18,7 +18,7 @@ export default function AppHeader() {
 		<header className="sticky top-0 flex h-16 items-center gap-4 border-b border-primary-gray bg-[#181a1c] px-4 md:px-6 z-[9]">
 			<nav className="w-full hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center md:gap-5 md:text-sm lg:gap-6 whitespace-nowrap">
 				<Link href="/" className="flex items-center gap-2 text-lg font-semibold md:text-base">
-					<Image className="inline-block h-auto max-w-[376px]" alt="image" src="/logo_black.png" width="150" height="150" sizes="100vw"></Image>
+					<Image className="inline-block h-auto max-w-[376px]" alt="image" src="/logo_white.png" width="150" height="150" sizes="100vw"></Image>
 				</Link>
 				{headerNavMenus.map((link) => (
 					<Link key={link.id} href={link.href} className="text-slate-50 transition-colors hover:text-foreground">
