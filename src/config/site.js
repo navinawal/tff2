@@ -25,7 +25,7 @@ export const resources = {
 };
 
 export const headerNavMenus = [
-	{ id: "aboutTeamforFilm", name: "About TeamforFilm", href: "/about-us" },
+	// { id: "aboutTeamforFilm", name: "About TeamforFilm", href: "/about-us" },
 	{ id: "findJob", name: "Find Job", href: "/find-job" },
 	{ id: "companies", name: "Companies", href: "/companies" },
 	{ id: "teamMeambers", name: "Team Members", href: "/team-members" },

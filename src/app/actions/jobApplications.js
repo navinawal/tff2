@@ -5,7 +5,7 @@ import { JobApplicationFromSchema } from "@/schemas/Schemas";
 
 export async function savJobApplication(teamMemberId, companyId, jobPostId, applicationData) {
 	try {
-		const parsedData = JobApplicationFromSchema.parse(applicationData);
+		// const parsedData = JobApplicationFromSchema.parse(applicationData);
 
 		const jobApplicationRef = adminDb.collection("job_applications");
 
@@ -15,7 +15,7 @@ export async function savJobApplication(teamMemberId, companyId, jobPostId, appl
 			teamMemberId,
 			companyId,
 			jobPostId,
-			...parsedData,
+			...applicationData,
 			createdAt: FieldValue.serverTimestamp(),
 		};
 

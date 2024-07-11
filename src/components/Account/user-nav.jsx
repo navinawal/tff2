@@ -28,6 +28,7 @@ export function UserNav() {
 		try {
 			await logout();
 			router.push("/");
+			router.refresh();
 		} catch (error) {
 			toast({
 				variant: "destructive",

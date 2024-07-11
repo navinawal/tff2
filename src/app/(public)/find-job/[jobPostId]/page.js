@@ -58,20 +58,34 @@ export default async function FindJob({ params, searchParams }) {
 									<h3 className="text-2xl font-bold tracking-tight">Actor Requirements</h3>
 									<Separator className="my-4" />
 									{job.actorRequirements?.map((actorRequirement, index) => {
-										const customOrder = ["gender", "characterName", "requiredNumbers", "eligibility", "age", "salaryRange"];
-
-										const sortedActorRequirement = Object.entries(actorRequirement).sort(([a], [b]) => {
-											return customOrder.indexOf(a) - customOrder.indexOf(b);
-										});
-
 										return (
-											<div className="flex flex-col gap-2" key={index}>
-												{sortedActorRequirement.map(([key, value]) => (
-													<div className="flex flex-row items-center gap-2" key={key}>
-														<div className="text-base font-semibold capitalize">{key}</div>
-														<div className="text-sm font-light">{value}</div>
+											<div key={index}>
+												<div className="flex flex-col gap-2">
+													<div className="flex flex-row items-center gap-2">
+														<div className="text-base font-semibold capitalize">Gender</div>
+														<div className="text-sm font-light">{actorRequirement.gender}</div>
 													</div>
-												))}
+													<div className="flex flex-row items-center gap-2">
+														<div className="text-base font-semibold capitalize">character Name</div>
+														<div className="text-sm font-light">{actorRequirement.characterName}</div>
+													</div>
+													<div className="flex flex-row items-center gap-2">
+														<div className="text-base font-semibold capitalize">Required Numbers</div>
+														<div className="text-sm font-light">{actorRequirement.requiredNumbers}</div>
+													</div>
+													<div className="flex flex-row items-center gap-2">
+														<div className="text-base font-semibold capitalize">Eligibility</div>
+														<div className="text-sm font-light">{actorRequirement.eligibility}</div>
+													</div>
+													<div className="flex flex-row items-center gap-2">
+														<div className="text-base font-semibold capitalize">Age</div>
+														<div className="text-sm font-light">{actorRequirement.age}</div>
+													</div>
+													<div className="flex flex-row items-center gap-2">
+														<div className="text-base font-semibold capitalize">Salary Range</div>
+														<div className="text-sm font-light">{actorRequirement.salaryRange}</div>
+													</div>
+												</div>
 												<Separator className="my-5" />
 											</div>
 										);

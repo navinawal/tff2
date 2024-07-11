@@ -16,7 +16,7 @@ import { filmDepartments } from "@/config/data";
 import { useRouter } from "next/navigation";
 import { savJobApplication, updateJobApplication } from "@/app/actions/jobApplications";
 import { toast } from "sonner";
-import { ProgressBar } from "@/components/ui/progress-bar";
+import { Progress } from "@/components/ui/progress";
 
 export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobApplicationId, jobType, defaultValues }) {
 	const router = useRouter();
@@ -84,7 +84,6 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 			}
 
 			let response;
-
 			if (jobApplicationId) {
 				response = await updateJobApplication(jobApplicationId, {
 					...formData,
@@ -107,7 +106,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 				toast.error("something went wrong!");
 			}
 		} catch (error) {
-			console.log(error.message);
+			console.log("error", error.message);
 			toast.error("something went wrong!");
 		}
 	}
@@ -212,7 +211,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 									<Input type="file" accept="application/pdf" onChange={(event) => handleResumeChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
-								{resumeProgress > 0 && <ProgressBar progress={resumeProgress} />}
+								{resumeProgress > 0 && <Progress value={resumeProgress} />}
 							</FormItem>
 						)}
 					/>
@@ -226,7 +225,7 @@ export function JobApplicationFrom({ teamMemberId, companyId, jobPostId, jobAppl
 									<Input type="file" accept="video/mp4,video/x-m4v,video/*" onChange={(event) => handleReelChange(event, onChange)} {...rest} />
 								</FormControl>
 								<FormMessage />
-								{reelProgress > 0 && <ProgressBar progress={reelProgress} />}
+								{reelProgress > 0 && <Progress value={reelProgress} />}
 							</FormItem>
 						)}
 					/>

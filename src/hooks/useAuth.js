@@ -27,6 +27,7 @@ export const useAuth = () => {
 
 function useProvideAuth() {
 	const [user, setUser] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
@@ -39,6 +40,7 @@ function useProvideAuth() {
 			} else {
 				await logout();
 			}
+			setLoading(false);
 		});
 		return () => unsubscribe();
 	}, []);
@@ -175,6 +177,7 @@ function useProvideAuth() {
 
 	return {
 		user,
+		loading,
 		registerWithEmail,
 		forgotPassword,
 		loginWithEmail,

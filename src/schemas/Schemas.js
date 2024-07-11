@@ -175,14 +175,25 @@ export const JobPostFormSchema = z.object({
 });
 
 export const JobApplicationFromSchema = z.object({
-	phoneNumber: z.any(),
-	email: z.any(),
-	coverLetter: z.any(),
-	projectType: z.any(),
+	phoneNumber: z.string({
+		message: "Please provide Phone Number",
+	}),
+	email: z
+		.string({
+			message: "Please enter your email",
+		})
+		.email({
+			message: "Please enter a valid email",
+		}),
+	coverLetter: z.string({
+		message: "Write a cover letter",
+	}),
 	expectedSalary: z.any(),
-	applyingAs: z.any(),
-	resume: z.any(),
-	auditionReel: z.any(),
+	projectType: z.string({
+		message: "Please select applying as",
+	}),
+	resume: z.instanceof(File),
+	auditionReel: z.instanceof(File),
 });
 
 export const audioReelsFormSchema = z.object({

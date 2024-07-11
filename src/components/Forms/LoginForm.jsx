@@ -85,7 +85,7 @@ export default function LoginForm() {
 						<Link href="/forgot-password">Forgot Password?</Link>
 					</div>
 					<Button className="w-full" type="submit" disabled={isSubmitting}>
-						{isSubmitting ? "Logging in ..." : "Submit"}
+						{isSubmitting ? "Logging in ..." : "Log In"}
 					</Button>
 				</form>
 			</Form>

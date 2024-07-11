@@ -20,7 +20,7 @@ export default function AppFooter() {
 					<div className="flex flex-wrap justify-between gap-10">
 						<div className="flex flex-col px-3 max-w-xs">
 							<Link href="/" className="w-100 mb-6">
-								<Image className="inline-block h-auto max-w-52" alt="image" src="/logo_white.png" width="200" height="200"></Image>
+								<Image className="inline-block h-auto max-w-52" alt="image" src="/logo_white.png" width="150" height="150"></Image>
 							</Link>
 							<div className="mb-6 text-base text-[#b2b2b2]">
 								Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantiu doloremque laudantium
