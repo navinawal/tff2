@@ -67,7 +67,8 @@ export default async function TeamMemberDetails({ params }) {
 							width={300}
 							height={400}
 							alt="Profile Picture"
-							className="aspect-[3/4] object-cover"
+							decoding="async"
+							className="aspect-[3/4] h-fit w-full object-cover transition-all hover:scale-105"
 						></Image>
 					</div>
 					<div className="flex flex-col flex-1 justify-center items-start gap-6">

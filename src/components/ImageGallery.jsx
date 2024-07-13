@@ -7,6 +7,7 @@ import "lightgallery/css/lightgallery.css";
 import "lightgallery/css/lg-zoom.css";
 import "lightgallery/css/lg-thumbnail.css";
 import Masonry from "react-masonry-css";
+import Image from "next/image";
 
 export default function ImageGallery({ images }) {
 	const lightGalleryRef = useRef(null);
@@ -28,7 +29,7 @@ export default function ImageGallery({ images }) {
 			<Masonry breakpointCols={{ default: 4, 1100: 3, 700: 2, 500: 1 }} className="masonry-grid" columnClassName="masonry-column">
 				{images.map(({ id, imageUrl }, index) => (
 					<div key={id} className="masonry-item" onClick={() => handleOpenGallery(index)} style={{ cursor: "pointer" }}>
-						<img alt="layers of blue." className="img-responsive" src={imageUrl} />
+						<Image src={imageUrl} alt="" className="aspect-[3/4] h-fit w-full object-cover" width={300} height={400} />
 					</div>
 				))}
 			</Masonry>

@@ -49,7 +49,7 @@ export function ShowReels({ teamMemberId }) {
 							<VPlayer
 								playerRef={playerRef}
 								url={projectLink}
-								playing={currentUrl === projectLink}
+								playing={false}
 								onReady={() => console.log("Player is ready")}
 								controls
 								width="100%"

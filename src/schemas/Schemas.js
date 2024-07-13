@@ -192,7 +192,7 @@ export const JobApplicationFromSchema = z.object({
 	projectType: z.string({
 		message: "Please select applying as",
 	}),
-	resume: z.instanceof(File),
+	resume: z.any(),
 	auditionReel: z.instanceof(File),
 });
 

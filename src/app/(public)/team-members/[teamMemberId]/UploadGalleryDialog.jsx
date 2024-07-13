@@ -12,6 +12,7 @@ import { useState } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { bulkUploadImagesToGallery } from "@/app/actions/teamMemberGalleryImages";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export function UploadGalleryDialog({ teamMemberId }) {
 	const [openDialog, setOpenDialog] = useState(false);
@@ -97,7 +98,7 @@ export function UploadGalleryDialog({ teamMemberId }) {
 					<div className="flex gap-5">
 						<div className="flex flex-col mt-4 px-4 h-[400px] max-h-[400px] overflow-y-auto scrollbar">
 							{galleryImages?.length > 0 &&
-								galleryImages.map((image, index) => <img key={index} src={image.url} alt={`Gallery Image ${index}`} className="mb-2 h-20 w-20" />)}
+								galleryImages.map((image, index) => <Image key={index} src={image.url} alt={`Gallery Image ${index}`} className="mb-2 h-20 w-20" />)}
 						</div>
 						<div className="flex flex-1">
 							<form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">

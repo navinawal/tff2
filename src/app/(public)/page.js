@@ -1,4 +1,5 @@
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
+import Image from "next/image";
 
 export default function Home() {
 	return (
@@ -16,7 +17,7 @@ export default function Home() {
 							</div>
 						</div>
 						<div className="flex flex-col justify-center relative w-full lg:w-7/12 max-w-[700px]">
-							<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/search-popup-from-laptop.png" alt="" />
+							<Image src={"/images/resource/search-popup-from-laptop.png"} alt="" width={"700"} height={"100"}></Image>
 						</div>
 					</div>
 
@@ -31,7 +32,7 @@ export default function Home() {
 
 					<div className="flex flex-col lg:flex-row justify-between gap-4 py-20">
 						<div className="flex flex-col justify-center relative w-full lg:w-7/12 gap-2 max-w-[700px]">
-							<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/COMPREHENSIVE-PROFILE-2.png" alt="" />
+							<Image src={"/images/resource/COMPREHENSIVE-PROFILE-2.png"} alt="" width={"700"} height={"100"}></Image>
 						</div>
 						<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
 							<div className="text-4xl font-bold">Swift assessment with Comprehensive Profiles</div>
@@ -51,13 +52,13 @@ export default function Home() {
 							</div>
 						</div>
 						<div className="flex flex-col justify-center relative w-full lg:w-7/12 max-w-[700px]">
-							<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/timestamps-opt-2.png" alt="" />
+							<Image src={"/images/resource/timestamps-opt-2.png"} alt="" width={"700"} height={"100"}></Image>
 						</div>
 					</div>
 
 					<div className="flex flex-col lg:flex-row justify-between gap-2 py-20">
 						<div className="flex flex-col justify-center relative w-full lg:w-7/12 gap-2 max-w-[600px]">
-							<img src="https://teamforfilm.com/tff/wp-content/uploads/2024/04/CHARTS-2.png" alt="" />
+							<Image src={"/images/resource/CHARTS-2.png"} alt="" width={"600"} height={"100"}></Image>
 						</div>
 						<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
 							<div className="text-4xl font-bold">Quick analysis through “Career Summary Metrics”</div>

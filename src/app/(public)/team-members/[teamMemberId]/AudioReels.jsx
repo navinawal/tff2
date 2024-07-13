@@ -19,7 +19,7 @@ export function AudioReels({ teamMemberId }) {
 			}
 		}
 		getAudioReels();
-	}, []);
+	}, [teamMemberId]);
 
 	return (
 		<Carousel

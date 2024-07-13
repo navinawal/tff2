@@ -1,6 +1,6 @@
 export const commonNavMenus = [
 	{ id: "profile", title: "Profile", url: "/account/profile" },
-	{ id: "account", title: "Account Settings", url: "/account/profile/change-password" },
+	{ id: "account", title: "Settings", url: "/account/profile/change-password" },
 ];
 
 export const userNavMenus = {

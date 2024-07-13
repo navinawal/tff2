@@ -20,15 +20,83 @@ export default async function FindJob({ params, searchParams }) {
 	if (job.error) return notFound();
 
 	return (
-		<div className="bg-black text-[#ffffffcc]">
+		<div className="bg-black text-[#ffffffcc] py-12 md:py-24">
 			<AppMaxWidthContainer>
+				{/* <div className="flex flex-col space-y-10">
+					<div className="flex gap-10">
+						<div className="overflow-hidden rounded-md max-w-[400px]">
+							<Image src={job.projectPoster} alt={job.projectTitle} className="aspect-[3/4] h-fit w-full object-cover" width={300} height={400} />
+						</div>
+						<div className="flex flex-col gap-5">
+							<div className="flex justify-start items-center">
+								<Image
+									src={job.companyDetails.profileImage}
+									alt={job.projectTitle}
+									className="aspect-auto h-fit w-fit object-cover"
+									width={100}
+									height={100}
+								/>
+							</div>
+							<Separator className="my-5" />
+							<div className="flex flex-col gap-2">
+								<h3 className="text-2xl font-bold tracking-tight">{job.projectTitle}</h3>
+								<h2 className="text-xl font-bold tracking-tight">{job.companyName}</h2>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Title</div>
+									<div className="text-base font-normal">{job.projectTitle}</div>
+								</div>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Genre</div>
+									<div className="text-base font-normal">{job.projectType}</div>
+								</div>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Job Type</div>
+									<div className="text-base font-normal">{job.jobType}</div>
+								</div>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Duration</div>
+									<div className="text-base font-normal">{job.projectDuration}</div>
+								</div>
+								{job?.auditionLocation && (
+									<div className="flex justify-between">
+										<div className="text-base font-semibold">Audition Location</div>
+										<div className="text-base font-normal">{job.auditionLocation}</div>
+									</div>
+								)}
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Audition Date</div>
+									<div className="text-base font-normal">{job.auditionDate}</div>
+								</div>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Audition Time</div>
+									<div className="text-base font-normal">{job.auditionTime}</div>
+								</div>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Contact Person</div>
+									<div className="text-base font-normal">{job.contactPerson}</div>
+								</div>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Contact Number</div>
+									<div className="text-base font-normal">{job.contactNumber}</div>
+								</div>
+								<div className="flex justify-between">
+									<div className="text-base font-semibold">Application DeadLine</div>
+									<div className="text-base font-normal">{job.applicationDeadline}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h1 className="text-5xl m-0 p-0 !leading-3">Overview</h1>
+					<Separator className="m-0 p-0" />
+					<div className="m-0 p-0">{job.projectDetails}</div>
+				</div> */}
 				<div className="py-12 md:py-24 flex-col space-y-10 md:flex">
 					<div className="flex flex-col lg:flex-row gap-10">
 						<div className="flex flex-col flex-1 gap-10">
-							<div className="overflow-hidden rounded-md">
-								<Image src={job.projectPoster} alt={job.projectTitle} className="aspect-[3/4] h-fit w-fit object-cover" width={300} height={400} />
+							<div className="overflow-hidden rounded-md max-w-[400px]">
+								<Image src={job.projectPoster} alt={job.projectTitle} className="aspect-[3/4] h-fit w-full object-cover" width={300} height={400} />
 							</div>
-							<div className="flex flex-row gap-5">
+							<div className="flex flex-col md:flex-row gap-5">
 								<div className="flex justify-start items-center">
 									<Image
 										src={job.companyDetails.profileImage}
@@ -41,11 +109,6 @@ export default async function FindJob({ params, searchParams }) {
 								<div className="flex flex-col gap-1">
 									<h3 className="text-2xl font-bold tracking-tight">{job.projectTitle}</h3>
 									<h2 className="text-xl font-bold tracking-tight">{job.companyName}</h2>
-									{/* <div className="flex flex-row">
-										<div className="gooogel">Googele</div>
-										<div className="gooogel">Facebook</div>
-										<div className="gooogel">Twitter</div>
-									</div> */}
 								</div>
 							</div>
 							<div className="flex flex-col gap-2">
@@ -114,7 +177,7 @@ export default async function FindJob({ params, searchParams }) {
 							)}
 						</div>
 
-						<Card className="w-[400px]">
+						<Card className="md:w-[400px]">
 							<CardHeader>
 								<CardTitle>Project Overview</CardTitle>
 								<CardDescription>More Details about Project</CardDescription>
@@ -172,12 +235,14 @@ export default async function FindJob({ params, searchParams }) {
 										Apply Now
 									</Link>
 								</Button>
-								<Button asChild className="w-full rounded-none bg-background text-foreground hover:bg-foreground hover:text-background">
-									<a href={job.projectDocument} alt="alt text" target="_blank" rel="noopener noreferrer">
-										<Download className="mr-2 h-4 w-4" />
-										Download Script/Snippet
-									</a>
-								</Button>
+								{user && user.profile && (
+									<Button asChild className="w-full rounded-none bg-background text-foreground hover:bg-foreground hover:text-background">
+										<a href={job.projectDocument} alt="alt text" target="_blank" rel="noopener noreferrer">
+											<Download className="mr-2 h-4 w-4" />
+											Download Script/Snippet
+										</a>
+									</Button>
+								)}
 							</CardFooter>
 						</Card>
 					</div>
