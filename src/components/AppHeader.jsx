@@ -10,7 +10,6 @@ import { UserNav } from "@/components/Account/user-nav";
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { useAuth } from "@/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
-// import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AppHeader() {
 	const { user, loading } = useAuth();

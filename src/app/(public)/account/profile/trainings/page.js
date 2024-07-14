@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { TrainingsSheet } from "../trainings/trainings-sheet";
 import { getCurrentUser } from "@/app/actions/userAuth";
@@ -28,11 +27,10 @@ export default async function Trainings() {
 						<h3 className="text-lg font-medium">Trainings</h3>
 						<p className="text-sm text-muted-foreground">Trainings And Affiliations</p>
 					</div>
-					<TrainingsSheet />
 				</div>
 				<Separator />
 				<div className="block">
-					<TrainingsDataTable trainings={trainings} />
+					<TrainingsDataTable teamMemberId={uid} trainings={trainings} />
 				</div>
 			</div>
 		</>

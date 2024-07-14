@@ -1,148 +1,153 @@
 "use client";
 
-import { CaretSortIcon, ChevronDownIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
-import {
-	ColumnDef,
-	ColumnFiltersState,
-	SortingState,
-	VisibilityState,
-	flexRender,
-	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	useReactTable,
-} from "@tanstack/react-table";
-
+import { CaretSortIcon, DotsHorizontalIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useState } from "react";
+import { FilmographySheet } from "./filmography-sheet";
+import { deleteFilmography } from "@/app/actions/teamFilmography";
+import { toast } from "sonner";
+import { PlusIcon } from "lucide-react";
 
-const data = [
-	{
-		id: "m5gr84i9",
-		amount: 316,
-		status: "success",
-		email: "ken99@yahoo.com",
-	},
-	{
-		id: "3u1reuv4",
-		amount: 242,
-		status: "success",
-		email: "Abe45@gmail.com",
-	},
-	{
-		id: "derv1ws0",
-		amount: 837,
-		status: "processing",
-		email: "Monserrat44@gmail.com",
-	},
-	{
-		id: "5kma53ae",
-		amount: 874,
-		status: "success",
-		email: "Silas22@gmail.com",
-	},
-	{
-		id: "bhqecj4p",
-		amount: 721,
-		status: "failed",
-		email: "carmella@hotmail.com",
-	},
-];
-
-export const columns = [
-	{
-		id: "select",
-		header: ({ table }) => (
-			<Checkbox
-				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-				aria-label="Select all"
-			/>
-		),
-		cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
-		enableSorting: false,
-		enableHiding: false,
-	},
-	{
-		accessorKey: "status",
-		header: "Status",
-		cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
-	},
-	{
-		accessorKey: "email",
-		header: ({ column }) => {
-			return (
-				<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-					Email
-					<CaretSortIcon className="ml-2 h-4 w-4" />
-				</Button>
-			);
-		},
-		cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-	},
-	{
-		accessorKey: "amount",
-		header: () => <div className="text-right">Amount</div>,
-		cell: ({ row }) => {
-			const amount = parseFloat(row.getValue("amount"));
-
-			// Format the amount as a dollar amount
-			const formatted = new Intl.NumberFormat("en-US", {
-				style: "currency",
-				currency: "USD",
-			}).format(amount);
-
-			return <div className="text-right font-medium">{formatted}</div>;
-		},
-	},
-	{
-		id: "actions",
-		enableHiding: false,
-		cell: ({ row }) => {
-			const payment = row.original;
-
-			return (
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" className="h-8 w-8 p-0">
-							<span className="sr-only">Open menu</span>
-							<DotsHorizontalIcon className="h-4 w-4" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						<DropdownMenuLabel>Actions</DropdownMenuLabel>
-						<DropdownMenuItem onClick={() => navigator.clipboard.writeText(payment.id)}>Copy payment ID</DropdownMenuItem>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>View customer</DropdownMenuItem>
-						<DropdownMenuItem>View payment details</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			);
-		},
-	},
-];
-
-export function FilmographyDataTable() {
+export function FilmographyDataTable({ teamMemberId, filmographies }) {
+	const [isSheetOpen, setIsSheetOpen] = useState(false);
 	const [sorting, setSorting] = useState([]);
 	const [columnFilters, setColumnFilters] = useState([]);
 	const [columnVisibility, setColumnVisibility] = useState({});
 	const [rowSelection, setRowSelection] = useState({});
+	const [filmographyId, setFilmographyId] = useState(null);
+
+	const columns = [
+		{
+			id: "select",
+			header: ({ table }) => (
+				<Checkbox
+					checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+					onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+					aria-label="Select all"
+				/>
+			),
+			cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
+			enableSorting: false,
+			enableHiding: false,
+		},
+		{
+			accessorKey: "projectName",
+			header: ({ column }) => {
+				return (
+					<div className="flex items-center">
+						Project Name
+						<Button variant="link" size="icon" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+							<CaretSortIcon className="h-4 w-4" />
+						</Button>
+					</div>
+				);
+			},
+			cell: ({ row }) => <div>{row.getValue("projectName")}</div>,
+		},
+		{
+			accessorKey: "projectType",
+			header: ({ column }) => {
+				return (
+					<div className="flex items-center">
+						Project Type
+						<Button variant="link" size="icon" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+							<CaretSortIcon className="ml-2 h-4 w-4" />
+						</Button>
+					</div>
+				);
+			},
+			cell: ({ row }) => <div>{row.getValue("projectType")}</div>,
+		},
+		{
+			accessorKey: "role",
+			header: ({ column }) => {
+				return (
+					<div className="flex items-center">
+						Role
+						<Button variant="link" size="icon" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+							<CaretSortIcon className="ml-2 h-4 w-4" />
+						</Button>
+					</div>
+				);
+			},
+			cell: ({ row }) => <div>{row.getValue("role")}</div>,
+		},
+		{
+			accessorKey: "productionYear",
+			header: ({ column }) => {
+				return (
+					<div className="flex items-center">
+						Production Year
+						<Button variant="link" size="icon" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+							<CaretSortIcon className="ml-2 h-4 w-4" />
+						</Button>
+					</div>
+				);
+			},
+			cell: ({ row }) => <div>{row.getValue("productionYear")}</div>,
+		},
+		{
+			accessorKey: "projectLink",
+			header: "Project Link",
+			cell: ({ row }) => <div>{row.getValue("projectLink")}</div>,
+		},
+		{
+			id: "actions",
+			enableHiding: false,
+			cell: ({ row }) => {
+				const filmography = row.original;
+
+				return (
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" className="h-8 w-8 p-0">
+								<span className="sr-only">Open menu</span>
+								<DotsHorizontalIcon className="h-4 w-4" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>Actions</DropdownMenuLabel>
+							<DropdownMenuItem
+								onClick={() => {
+									handleOpenFilmographySheet(filmography.id);
+								}}
+							>
+								Edit
+							</DropdownMenuItem>
+							<DropdownMenuItem onClick={async () => await handleDelete(teamMemberId, filmography.id)}>Delete</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				);
+			},
+		},
+	];
+
+	async function handleDelete(teamMemberId, filmographyId) {
+		try {
+			const response = await deleteFilmography(teamMemberId, filmographyId);
+			if (response.success) {
+				toast.success(response.message);
+			} else {
+				toast.error("something went wrong");
+				console.log(response.message);
+			}
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
+	const handleOpenFilmographySheet = (id = null) => {
+		setFilmographyId(id);
+		setIsSheetOpen(true);
+	};
 
 	const table = useReactTable({
-		data,
+		data: filmographies,
 		columns,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
@@ -162,37 +167,20 @@ export function FilmographyDataTable() {
 
 	return (
 		<div className="w-full">
+			<div className="float-right">
+				<Button variant="outline" size="sm" onClick={() => handleOpenFilmographySheet(null)}>
+					<PlusIcon className="mr-2 size-4" aria-hidden="true" />
+					Add New
+				</Button>
+				<FilmographySheet teamMemberId={teamMemberId} filmographyId={filmographyId} isOpen={isSheetOpen} setIsOpen={setIsSheetOpen} />
+			</div>
 			<div className="flex items-center py-4">
 				<Input
-					placeholder="Filter emails..."
-					value={table.getColumn("email")?.getFilterValue() ?? ""}
-					onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
+					placeholder="Filter filmography..."
+					value={table.getColumn("projectName")?.getFilterValue() ?? ""}
+					onChange={(event) => table.getColumn("projectName")?.setFilterValue(event.target.value)}
 					className="max-w-sm"
 				/>
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="outline" className="ml-auto">
-							Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						{table
-							.getAllColumns()
-							.filter((column) => column.getCanHide())
-							.map((column) => {
-								return (
-									<DropdownMenuCheckboxItem
-										key={column.id}
-										className="capitalize"
-										checked={column.getIsVisible()}
-										onCheckedChange={(value) => column.toggleVisibility(!!value)}
-									>
-										{column.id}
-									</DropdownMenuCheckboxItem>
-								);
-							})}
-					</DropdownMenuContent>
-				</DropdownMenu>
 			</div>
 			<div className="rounded-md border">
 				<Table>
@@ -201,7 +189,7 @@ export function FilmographyDataTable() {
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => {
 									return (
-										<TableHead key={header.id}>
+										<TableHead key={header.id} className="whitespace-nowrap">
 											{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
 										</TableHead>
 									);
@@ -214,7 +202,9 @@ export function FilmographyDataTable() {
 							table.getRowModel().rows.map((row) => (
 								<TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+										<TableCell className="whitespace-nowrap" key={cell.id}>
+											{flexRender(cell.column.columnDef.cell, cell.getContext())}
+										</TableCell>
 									))}
 								</TableRow>
 							))

@@ -7,20 +7,16 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TeamMemberTrainingFormSchema } from "@/schemas/Schemas";
-import { saveTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
+import { addTraining, editTraining } from "@/app/actions/teamMemberTrainings";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { FiLoader } from "react-icons/fi";
 
-export function TeamMemberTrainingForm({ uid, defaultValues }) {
+export function TeamMemberTrainingForm({ teamMemberId, training }) {
 	const router = useRouter();
 	const formHook = useForm({
 		resolver: zodResolver(TeamMemberTrainingFormSchema),
-		defaultValues: {
-			courseTaken: "",
-			instituition: "",
-			mentor: "",
-			courseLength: "",
-		},
+		defaultValues: training,
 	});
 
 	const {
@@ -30,13 +26,23 @@ export function TeamMemberTrainingForm({ uid, defaultValues }) {
 	} = formHook;
 
 	async function onSubmit(formData) {
-		const response = await saveTeamMemberTrainings(uid, formData);
-		if (response.success === true) {
-			toast.success(response.message);
-			router.refresh();
-		} else {
-			console.log(error.message);
-			toast.error("Something went wrong");
+		try {
+			let response;
+			if (training && training.id) {
+				response = await editTraining(teamMemberId, training.id, formData);
+			} else {
+				response = await addTraining(teamMemberId, formData);
+			}
+
+			if (response.success) {
+				toast.success(response.message);
+			} else {
+				console.log(response.message);
+				toast.error("something went wrong");
+			}
+		} catch (error) {
+			console.log(response.message);
+			toast.error("something went wrong");
 		}
 	}
 
@@ -96,7 +102,16 @@ export function TeamMemberTrainingForm({ uid, defaultValues }) {
 					)}
 				/>
 				<Button type="submit" disabled={isSubmitting}>
-					{isSubmitting ? "Saving..." : "Add New"}
+					{isSubmitting ? (
+						<>
+							<FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" />
+							Saving...
+						</>
+					) : training ? (
+						"Update"
+					) : (
+						"Add New"
+					)}
 				</Button>
 			</form>
 		</Form>

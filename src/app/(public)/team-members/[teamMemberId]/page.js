@@ -107,7 +107,7 @@ export default async function TeamMemberDetails({ params }) {
 								</AccordionTrigger>
 								<AccordionContent>
 									<div className="flex flex-col gap-6 pl-5">
-										{!trainings ? (
+										{!trainings.error ? (
 											trainings?.map((training) => (
 												<div className="flex flex-col" key={training.id}>
 													<div className="text-sm">Course : {training.courseTaken}</div>
