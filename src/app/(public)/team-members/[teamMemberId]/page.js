@@ -1,7 +1,6 @@
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import Image from "next/image";
 import styles from "./styles.module.css";
-import { CarrierSummaryChart } from "@/components/Account/TeamMember/CarrierSummaryChart";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { notFound } from "next/navigation";
 import { getTeamMemberDetails } from "@/app/actions/team_members";
@@ -22,6 +21,7 @@ import { getAllGalleryImages } from "@/app/actions/teamMemberGalleryImages";
 import { AudioReels } from "./AudioReels";
 import { ShowReels } from "./ShowReels";
 import Loading from "./loading";
+import { CarrierSummaryChart } from "./_components/carrier-summary-chart";
 
 export default async function TeamMemberDetails({ params }) {
 	const user = await getCurrentUser();
@@ -98,7 +98,7 @@ export default async function TeamMemberDetails({ params }) {
 									<h6 className={`${styles.smallHeading}`}>Carrier Summary</h6>
 								</AccordionTrigger>
 								<AccordionContent>
-									<CarrierSummaryChart />
+									<CarrierSummaryChart teamMember={teamMember} />
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-2">
