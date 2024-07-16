@@ -1,37 +1,45 @@
 "use client";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
-import Dropzone, { useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 
-import { PlusCircleIcon } from "lucide-react";
+import { Edit2, PlusCircleIcon, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { toast } from "sonner";
-import { addAudioReel } from "@/app/actions/teamMemberAudioReels";
 import { audioReelsFormSchema } from "@/schemas/Schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addAudioReel, deleteAudioReel, updateAudioReel } from "@/app/actions/audio-reels";
+import { FiLoader } from "react-icons/fi";
+import AudioReelForm from "./_components/audio-reel-form";
 
-export function AudioReelsDialog({ teamMemberId }) {
+export default function AudioReelsDialog({ teamMemberId, audioReel }) {
 	const [openDialog, setOpenDialog] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const formHook = useForm({
 		resolver: zodResolver(audioReelsFormSchema),
 		defaultValues: {
-			soundTrackTitle: "",
-			soundTrack: "",
-			description: "",
+			soundTrackTitle: audioReel?.soundTrackTitle || "",
+			soundTrack: audioReel?.soundTrack || "",
+			description: audioReel?.description || "",
 		},
 	});
 
 	if (!teamMemberId) return;
 
 	const {
-		handleSubmit,
-		control,
 		formState: { isSubmitting },
 	} = formHook;
 
@@ -46,12 +54,21 @@ export function AudioReelsDialog({ teamMemberId }) {
 				soundTrackUrl = await getDownloadURL(snapshot.ref);
 			}
 
-			const response = await addAudioReel(teamMemberId, {
-				...formData,
-				soundTrack: soundTrackUrl,
-			});
+			let response;
+			if (audioReel) {
+				response = await updateAudioReel(teamMemberId, audioReel.id, {
+					...formData,
+					soundTrack: soundTrackUrl,
+				});
+			} else {
+				response = await addAudioReel(teamMemberId, {
+					...formData,
+					soundTrack: soundTrackUrl,
+				});
+			}
 
 			if (response.success) {
+				formHook.reset();
 				toast.success(response.message);
 				setOpenDialog(false);
 			} else {
@@ -76,82 +93,60 @@ export function AudioReelsDialog({ teamMemberId }) {
 		}
 	};
 
+	async function handleDelete(audioReelId) {
+		setLoading(true);
+		try {
+			const response = await deleteAudioReel(teamMemberId, audioReelId);
+
+			if (response.success) {
+				toast.success(response.message);
+			} else {
+				console.log(response.message);
+				toast.error("Something went wrong");
+			}
+		} catch (error) {
+			console.error("Error :", error);
+			toast.error("Something went wrong");
+		}
+		setLoading(false);
+	}
+
 	return (
 		<Dialog open={openDialog} onOpenChange={setOpenDialog}>
-			<DialogTrigger asChild>
-				<Button variant="outline" size="icon">
-					<PlusCircleIcon className="h-4 w-4" />
-				</Button>
+			<DialogTrigger asChild className="flex justify-center items-center gap-2">
+				{audioReel ? (
+					<Button variant="outline" size="icon">
+						<Edit2 className="h-4 w-4" />
+					</Button>
+				) : (
+					<Button variant="outline" size="icon">
+						<PlusCircleIcon className="h-4 w-4" />
+					</Button>
+				)}
 			</DialogTrigger>
-			<DialogContent className="max-w-[800px]">
+			{audioReel && (
+				<Button variant="outline" size="icon" onClick={() => handleDelete(audioReel.id)} disabled={loading}>
+					{loading ? <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" /> : <Trash2 className="h-4 w-4" />}
+				</Button>
+			)}
+			<DialogContent>
 				<DialogHeader>
 					<DialogTitle className="text-center">Upload your Soundtracks</DialogTitle>
 					<DialogDescription></DialogDescription>
 				</DialogHeader>
-				<Form {...formHook}>
-					<div className="flex gap-5">
-						<div className="flex flex-col mt-4 px-4 h-[400px] max-h-[400px] overflow-y-auto scrollbar"></div>
-						<div className="flex flex-1">
-							<form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
-								<FormField
-									control={control}
-									name="soundTrackTitle"
-									render={({ field }) => (
-										<>
-											<FormItem>
-												<FormLabel>Soundtrack Title</FormLabel>
-												<FormControl>
-													<Input type="text" {...field} placeholder="Soundtrack Title"></Input>
-												</FormControl>
-												<FormDescription>Upload Your Soundtrack Here.</FormDescription>
-												<FormMessage />
-											</FormItem>
-										</>
-									)}
-								/>
-								<FormField
-									control={control}
-									name="soundTrack"
-									render={({ field: { onChange, value, ...rest } }) => (
-										<>
-											<FormItem>
-												<FormLabel></FormLabel>
-												<FormControl>
-													<Input
-														type="file"
-														{...rest}
-														onChange={(event) => handleSoundTrackChange(event, onChange)}
-														className="min-h-[100px] w-full"
-													/>
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										</>
-									)}
-								/>
-								<FormField
-									control={control}
-									name="description"
-									render={({ field }) => (
-										<>
-											<FormItem>
-												<FormLabel>Description</FormLabel>
-												<FormControl>
-													<Input type="text" {...field} placeholder="Description"></Input>
-												</FormControl>
-												<FormDescription>Describe Something about Soundtract.</FormDescription>
-												<FormMessage />
-											</FormItem>
-										</>
-									)}
-								/>
-								<Button className="w-full" type="submit" disabled={isSubmitting}>
-									{isSubmitting ? "Submitting data ..." : "Submit"}
-								</Button>
-							</form>
-						</div>
-					</div>
-				</Form>
+				<AudioReelForm formHook={formHook} onSubmit={onSubmit} className="w-full">
+					<DialogFooter className="gap-2 p-5">
+						<DialogClose asChild>
+							<Button type="button" variant="outline">
+								Cancel
+							</Button>
+						</DialogClose>
+						<Button disabled={isSubmitting}>
+							{isSubmitting && <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" />}
+							{isSubmitting ? "Submitting data ..." : "Submit"}
+						</Button>
+					</DialogFooter>
+				</AudioReelForm>
 			</DialogContent>
 		</Dialog>
 	);

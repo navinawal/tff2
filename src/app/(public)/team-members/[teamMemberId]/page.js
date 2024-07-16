@@ -1,27 +1,29 @@
-import AppMaxWidthContainer from "@/components/ui/max-width-container";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Image from "next/image";
 import styles from "./styles.module.css";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { notFound } from "next/navigation";
-import { getTeamMemberDetails } from "@/app/actions/team_members";
-import { getTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
 import { Badge } from "@/components/ui/badge";
-import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
+import { FaWhatsapp } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
+
+import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import ImageGallery from "@/components/ImageGallery";
 import SocialShare from "@/components/ui/social-share";
 import TeamMemberMoreInfo from "./MoreInfo";
-import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
+import UploadGalleryDialog from "./UploadGalleryDialog";
+import AudioReelsDialog from "./AudioReelsDialog";
+import ShowReelsDialog from "./ShowReelsDialog";
+import CarrierSummaryChart from "./_components/carrier-summary-chart";
+import AudioReels from "./AudioReels";
+import ShowReels from "./ShowReels";
+
 import { getCurrentUser } from "@/app/actions/userAuth";
-import { UploadGalleryDialog } from "./UploadGalleryDialog";
-import { AudioReelsDialog } from "./AudioReelsDialog";
-import { ShowReelsDialog } from "./ShowReelsDialog";
+import { getTeamMemberDetails } from "@/app/actions/team_members";
+import { getTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
+import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
 import { getAllGalleryImages } from "@/app/actions/teamMemberGalleryImages";
-import { AudioReels } from "./AudioReels";
-import { ShowReels } from "./ShowReels";
-import Loading from "./loading";
-import { CarrierSummaryChart } from "./_components/carrier-summary-chart";
+import { getAllShowReels } from "@/app/actions/teamMemberShowReels";
+import { getAudioReels } from "@/app/actions/audio-reels";
 
 export default async function TeamMemberDetails({ params }) {
 	const user = await getCurrentUser();
@@ -33,6 +35,8 @@ export default async function TeamMemberDetails({ params }) {
 	const teamMemberData = await getTeamMemberDetails(teamMemberId);
 	const trainings = await getTeamMemberTrainings(teamMemberId);
 	const filmographies = await getTeamMemberFilmographies(teamMemberId);
+	const audioReels = await getAudioReels(teamMemberId);
+	const showReels = await getAllShowReels(teamMemberId);
 
 	if (!teamMemberData.success || !teamMemberData.data) return notFound();
 
@@ -166,7 +170,7 @@ export default async function TeamMemberDetails({ params }) {
 							{uid && uid === teamMemberId ? <AudioReelsDialog teamMemberId={teamMemberId} /> : null}
 						</div>
 						<div className={`flex justify-between gap-5`}>
-							<AudioReels teamMemberId={teamMemberId} />
+							<AudioReels uid={uid} teamMemberId={teamMemberId} audioReels={audioReels} />
 						</div>
 					</div>
 				</AppMaxWidthContainer>
@@ -203,8 +207,8 @@ export default async function TeamMemberDetails({ params }) {
 							</div>
 							{uid && uid === teamMemberId ? <ShowReelsDialog teamMemberId={teamMemberId} /> : null}
 						</div>
-						<div className={`flex justify-between gap-5`}>
-							<ShowReels teamMemberId={teamMemberId} />
+						<div className={`flex justify-center gap-5`}>
+							<ShowReels uid={uid} teamMemberId={teamMemberId} showReels={showReels} />
 						</div>
 					</div>
 				</AppMaxWidthContainer>

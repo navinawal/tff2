@@ -2,7 +2,7 @@
 import { FacebookShareButton, TwitterShareButton, LinkedinShareButton, WhatsappShareButton } from "react-share";
 import { FacebookIcon, TwitterIcon, LinkedinIcon, WhatsappIcon } from "react-share";
 
-const SocialShare = ({ url, title, quote, hashtag }) => {
+export default function SocialShare({ url, title, quote, hashtag }) {
 	return (
 		<div className="flex gap-2">
 			<FacebookShareButton url={url} quote={quote} hashtag={hashtag}>
@@ -19,6 +19,4 @@ const SocialShare = ({ url, title, quote, hashtag }) => {
 			</WhatsappShareButton>
 		</div>
 	);
-};
-
-export default SocialShare;
+}

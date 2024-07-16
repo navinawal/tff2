@@ -14,7 +14,7 @@ import { bulkUploadImagesToGallery } from "@/app/actions/teamMemberGalleryImages
 import { toast } from "sonner";
 import Image from "next/image";
 
-export function UploadGalleryDialog({ teamMemberId }) {
+export default function UploadGalleryDialog({ teamMemberId }) {
 	const [openDialog, setOpenDialog] = useState(false);
 	const [galleryImages, setGalleryImages] = useState([]);
 
