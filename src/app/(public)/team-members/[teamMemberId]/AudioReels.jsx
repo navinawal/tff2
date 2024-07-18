@@ -7,7 +7,7 @@ import "react-h5-audio-player/lib/styles.css";
 import AudioReelsDialog from "./AudioReelsDialog";
 
 export default function AudioReels({ uid, teamMemberId, audioReels }) {
-	return (
+	return audioReels.length > 0 ? (
 		<Carousel
 			className="w-full"
 			opts={{
@@ -38,5 +38,7 @@ export default function AudioReels({ uid, teamMemberId, audioReels }) {
 			<CarouselPrevious />
 			<CarouselNext />
 		</Carousel>
+	) : (
+		<div className="flex justify-center items-center h-[400px] border w-full border-dashed rounded-md text-4xl">No data</div>
 	);
 }

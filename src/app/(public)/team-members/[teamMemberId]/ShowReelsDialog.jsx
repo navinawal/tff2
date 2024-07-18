@@ -9,6 +9,16 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+	Drawer,
+	DrawerClose,
+	DrawerContent,
+	DrawerDescription,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+	DrawerTrigger,
+} from "@/components/ui/drawer";
 
 import { Button } from "@/components/ui/button";
 import { Edit2, PlusCircleIcon, Trash2 } from "lucide-react";
@@ -23,8 +33,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import ShowReelForm from "./_components/show-reel-form";
 import { FiLoader } from "react-icons/fi";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function ShowReelsDialog({ teamMemberId, showReel }) {
+	const isDesktop = useMediaQuery("(min-width: 640px)");
 	const [openDialog, setOpenDialog] = useState(false);
 	const [loading, setLoading] = useState(false);
 
@@ -80,8 +92,49 @@ export default function ShowReelsDialog({ teamMemberId, showReel }) {
 		setLoading(false);
 	}
 
+	if (isDesktop)
+		return (
+			<Dialog open={openDialog} onOpenChange={setOpenDialog}>
+				<DialogTrigger asChild className="flex justify-center items-center gap-2">
+					{showReel ? (
+						<Button variant="outline" size="icon">
+							<Edit2 className="h-4 w-4" />
+						</Button>
+					) : (
+						<Button variant="outline" size="icon">
+							<PlusCircleIcon className="h-4 w-4" />
+						</Button>
+					)}
+				</DialogTrigger>
+				{showReel && (
+					<Button variant="outline" size="icon" onClick={() => handleDelete(showReel.id)} disabled={loading}>
+						{loading ? <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" /> : <Trash2 className="h-4 w-4" />}
+					</Button>
+				)}
+				<DialogContent className="max-w-[400px] md:max-w-[800px]">
+					<DialogHeader>
+						<DialogTitle className="text-center">Add Portfolio / Showreel</DialogTitle>
+						<DialogDescription></DialogDescription>
+					</DialogHeader>
+					<ShowReelForm formHook={formHook} onSubmit={onSubmit} className="w-full">
+						<DialogFooter className="gap-2 p-5">
+							<DialogClose asChild>
+								<Button type="button" variant="outline">
+									Cancel
+								</Button>
+							</DialogClose>
+							<Button disabled={isSubmitting}>
+								{isSubmitting && <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" />}
+								{isSubmitting ? "Submitting data ..." : "Submit"}
+							</Button>
+						</DialogFooter>
+					</ShowReelForm>
+				</DialogContent>
+			</Dialog>
+		);
+
 	return (
-		<Dialog open={openDialog} onOpenChange={setOpenDialog}>
+		<Drawer open={openDialog} onOpenChange={setOpenDialog}>
 			<DialogTrigger asChild className="flex justify-center items-center gap-2">
 				{showReel ? (
 					<Button variant="outline" size="icon">
@@ -98,11 +151,11 @@ export default function ShowReelsDialog({ teamMemberId, showReel }) {
 					{loading ? <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" /> : <Trash2 className="h-4 w-4" />}
 				</Button>
 			)}
-			<DialogContent className="max-w-[400px] md:max-w-[800px]">
-				<DialogHeader>
-					<DialogTitle className="text-center">Add Portfolio / Showreel</DialogTitle>
-					<DialogDescription></DialogDescription>
-				</DialogHeader>
+			<DrawerContent>
+				<DrawerHeader>
+					<DrawerTitle>Add Portfolio / Showreel</DrawerTitle>
+					<DrawerDescription></DrawerDescription>
+				</DrawerHeader>
 				<ShowReelForm formHook={formHook} onSubmit={onSubmit} className="w-full">
 					<DialogFooter className="gap-2 p-5">
 						<DialogClose asChild>
@@ -116,7 +169,7 @@ export default function ShowReelsDialog({ teamMemberId, showReel }) {
 						</Button>
 					</DialogFooter>
 				</ShowReelForm>
-			</DialogContent>
-		</Dialog>
+			</DrawerContent>
+		</Drawer>
 	);
 }

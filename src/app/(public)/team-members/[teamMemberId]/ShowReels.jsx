@@ -1,25 +1,26 @@
 "use client";
 
-import { getAllShowReels } from "@/app/actions/teamMemberShowReels";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import { Button } from "@/components/ui/button";
-// import ReactPlayer from "react-player/youtube";
 import ShowReelsDialog from "./ShowReelsDialog";
-import YoutubeVideoPlayer from "./_components/youtube-video-player";
-const ReactPlayer = dynamic(() => import("react-player/youtube"), { ssr: false });
+import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import ReactPlayer from "react-player/youtube";
 
 export default function ShowReels({ uid, teamMemberId, showReels }) {
 	const playerRefs = useRef([]);
+	const [hasWindow, setHasWindow] = useState(false);
+
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			setHasWindow(true);
+		}
+	}, []);
 
 	const handleTimestampClick = (index, time) => {
-		console.log(index, time, playerRefs.current, playerRefs.current[index]);
 		const timeInSeconds = parseFloat(time);
 		if (playerRefs.current[index]) {
 			playerRefs.current[index].seekTo(timeInSeconds, "seconds", true);
-			setCurrentTime(timeInSeconds);
 		}
 	};
 
@@ -31,15 +32,19 @@ export default function ShowReels({ uid, teamMemberId, showReels }) {
 					return (
 						<CarouselItem key={id} className="md:basis-1/1 lg:basis-1/1">
 							<div className="flex flex-col border rounded-md">
-								<ReactPlayer
-									ref={(ref) => (playerRefs.current[index] = ref)}
-									url={projectLink}
-									playing={false}
-									onReady={() => console.log("Player is ready")}
-									controls
-									width="100%"
-									className="aspect-video"
-								/>
+								{hasWindow && (
+									<ReactPlayer
+										ref={(ref) => {
+											playerRefs.current[index] = ref;
+										}}
+										url={projectLink}
+										playing={false}
+										onReady={() => console.log("Player is ready")}
+										controls
+										width="100%"
+										className="aspect-video"
+									/>
+								)}
 								<div className="flex flex-col gap-2 px-5 py-8">
 									<div className="flex">
 										<div className="flex-1">

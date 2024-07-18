@@ -42,7 +42,7 @@ export default async function TeamMemberDetails({ params }) {
 
 	const teamMember = teamMemberData.data;
 
-	const images = await getAllGalleryImages(teamMemberId);
+	const galleryImages = await getAllGalleryImages(teamMemberId);
 
 	return (
 		<div className="bg-black text-[#ffffffcc]">
@@ -65,7 +65,7 @@ export default async function TeamMemberDetails({ params }) {
 
 			<AppMaxWidthContainer>
 				<div className="flex flex-col lg:flex-row gap-10">
-					<div className="overflow-hidden rounded-md">
+					<div className="overflow-hidden rounded-md max-w-[300px]">
 						<Image
 							src={teamMember.profileImage || "/profile_pictures/placeholder.jpg"}
 							width={300}
@@ -186,10 +186,10 @@ export default async function TeamMemberDetails({ params }) {
 									My <span className={`${styles.textHGradient}`}>GALLERY</span>
 								</h1>
 							</div>
-							{uid && uid === teamMemberId ? <UploadGalleryDialog teamMemberId={teamMemberId} /> : null}
+							{uid && uid === teamMemberId ? <UploadGalleryDialog teamMemberId={teamMemberId} galleryImages={galleryImages} /> : null}
 						</div>
 						<div className={`flex flex-col`}>
-							<ImageGallery images={images} />
+							<ImageGallery galleryImages={galleryImages} />
 						</div>
 					</div>
 				</AppMaxWidthContainer>
