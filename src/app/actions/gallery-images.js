@@ -1,6 +1,7 @@
 "use server";
 
 import { adminDb, FieldValue } from "@/lib/firebase-admin";
+import { revalidatePath } from "next/cache";
 
 // Utility function to convert Firestore Timestamps to JavaScript Dates
 const transformTimestamps = (doc) => {
@@ -33,24 +34,6 @@ export const addImageToGallery = async (teamMemberId, data) => {
 		);
 
 		return { success: true, message: "Image added successfully." };
-	} catch (error) {
-		return { success: false, message: error.message };
-	}
-};
-
-/**
- * Removes an image from a team member's gallery.
- * @param {string} teamMemberId - The UID of the team member.
- * @param {string} imageId - The ID of the image to remove.
- * @returns {Promise<{ success: boolean, message?: string }>}
- */
-export const removeImageFromGallery = async (teamMemberId, imageId) => {
-	try {
-		const ref = adminDb.collection("team_members").doc(teamMemberId).collection("gallery_images").doc(imageId);
-
-		await ref.delete();
-
-		return { success: true, message: "Image removed successfully." };
 	} catch (error) {
 		return { success: false, message: error.message };
 	}
@@ -103,8 +86,31 @@ export const bulkUploadImagesToGallery = async (teamMemberId, images) => {
 
 		await batch.commit();
 
+		revalidatePath(`/`);
+
 		return { success: true, message: "Images uploaded successfully." };
 	} catch (error) {
 		return { success: false, message: error.message };
 	}
 };
+
+/**
+ * Removes an image from a team member's gallery.
+ * @param {string} teamMemberId - The UID of the team member.
+ * @param {string} imageId - The ID of the image to remove.
+ * @returns {Promise<{ success: boolean, message?: string }>}
+ */
+
+export async function deleteGalleryImage(teamMemberId, galleryId) {
+	try {
+		if (!teamMemberId || !galleryId) {
+			return { success: false, message: "TeamMemberId and GalleryId are required" };
+		}
+
+		await adminDb.collection("team_members").doc(teamMemberId).collection("gallery_images").doc(galleryId).delete();
+		revalidatePath(`/`);
+		return { success: true, message: "Image Deleted successfully" };
+	} catch (error) {
+		return { success: false, message: error.message };
+	}
+}

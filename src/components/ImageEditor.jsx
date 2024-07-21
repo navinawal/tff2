@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import FilerobotImageEditor, { TABS, TOOLS } from "react-filerobot-image-editor";
 
@@ -21,11 +22,14 @@ export default function ImageEditor() {
 					source="https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"
 					onSave={(editedImageObject, designState) => console.log("saved", editedImageObject, designState)}
 					onClose={closeImgEditor}
+					annotationsCommon={{
+						fill: "#ff0000",
+					}}
 					Text={{ text: "Filerobot..." }}
 					Rotate={{ angle: 90, componentType: "slider" }}
-					tabsIds={[TABS.ADJUST]} // or {['Adjust', 'Annotate', 'Watermark']}
-					defaultTabId={TABS.ADJUST} // or 'Annotate'
-					defaultToolId={TOOLS.ADJUST} // or 'Text'
+					tabsIds={[TABS.ADJUST, TABS.ANNOTATE, TABS.WATERMARK]} // or {['Adjust', 'Annotate', 'Watermark']}
+					defaultTabId={TABS.ANNOTATE} // or 'Annotate'
+					defaultToolId={TOOLS.TEXT} // or 'Text'
 				/>
 			)}
 		</div>

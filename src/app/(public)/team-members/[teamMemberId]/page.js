@@ -21,7 +21,7 @@ import { getCurrentUser } from "@/app/actions/userAuth";
 import { getTeamMemberDetails } from "@/app/actions/team_members";
 import { getTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
 import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
-import { getAllGalleryImages } from "@/app/actions/teamMemberGalleryImages";
+import { getAllGalleryImages } from "@/app/actions/gallery-images";
 import { getAllShowReels } from "@/app/actions/teamMemberShowReels";
 import { getAudioReels } from "@/app/actions/audio-reels";
 

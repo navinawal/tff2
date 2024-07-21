@@ -28,10 +28,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { bulkUploadImagesToGallery } from "@/app/actions/teamMemberGalleryImages";
+import { bulkUploadImagesToGallery } from "@/app/actions/gallery-images";
 import { FiLoader } from "react-icons/fi";
 import GalleryForm from "./_components/gallery-form";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
@@ -87,22 +86,12 @@ export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
 						<PlusCircleIcon className="h-4 w-4" />
 					</Button>
 				</DialogTrigger>
-				<DialogContent className="max-w-[800px]">
+				<DialogContent>
 					<DialogHeader>
 						<DialogTitle>Upload Gallery Images</DialogTitle>
 						<DialogDescription></DialogDescription>
 					</DialogHeader>
-					<ScrollArea className="w-full whitespace-nowrap rounded-md border">
-						<div className="flex gap-2">
-							{galleryImages &&
-								galleryImages?.length > 0 &&
-								galleryImages.map((image, index) => (
-									<Image key={index} src={image.imageUrl} width={`24`} height={`24`} alt={`Gallery Image ${index}`} className="mb-2 h-24 w-24" />
-								))}
-						</div>
-						<ScrollBar orientation="horizontal" />
-					</ScrollArea>
-					<GalleryForm formHook={formHook} onSubmit={onSubmit} galleryImages={galleryImages} className="w-full">
+					<GalleryForm teamMemberId={teamMemberId} formHook={formHook} onSubmit={onSubmit} galleryImages={galleryImages} className="w-full">
 						<DialogFooter className="gap-2">
 							<DialogClose asChild>
 								<Button type="button" variant="outline">
@@ -111,7 +100,7 @@ export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
 							</DialogClose>
 							<Button disabled={isSubmitting}>
 								{isSubmitting && <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" />}
-								{isSubmitting ? "Uploading data ..." : "Upload"}
+								{isSubmitting ? "Uploading Images ..." : "Upload"}
 							</Button>
 						</DialogFooter>
 					</GalleryForm>
@@ -126,20 +115,20 @@ export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
 					<PlusCircleIcon className="h-4 w-4" />
 				</Button>
 			</DrawerTrigger>
-			<DrawerContent>
+			<DrawerContent className={`p-5`}>
 				<DrawerHeader>
 					<DrawerTitle>Upload Gallery Images</DrawerTitle>
 					<DrawerDescription></DrawerDescription>
 				</DrawerHeader>
 				<GalleryForm formHook={formHook} onSubmit={onSubmit} galleryImages={galleryImages} className="w-full">
-					<DrawerFooter className="gap-2 sm:space-x-0">
-						<DrawerClose asChild>
-							<Button variant="outline">Cancel</Button>
-						</DrawerClose>
+					<DrawerFooter className={`p-0 m-0`}>
 						<Button disabled={isSubmitting}>
 							{isSubmitting && <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" />}
 							{isSubmitting ? "Uploading data ..." : "Upload"}
 						</Button>
+						<DrawerClose asChild>
+							<Button variant="outline">Cancel</Button>
+						</DrawerClose>
 					</DrawerFooter>
 				</GalleryForm>
 			</DrawerContent>
