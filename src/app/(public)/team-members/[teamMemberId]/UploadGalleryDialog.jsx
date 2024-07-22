@@ -32,12 +32,15 @@ import { bulkUploadImagesToGallery } from "@/app/actions/gallery-images";
 import { FiLoader } from "react-icons/fi";
 import GalleryForm from "./_components/gallery-form";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
 	const isDesktop = useMediaQuery("(min-width: 640px)");
 	const [openDialog, setOpenDialog] = useState(false);
 
 	const formHook = useForm({
+		// resolver: zodResolver(z.any().refine((files) => files?.length == 1, "Image is required.")),
 		defaultValues: {
 			galleryImages: [],
 		},
@@ -51,6 +54,11 @@ export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
 
 	async function onSubmit(formData) {
 		try {
+			if (!formData || !formData.galleryImages || !formData.galleryImages.length > 0) {
+				toast.error("at least one image is required");
+				return;
+			}
+
 			const storage = getStorage();
 
 			const uploadPromises = formData?.galleryImages?.map((file) => {
