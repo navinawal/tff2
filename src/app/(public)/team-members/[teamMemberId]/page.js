@@ -45,24 +45,7 @@ export default async function TeamMemberDetails({ params }) {
 	const galleryImages = await getAllGalleryImages(teamMemberId);
 
 	return (
-		<div className="bg-black text-[#ffffffcc]">
-			<div className="py-12 md:pt-20 pb-10">
-				<AppMaxWidthContainer>
-					<div className="flex flex-col justify-start items-start gap-4">
-						<div className="flex flex-wrap gap-2">
-							{teamMember.filmDepartments?.map((filmDepartment) => (
-								<Badge key={filmDepartment} variant="secondary" className={`capitalize`}>
-									{filmDepartment}
-								</Badge>
-							))}
-						</div>
-						<h1 className={`${styles.strokeHeading} text-5xl md:text-8xl text-white font-bold`}>
-							{teamMember.firstName} {teamMember.lastName}
-						</h1>
-					</div>
-				</AppMaxWidthContainer>
-			</div>
-
+		<div className="bg-black text-[#ffffffcc] py-12 md:pt-28 pb-10">
 			<AppMaxWidthContainer>
 				<div className="flex flex-col lg:flex-row gap-10">
 					<div className="overflow-hidden rounded-md max-w-[300px]">
@@ -76,6 +59,18 @@ export default async function TeamMemberDetails({ params }) {
 						></Image>
 					</div>
 					<div className="flex flex-col flex-1 justify-center items-start gap-6">
+						<div className="flex flex-col justify-start items-start gap-4">
+							<div className="flex flex-wrap gap-2">
+								{teamMember.filmDepartments?.map((filmDepartment) => (
+									<Badge key={filmDepartment} variant="secondary" className={`capitalize`}>
+										{filmDepartment}
+									</Badge>
+								))}
+							</div>
+							<h1 className={`${styles.strokeHeading} text-5xl md:text-8xl text-white font-bold`}>
+								{teamMember.firstName} {teamMember.lastName}
+							</h1>
+						</div>
 						<div className="flex gap-2">
 							<a href={`https://wa.me/12345678890`} target="_blank" rel="noopener noreferrer" variant="link" className="flex p-0 m-0 mr-10">
 								Whatsapp
@@ -189,7 +184,7 @@ export default async function TeamMemberDetails({ params }) {
 							{uid && uid === teamMemberId ? <UploadGalleryDialog teamMemberId={teamMemberId} galleryImages={galleryImages} /> : null}
 						</div>
 						<div className={`flex flex-col`}>
-							<ImageGallery galleryImages={galleryImages} />
+							<ImageGallery galleryImages={galleryImages} teamMemberId={teamMemberId} />
 						</div>
 					</div>
 				</AppMaxWidthContainer>

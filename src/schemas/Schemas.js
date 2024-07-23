@@ -221,3 +221,7 @@ export const showReelsFormSchema = z.object({
 		})
 	),
 });
+
+export const gallerySchema = z.object({
+	galleryImages: z.array(z.instanceof(File)).min(1, "At least add 1 new file to upload"),
+});

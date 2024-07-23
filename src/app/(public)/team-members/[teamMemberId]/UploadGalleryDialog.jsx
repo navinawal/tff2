@@ -19,9 +19,10 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "@/components/ui/drawer";
+import GalleryForm from "./_components/gallery-form";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
-import Image from "next/image";
+import { FiLoader } from "react-icons/fi";
 import { toast } from "sonner";
 
 import { useState } from "react";
@@ -29,18 +30,16 @@ import { useForm } from "react-hook-form";
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { bulkUploadImagesToGallery } from "@/app/actions/gallery-images";
-import { FiLoader } from "react-icons/fi";
-import GalleryForm from "./_components/gallery-form";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { gallerySchema } from "@/schemas/Schemas";
 
 export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
 	const isDesktop = useMediaQuery("(min-width: 640px)");
 	const [openDialog, setOpenDialog] = useState(false);
 
 	const formHook = useForm({
-		// resolver: zodResolver(z.any().refine((files) => files?.length == 1, "Image is required.")),
+		resolver: zodResolver(gallerySchema),
 		defaultValues: {
 			galleryImages: [],
 		},
@@ -54,11 +53,6 @@ export default function UploadGalleryDialog({ teamMemberId, galleryImages }) {
 
 	async function onSubmit(formData) {
 		try {
-			if (!formData || !formData.galleryImages || !formData.galleryImages.length > 0) {
-				toast.error("at least one image is required");
-				return;
-			}
-
 			const storage = getStorage();
 
 			const uploadPromises = formData?.galleryImages?.map((file) => {
