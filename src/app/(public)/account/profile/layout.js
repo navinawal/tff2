@@ -27,11 +27,11 @@ export default async function SettingsLayout({ children }) {
 					</div>
 					{profile.role === "TeamMember" ? (
 						<Button asChild size="sm">
-							<Link href={`/team-members/${uid}`}>Public View</Link>
+							<Link href={`/team-members/${uid}`}>View as Public</Link>
 						</Button>
 					) : profile.role === "Company" ? (
 						<Button asChild size="sm">
-							<Link href={`/companies/${uid}`}>Public View</Link>
+							<Link href={`/companies/${uid}`}>View as Public</Link>
 						</Button>
 					) : null}
 				</div>

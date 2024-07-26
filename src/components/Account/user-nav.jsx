@@ -14,12 +14,11 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/components/ui/use-toast";
 import { commonNavMenus } from "@/config/navMenus";
+import { toast } from "sonner";
 
-export function UserNav() {
+export default function UserNav() {
 	const router = useRouter();
-	const { toast } = useToast();
 	const { user, logout } = useAuth();
 	const { profileData } = user;
 	const displayName = `${profileData?.firstName} ${profileData?.lastName}`;
@@ -30,11 +29,8 @@ export function UserNav() {
 			router.push("/");
 			router.refresh();
 		} catch (error) {
-			toast({
-				variant: "destructive",
-				title: "Uh oh! Something went wrong.",
-				description: error,
-			});
+			console.log(error.message);
+			toast.error("something went wrong");
 		}
 	};
 

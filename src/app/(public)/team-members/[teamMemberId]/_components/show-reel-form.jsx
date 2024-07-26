@@ -114,7 +114,7 @@ export default function ShowReelForm({ formHook, onSubmit, children }) {
 											<FormItem>
 												<FormLabel>Timestamp</FormLabel>
 												<FormControl>
-													<Input type="number" min="0" placeholder="Timestamp" {...field} />
+													<Input type="time" placeholder="Timestamp" {...field} />
 												</FormControl>
 												<FormMessage />
 											</FormItem>

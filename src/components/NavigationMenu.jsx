@@ -13,6 +13,11 @@ import {
 	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import Image from "next/image";
+import { Skeleton } from "./ui/skeleton";
+import UserNav from "./Account/user-nav";
+import AuthButtons from "./Auth/AuthButtons/AuthButton";
+import { useAuth } from "@/hooks/useAuth";
 
 const components = [
 	{
@@ -48,11 +53,63 @@ const components = [
 ];
 
 export function NavigationMenuDemo() {
+	const { user, loading } = useAuth();
 	return (
-		<NavigationMenu>
+		<NavigationMenu className="max-w-full justify-start">
 			<NavigationMenuList>
+				<NavigationMenuItem className="mr-5">
+					<Link href="/" className="flex items-center gap-2 text-lg font-semibold md:text-base">
+						<Image className="inline-block h-auto max-w-[300px]" alt="image" src="/logo_white.png" width="120" height="120" sizes="100vw"></Image>
+					</Link>
+				</NavigationMenuItem>
 				<NavigationMenuItem>
-					<NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
+					<NavigationMenuTrigger>Job</NavigationMenuTrigger>
+					<NavigationMenuContent>
+						<ul className="flex flex-col gap-3 p-4 md:w-[400px] lg:grid-cols-[.75fr_1fr]">
+							<ListItem href="/docs" title="Saved Job">
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+							<ListItem href="/docs" title="Saved Job">
+								SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+							<ListItem href="/docs" title="Introduction">
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+							<ListItem href="/docs/installation" title="Installation">
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+						</ul>
+					</NavigationMenuContent>
+				</NavigationMenuItem>
+				<NavigationMenuItem>
+					<NavigationMenuTrigger>Companies</NavigationMenuTrigger>
+					<NavigationMenuContent>
+						<ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+							<ListItem href="/docs" title="Saved Job">
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+							<ListItem href="/docs" title="Saved Job">
+								SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+							<ListItem href="/docs" title="Introduction">
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+							<ListItem href="/docs/installation" title="Installation">
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+						</ul>
+					</NavigationMenuContent>
+				</NavigationMenuItem>
+				<NavigationMenuItem>
+					<NavigationMenuTrigger>TeamMembers</NavigationMenuTrigger>
 					<NavigationMenuContent>
 						<ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
 							<li className="row-span-3">
@@ -68,36 +125,26 @@ export function NavigationMenuDemo() {
 									</a>
 								</NavigationMenuLink>
 							</li>
-							<ListItem href="/docs" title="Introduction">
-								Re-usable components built using Radix UI and Tailwind CSS.
+							<ListItem href="/docs" title="Find TeamMember">
+								SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+							</ListItem>
+							<ListItem href="/docs" title="Saved TeamMember">
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
 							</ListItem>
 							<ListItem href="/docs/installation" title="Installation">
-								How to install dependencies and structure your app.
-							</ListItem>
-							<ListItem href="/docs/primitives/typography" title="Typography">
-								Styles for headings, paragraphs, lists...etc
+								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
 							</ListItem>
 						</ul>
 					</NavigationMenuContent>
 				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuTrigger>Components</NavigationMenuTrigger>
-					<NavigationMenuContent>
-						<ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-							{components.map((component) => (
-								<ListItem key={component.title} title={component.title} href={component.href}>
-									{component.description}
-								</ListItem>
-							))}
-						</ul>
-					</NavigationMenuContent>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<Link href="/docs" legacyBehavior passHref>
-						<NavigationMenuLink className={navigationMenuTriggerStyle()}>Documentation</NavigationMenuLink>
-					</Link>
-				</NavigationMenuItem>
+				{/* <NavigationMenuItem className="!ml-auto">
+					{loading ? <Skeleton className="h-8 w-8 rounded-full" /> : user ? <UserNav /> : <AuthButtons />}
+				</NavigationMenuItem> */}
 			</NavigationMenuList>
+			<div className="flex ml-auto">{loading ? <Skeleton className="h-8 w-8 rounded-full" /> : user ? <UserNav /> : <AuthButtons />}</div>
 		</NavigationMenu>
 	);
 }

@@ -66,19 +66,20 @@ export const profileFormSchema = z.object({
 	alternateEmail: z.string().email({ message: "Email must be valid" }).optional(),
 	phone: z.string().optional(),
 	alternatePhone: z.string().optional(),
-	dob: z
-		.preprocess(
-			(arg) => {
-				// Convert input value to a Date object
-				if (typeof arg === "string" || arg instanceof Date) {
-					return new Date(arg);
-				}
-			},
-			z.date({
-				required_error: "A date of birth is required.",
-			})
-		)
-		.optional(),
+	// dob: z
+	// 	.preprocess(
+	// 		(arg) => {
+	// 			// Convert input value to a Date object
+	// 			if (typeof arg === "string" || arg instanceof Date) {
+	// 				return new Date(arg);
+	// 			}
+	// 		},
+	// 		z.date({
+	// 			required_error: "A date of birth is required.",
+	// 		})
+	// 	)
+	// 	.optional(),
+	dob: z.string().optional(),
 	bio: z.string().max(200).min(4),
 	gender: z.enum(["Male", "Female"], {
 		required_error: "You need to select your gender",

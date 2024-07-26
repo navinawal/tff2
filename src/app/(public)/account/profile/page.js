@@ -16,7 +16,7 @@ export default async function Home() {
 
 	if (response.success) {
 		defaultValues = response.data;
-		defaultValues.dob = defaultValues.dob ? new Date(defaultValues.dob._seconds * 1000).toISOString().split("T")[0] : "";
+		// defaultValues.dob = defaultValues.dob ? new Date(defaultValues.dob._seconds * 1000).toISOString().split("T")[0] : "";
 	}
 
 	return (
