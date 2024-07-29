@@ -53,7 +53,16 @@ export default function ShowReelsDialog({ teamMemberId, showReel }) {
 
 	async function onSubmit(formData) {
 		try {
+			const { showReelTimeStamps } = formData;
+
+			showReelTimeStamps.forEach((showReelTimeStamp) => {
+				const { hours, minutes, seconds } = showReelTimeStamp;
+				const timestamp = formatToTimestamp(hours, minutes, seconds);
+				showReelTimeStamp.timestamp = timestamp;
+			});
+
 			let response;
+
 			if (showReel) {
 				response = await updateShowReel(teamMemberId, showReel.id, formData);
 			} else {
@@ -61,7 +70,6 @@ export default function ShowReelsDialog({ teamMemberId, showReel }) {
 			}
 
 			if (response.success) {
-				formHook.reset();
 				setOpenDialog(false);
 				toast.success(response.message);
 			} else {
@@ -73,6 +81,13 @@ export default function ShowReelsDialog({ teamMemberId, showReel }) {
 			toast.error("Something went wrong");
 		}
 	}
+
+	const formatToTimestamp = (hours, minutes, seconds) => {
+		const h = parseInt(hours, 10) || 0;
+		const m = parseInt(minutes, 10) || 0;
+		const s = parseInt(seconds, 10) || 0;
+		return h * 3600 + m * 60 + s;
+	};
 
 	async function handleDelete(showReelId) {
 		setLoading(true);

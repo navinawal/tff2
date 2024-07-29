@@ -107,26 +107,60 @@ export default function ShowReelForm({ formHook, onSubmit, children }) {
 											</FormItem>
 										)}
 									/>
-									<FormField
-										control={control}
-										name={`showReelTimeStamps.${index}.timestamp`}
-										render={({ field }) => (
-											<FormItem>
-												<FormLabel>Timestamp</FormLabel>
-												<FormControl>
-													<Input type="time" placeholder="Timestamp" {...field} />
-												</FormControl>
-												<FormMessage />
-											</FormItem>
-										)}
-									/>
+									<div className="flex flex-col space-y-4">
+										<FormLabel>Timestamp</FormLabel>
+										<div className="grid grid-cols-3 gap-3">
+											<FormField
+												control={control}
+												name={`showReelTimeStamps.${index}.hours`}
+												render={({ field }) => (
+													<FormItem>
+														<FormControl>
+															<Input type="number" placeholder="Hours" {...field} min={0} max={24} />
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											<FormField
+												control={control}
+												name={`showReelTimeStamps.${index}.minutes`}
+												render={({ field }) => (
+													<FormItem>
+														<FormControl>
+															<Input type="number" placeholder="Minutes" {...field} min={0} max={60} />
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+											<FormField
+												control={control}
+												name={`showReelTimeStamps.${index}.seconds`}
+												render={({ field }) => (
+													<FormItem>
+														<FormControl>
+															<Input type="number" placeholder="Seconds" {...field} min={0} max={60} />
+														</FormControl>
+														<FormMessage />
+													</FormItem>
+												)}
+											/>
+										</div>
+									</div>
 								</div>
 								<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => removeShowReelTimeStamps(index)}>
 									<Trash2 className="h-4 w-4" />
 								</Button>
 							</div>
 						))}
-						<Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => appendShowReelTimeStamps({ title: "", timestamp: "" })}>
+						<Button
+							type="button"
+							variant="outline"
+							size="sm"
+							className="mt-2"
+							onClick={() => appendShowReelTimeStamps({ title: "", hours: "", minutes: "", seconds: "" })}
+						>
 							<PlusCircledIcon className="mr-2 h-4 w-4" />
 							Add More
 						</Button>

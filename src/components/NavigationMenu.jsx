@@ -19,133 +19,110 @@ import UserNav from "./Account/user-nav";
 import AuthButtons from "./Auth/AuthButtons/AuthButton";
 import { useAuth } from "@/hooks/useAuth";
 
-const components = [
-	{
-		title: "Alert Dialog",
-		href: "/docs/primitives/alert-dialog",
-		description: "A modal dialog that interrupts the user with important content and expects a response.",
-	},
-	{
-		title: "Hover Card",
-		href: "/docs/primitives/hover-card",
-		description: "For sighted users to preview content available behind a link.",
-	},
-	{
-		title: "Progress",
-		href: "/docs/primitives/progress",
-		description: "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-	},
-	{
-		title: "Scroll-area",
-		href: "/docs/primitives/scroll-area",
-		description: "Visually or semantically separates content.",
-	},
-	{
-		title: "Tabs",
-		href: "/docs/primitives/tabs",
-		description: "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-	},
-	{
-		title: "Tooltip",
-		href: "/docs/primitives/tooltip",
-		description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-	},
-];
-
 export function NavigationMenuDemo() {
 	const { user, loading } = useAuth();
 	return (
-		<NavigationMenu className="max-w-full justify-start">
-			<NavigationMenuList>
-				<NavigationMenuItem className="mr-5">
-					<Link href="/" className="flex items-center gap-2 text-lg font-semibold md:text-base">
-						<Image className="inline-block h-auto max-w-[300px]" alt="image" src="/logo_white.png" width="120" height="120" sizes="100vw"></Image>
-					</Link>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuTrigger>Job</NavigationMenuTrigger>
-					<NavigationMenuContent>
-						<ul className="flex flex-col gap-3 p-4 md:w-[400px] lg:grid-cols-[.75fr_1fr]">
-							<ListItem href="/docs" title="Saved Job">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs" title="Saved Job">
-								SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs" title="Introduction">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs/installation" title="Installation">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-						</ul>
-					</NavigationMenuContent>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuTrigger>Companies</NavigationMenuTrigger>
-					<NavigationMenuContent>
-						<ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-							<ListItem href="/docs" title="Saved Job">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs" title="Saved Job">
-								SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs" title="Introduction">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs/installation" title="Installation">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-						</ul>
-					</NavigationMenuContent>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuTrigger>TeamMembers</NavigationMenuTrigger>
-					<NavigationMenuContent>
-						<ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-							<li className="row-span-3">
-								<NavigationMenuLink asChild>
-									<a
-										className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-										href="/"
-									>
-										<div className="mb-2 mt-4 text-lg font-medium">shadcn/ui</div>
-										<p className="text-sm leading-tight text-muted-foreground">
-											Beautifully designed components built with Radix UI and Tailwind CSS.
-										</p>
-									</a>
-								</NavigationMenuLink>
-							</li>
-							<ListItem href="/docs" title="Find TeamMember">
-								SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs" title="Saved TeamMember">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-							<ListItem href="/docs/installation" title="Installation">
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-								voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-							</ListItem>
-						</ul>
-					</NavigationMenuContent>
-				</NavigationMenuItem>
-				{/* <NavigationMenuItem className="!ml-auto">
-					{loading ? <Skeleton className="h-8 w-8 rounded-full" /> : user ? <UserNav /> : <AuthButtons />}
-				</NavigationMenuItem> */}
-			</NavigationMenuList>
-			<div className="flex ml-auto">{loading ? <Skeleton className="h-8 w-8 rounded-full" /> : user ? <UserNav /> : <AuthButtons />}</div>
-		</NavigationMenu>
+		<div className="flex flex-grow gap-4">
+			<Link href="/" className="flex items-center gap-2 text-lg font-semibold md:text-base">
+				<Image className="inline-block h-auto max-w-[300px]" alt="image" src="/logo_white.png" width="120" height="120" sizes="100vw"></Image>
+			</Link>
+			<NavigationMenu className="max-w-full justify-start">
+				<NavigationMenuList>
+					<NavigationMenuItem>
+						<NavigationMenuTrigger>Job</NavigationMenuTrigger>
+						<NavigationMenuContent>
+							<ul className="flex flex-col p-4 md:w-[500px] lg:grid-cols-[.75fr_1fr]">
+								<ListItem href="/find-job" title="Find a Job">
+									Lorem ipsum dolor, sit amet
+								</ListItem>
+								<ListItem href="/account/profile/saved-jobs" title="Saved Job">
+									SLorem ipsum dolor, sit amet consectetur
+								</ListItem>
+								<ListItem href="/account/profile/company-job-posts" title="Job Posts">
+									SLorem ipsum dolor, sit amet consectetur
+								</ListItem>
+							</ul>
+						</NavigationMenuContent>
+					</NavigationMenuItem>
+					<NavigationMenuItem>
+						<NavigationMenuTrigger>Companies</NavigationMenuTrigger>
+						<NavigationMenuContent>
+							<ul className="grid gap-3 p-4 md:w-[500px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+								{user && user.company && (
+									<li className="row-span-3">
+										<NavigationMenuLink asChild>
+											<Link
+												className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+												href="/account/profile/company-details"
+											>
+												<Image src={user.company.profileImage} alt="" width={100} height={100}></Image>
+												<div className="mb-2 mt-4 text-lg font-medium">Company Profile</div>
+												<p className="text-sm leading-tight text-muted-foreground">Manage or Edit your Company Profile</p>
+											</Link>
+										</NavigationMenuLink>
+									</li>
+								)}
+								<ListItem href="/companies" title="Find Company">
+									SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+								</ListItem>
+								<ListItem href="/docs" title="Saved Company">
+									Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+								</ListItem>
+							</ul>
+						</NavigationMenuContent>
+					</NavigationMenuItem>
+					<NavigationMenuItem>
+						<NavigationMenuTrigger>TeamMembers</NavigationMenuTrigger>
+						<NavigationMenuContent>
+							<ul className="grid gap-3 p-4 md:w-[500px] lg:w-[500px] grid-cols-[.75fr_1fr]">
+								{user && user.teamMember && (
+									<li className="row-span-3">
+										<NavigationMenuLink asChild>
+											<Link
+												className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+												href="/account/profile/team-profile"
+											>
+												<Image src={user.teamMember.profileImage} alt="" width={200} height={100}></Image>
+												<div className="mb-2 mt-4 text-lg font-medium">TeamMember Profile</div>
+												<p className="text-sm leading-tight text-muted-foreground">Manage or Edit your TeamMember Profile</p>
+											</Link>
+										</NavigationMenuLink>
+									</li>
+								)}
+								<ListItem href="/docs" title="Find TeamMember">
+									SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+								</ListItem>
+								<ListItem href="/docs" title="Saved TeamMember">
+									Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
+									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
+								</ListItem>
+							</ul>
+						</NavigationMenuContent>
+					</NavigationMenuItem>
+					{user && (
+						<NavigationMenuItem>
+							<NavigationMenuTrigger>Job Applications</NavigationMenuTrigger>
+							<NavigationMenuContent>
+								<ul className="flex flex-col p-4 md:w-[500px] lg:grid-cols-[.75fr_1fr]">
+									<ListItem href="/account/profile/recieved-job-applications" title="Recieved Job Applications">
+										SLorem ipsum dolor, sit amet consectetur
+									</ListItem>
+									<ListItem href="/account/profile/my-applications" title="My Applications">
+										SLorem ipsum dolor, sit amet consectetur
+									</ListItem>
+								</ul>
+							</NavigationMenuContent>
+						</NavigationMenuItem>
+					)}
+				</NavigationMenuList>
+			</NavigationMenu>
+			<div className="flex ml-auto justify-center items-center">
+				{loading ? <Skeleton className="h-8 w-8 rounded-full" /> : user ? <UserNav /> : <AuthButtons />}
+			</div>
+		</div>
 	);
 }
 
@@ -153,7 +130,7 @@ const ListItem = React.forwardRef(({ className, title, children, ...props }, ref
 	return (
 		<li>
 			<NavigationMenuLink asChild>
-				<a
+				<Link
 					ref={ref}
 					className={cn(
 						"block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
@@ -163,7 +140,7 @@ const ListItem = React.forwardRef(({ className, title, children, ...props }, ref
 				>
 					<div className="text-sm font-medium leading-none">{title}</div>
 					<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
-				</a>
+				</Link>
 			</NavigationMenuLink>
 		</li>
 	);

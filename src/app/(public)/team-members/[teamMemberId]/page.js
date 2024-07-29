@@ -32,15 +32,11 @@ export default async function TeamMemberDetails({ params }) {
 		uid = user.uid;
 	}
 	const { teamMemberId } = params;
-	const teamMemberData = await getTeamMemberDetails(teamMemberId);
+	const teamMember = await getTeamMemberDetails(teamMemberId);
 	const trainings = await getTeamMemberTrainings(teamMemberId);
 	const filmographies = await getTeamMemberFilmographies(teamMemberId);
 	const audioReels = await getAudioReels(teamMemberId);
 	const showReels = await getAllShowReels(teamMemberId);
-
-	if (!teamMemberData.success || !teamMemberData.data) return notFound();
-
-	const teamMember = teamMemberData.data;
 
 	const galleryImages = await getAllGalleryImages(teamMemberId);
 

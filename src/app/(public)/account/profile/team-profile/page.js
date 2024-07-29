@@ -27,7 +27,7 @@ export default async function TeamMemberBasicInfo() {
 					</div>
 				</div>
 				<Separator />
-				<TeamMemberBasicInfoForm uid={uid} defaultValues={teamMemberProfile.data} />
+				<TeamMemberBasicInfoForm uid={uid} defaultValues={teamMemberProfile} />
 			</div>
 		</>
 	);

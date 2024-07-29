@@ -49,7 +49,7 @@ export const getTeamMemberDetails = async (uid) => {
 		const snapshot = await teamMemberRef.get();
 
 		if (!snapshot.exists) {
-			return { success: false, message: "No TeamMember data found" };
+			return { error: "No TeamMember data found" };
 		}
 
 		const teamMemberProfile = {
@@ -57,9 +57,9 @@ export const getTeamMemberDetails = async (uid) => {
 			...transformTimestamps(snapshot),
 		};
 
-		return { success: true, data: JSON.parse(JSON.stringify(teamMemberProfile)) };
+		return JSON.parse(JSON.stringify(teamMemberProfile));
 	} catch (error) {
-		return { success: false, message: error.message };
+		return { error: error.message };
 	}
 };
 

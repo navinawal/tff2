@@ -218,7 +218,9 @@ export const showReelsFormSchema = z.object({
 	showReelTimeStamps: z.array(
 		z.object({
 			title: z.any(),
-			timestamp: z.any(),
+			hours: z.any(),
+			minutes: z.any(),
+			seconds: z.any(),
 		})
 	),
 });

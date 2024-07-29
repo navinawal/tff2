@@ -13,6 +13,8 @@ import {
 import { auth, googleProvider, facebookProvider } from "@/lib/firebase";
 import { setAuthCookie, revokeAllSessions } from "@/app/actions/userAuth";
 import { getUserProfile, createUserProfile, updateUserProfile } from "@/app/actions/users_profile";
+import { getTeamMemberDetails } from "@/app/actions/team_members";
+import { getCompanyProfile } from "@/app/actions/companies";
 
 const AuthContext = createContext();
 
@@ -35,8 +37,19 @@ function useProvideAuth() {
 				const uid = authUser.uid;
 				const authToken = await authUser.getIdToken();
 				const profileData = await handleUserProfile(uid, authUser.photoURL, authUser.displayName);
+
+				let teamMember;
+				if (profileData && profileData.role === "TeamMember") {
+					teamMember = await getTeamMemberDetails(uid);
+				}
+
+				let company;
+				if (profileData && profileData.role === "Company") {
+					company = await getCompanyProfile(uid);
+				}
+
 				await setAuthCookie(authToken);
-				setUser({ uid, profileData });
+				setUser({ uid, profileData, teamMember, company });
 			} else {
 				await logout();
 			}
