@@ -1,9 +1,7 @@
 import { getTeamMemberDetails } from "@/app/actions/team_members";
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { TeamMemberBasicInfoForm } from "@/components/Forms/Account/TeamMemberBasicInfoForm";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function TeamMemberBasicInfo() {

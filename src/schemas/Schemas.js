@@ -228,3 +228,8 @@ export const showReelsFormSchema = z.object({
 export const gallerySchema = z.object({
 	galleryImages: z.array(z.instanceof(File)).min(1, "At least add 1 new file to upload"),
 });
+
+export const reviewFormSchema = z.object({
+	rating: z.number().min(1, "Please rate atleast 1 review"),
+	comments: z.any(),
+});

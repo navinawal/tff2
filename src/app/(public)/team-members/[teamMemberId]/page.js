@@ -24,6 +24,8 @@ import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
 import { getAllGalleryImages } from "@/app/actions/gallery-images";
 import { getAllShowReels } from "@/app/actions/teamMemberShowReels";
 import { getAudioReels } from "@/app/actions/audio-reels";
+import Reviews from "./Reviews";
+import { getTeamMemberReviews } from "@/app/actions/review";
 
 export default async function TeamMemberDetails({ params }) {
 	const user = await getCurrentUser();
@@ -37,8 +39,8 @@ export default async function TeamMemberDetails({ params }) {
 	const filmographies = await getTeamMemberFilmographies(teamMemberId);
 	const audioReels = await getAudioReels(teamMemberId);
 	const showReels = await getAllShowReels(teamMemberId);
-
 	const galleryImages = await getAllGalleryImages(teamMemberId);
+	const teamMemberReviews = await getTeamMemberReviews(teamMemberId);
 
 	return (
 		<div className="bg-black text-[#ffffffcc] py-12 md:pt-28 pb-10">
@@ -214,11 +216,7 @@ export default async function TeamMemberDetails({ params }) {
 								My <span className={`${styles.textHGradient}`}>REVIEWS</span>
 							</h1>
 						</div>
-						<div className={`${styles.fancyBorderedBox} grid grid-cols-1 md:grid-cols-2 justify-between gap-5 md:gap-10`}>
-							<div className={"flex flex-col gap-2"}>
-								<div className={"flex flex-col gap-2"}>No data</div>
-							</div>
-						</div>
+						<Reviews uid={uid} teamMemberId={teamMemberId} teamMemberReviews={teamMemberReviews} />
 					</div>
 				</AppMaxWidthContainer>
 			</div>

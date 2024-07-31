@@ -66,7 +66,7 @@ export async function updateShowReel(teamMemberId, audioReelId, data) {
 			});
 
 		revalidatePath(`/`);
-		return { success: true, message: "Show Reel removed successfully." };
+		return { success: true, message: "Show Reel updated successfully." };
 	} catch (error) {
 		return { success: false, message: error.message };
 	}
