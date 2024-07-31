@@ -66,10 +66,6 @@ export function NavigationMenuDemo() {
 									SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
 									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
 								</ListItem>
-								<ListItem href="/docs" title="Saved Company">
-									Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
-									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
-								</ListItem>
 							</ul>
 						</NavigationMenuContent>
 					</NavigationMenuItem>
@@ -91,11 +87,11 @@ export function NavigationMenuDemo() {
 										</NavigationMenuLink>
 									</li>
 								)}
-								<ListItem href="/docs" title="Find TeamMember">
+								<ListItem href="/team-members" title="Find TeamMember">
 									SLorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
 									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
 								</ListItem>
-								<ListItem href="/docs" title="Saved TeamMember">
+								<ListItem href="/account/profile/saved-team-members" title="Saved TeamMember">
 									Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae aliquam dicta perferendis nemo iure rerum consectetur modi dolor
 									voluptatem. Animi totam repellat laudantium voluptate nisi ipsa dolore nulla cumque soluta?
 								</ListItem>
