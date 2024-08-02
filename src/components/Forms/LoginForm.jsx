@@ -14,9 +14,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { FiLoader, FiSend } from "react-icons/fi";
 
 export default function LoginForm() {
-	const { loginWithEmail } = useAuth();
+	const { loginWithEmail, loginWithGoogle, loginWithFacebook } = useAuth();
 	const router = useRouter();
 	const formHook = useForm({
 		resolver: zodResolver(LoginSchema),
@@ -33,6 +34,7 @@ export default function LoginForm() {
 	} = formHook;
 
 	const [errorMessage, setErrorMessage] = useState("");
+	const [redirecting, setRedirecting] = useState(false); // State to track redirecting status
 
 	async function onSubmit(formData) {
 		const validatedFields = LoginSchema.safeParse(formData);
@@ -45,9 +47,31 @@ export default function LoginForm() {
 
 		try {
 			await loginWithEmail(email, password);
+			setRedirecting(true); // Set redirecting to true before pushing to the router
 			router.push("/account/profile");
 		} catch (error) {
 			setErrorMessage("Error: " + error.message);
+		}
+	}
+
+	async function onSocialLogin(type) {
+		const loginFunctions = {
+			google: loginWithGoogle,
+			facebook: loginWithFacebook,
+		};
+
+		const loginFunction = loginFunctions[type];
+
+		if (loginFunction) {
+			try {
+				await loginFunction();
+				setRedirecting(true);
+				router.push("/account/profile");
+			} catch (error) {
+				setErrorMessage("Error: " + error.message);
+			}
+		} else {
+			setErrorMessage("Invalid login type");
 		}
 	}
 
@@ -62,7 +86,7 @@ export default function LoginForm() {
 							<FormItem>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input type="email" placeholder="example@example.com" {...field} />
+									<Input type="email" placeholder="example@example.com" {...field} className="h-10" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -75,7 +99,7 @@ export default function LoginForm() {
 							<FormItem>
 								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<Input type="password" placeholder="*******" {...field} />
+									<Input type="password" placeholder="*******" {...field} className="h-10" />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -84,8 +108,24 @@ export default function LoginForm() {
 					<div className="text-muted-foreground font-medium">
 						<Link href="/forgot-password">Forgot Password?</Link>
 					</div>
-					<Button className="w-full" type="submit" disabled={isSubmitting}>
-						{isSubmitting ? "Logging in ..." : "Log In"}
+					<Button
+						type="submit"
+						className="w-full h-10 relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out bg-blue-600 rounded-lg shadow-xl group hover:bg-gradient-to-br from-blue-500 to-purple-600"
+						disabled={isSubmitting || redirecting}
+					>
+						{redirecting ? (
+							<div className="flex items-center">
+								<FiSend className="animate-bounce mr-2" />
+								Redirecting...
+							</div>
+						) : isSubmitting ? (
+							<>
+								<FiLoader className="mr-2 h-4 w-4 animate-spin" />
+								Logging in...
+							</>
+						) : (
+							"Login"
+						)}
 					</Button>
 				</form>
 			</Form>
@@ -97,7 +137,7 @@ export default function LoginForm() {
 				</div>
 			)}
 			<CustomSeparator text="Or Sign In with" />
-			<SocialLoginButtons onError={(error) => setErrorMessage(error)} />
+			<SocialLoginButtons onSocialLogin={onSocialLogin} />
 		</>
 	);
 }

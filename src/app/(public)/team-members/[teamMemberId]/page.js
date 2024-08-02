@@ -4,7 +4,6 @@ import styles from "./styles.module.css";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { FaWhatsapp } from "react-icons/fa";
-import { CiStar } from "react-icons/ci";
 
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import ImageGallery from "@/components/ImageGallery";
@@ -75,12 +74,6 @@ export default async function TeamMemberDetails({ params }) {
 								<FaWhatsapp className="h-5 w-5 ml-2" />
 							</a>
 							<SocialShare url="https://teamforfilm.vercel.app/" title={teamMember.firstName} hashtag="" />
-						</div>
-						<div className="flex gap-2">
-							<CiStar className="h-5 w-5" />
-							<CiStar className="h-5 w-5" />
-							<CiStar className="h-5 w-5" />
-							<CiStar className="h-5 w-5" />
 						</div>
 						<div className="flex flex-wrap justify-between md:justify-start w-full gap-6">
 							<DetailBox containerClass="flex flex-col gap-3" heading="Age" subHeading={teamMember.ageGroup} />

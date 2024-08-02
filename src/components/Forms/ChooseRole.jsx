@@ -11,11 +11,13 @@ import { Label } from "@/components/ui/label";
 import { FcFilm, FcManager } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { saveRole } from "@/app/actions/users_profile";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
+import { FiLoader, FiSend } from "react-icons/fi";
+import { useState } from "react";
 
 export default function ChooseRoleForm({ uid }) {
+	const [redirecting, setRedirecting] = useState(false); // State to track redirecting status
 	const router = useRouter();
-	const { toast } = useToast();
 	const formHook = useForm({
 		resolver: zodResolver(ChooseRoleSchema),
 	});
@@ -27,16 +29,18 @@ export default function ChooseRoleForm({ uid }) {
 	} = formHook;
 
 	async function onSubmit(formData) {
-		const response = await saveRole(uid, formData);
-		if (response.success === true) {
-			router.push("/account/profile");
-			router.refresh();
-		} else {
-			toast({
-				variant: "destructive",
-				title: "Error !",
-				description: "Something went wrong",
-			});
+		try {
+			const response = await saveRole(uid, formData);
+			if (response.success === true) {
+				setRedirecting(true);
+				router.push("/account/profile");
+			} else {
+				console.log(response.message);
+				toast.error("Something went wrong");
+			}
+		} catch (error) {
+			console.log(error.message);
+			toast.error("Something went wrong");
 		}
 	}
 
@@ -78,8 +82,24 @@ export default function ChooseRoleForm({ uid }) {
 							</FormItem>
 						)}
 					/>
-					<Button className="w-full" type="submit" disabled={isSubmitting}>
-						{isSubmitting ? "Submitting..." : "Submit"}
+					<Button
+						className="w-full h-10 relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out bg-blue-600 rounded-lg shadow-xl group hover:bg-gradient-to-br from-blue-500 to-purple-600"
+						type="submit"
+						disabled={isSubmitting || redirecting}
+					>
+						{redirecting ? (
+							<div className="flex items-center">
+								<FiSend className="animate-bounce mr-2" />
+								Redirecting...
+							</div>
+						) : isSubmitting ? (
+							<>
+								<FiLoader className="mr-2 h-4 w-4 animate-spin" />
+								Saving ...
+							</>
+						) : (
+							"Save"
+						)}
 					</Button>
 				</form>
 			</Form>

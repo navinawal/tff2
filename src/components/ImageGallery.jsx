@@ -36,7 +36,7 @@ export default function ImageGallery({ galleryImages, teamMemberId }) {
 		}
 	}
 
-	return (
+	return galleryImages.length > 0 ? (
 		<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 			{galleryImages.map((image, idx) => (
 				<div key={image.id} className="" onClick={() => handleOpenGallery(idx)}>
@@ -80,5 +80,7 @@ export default function ImageGallery({ galleryImages, teamMemberId }) {
 				/>
 			)}
 		</div>
+	) : (
+		<div className="flex justify-center items-center h-[400px] border w-full border-dashed rounded-md text-4xl">No data</div>
 	);
 }

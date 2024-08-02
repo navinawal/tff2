@@ -13,9 +13,12 @@ import { registrationSchema } from "@/schemas/Schemas";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import SocialLoginButtons from "@/components/Auth/SocialLoginButtons";
 import { useAuth } from "@/hooks/useAuth";
+import { FiLoader, FiSend } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 export default function RegistrationForm() {
-	const { registerWithEmail } = useAuth();
+	const router = useRouter();
+	const { registerWithEmail, loginWithGoogle, loginWithFacebook } = useAuth();
 	const registrationForm = useForm({
 		resolver: zodResolver(registrationSchema),
 		defaultValues: {
@@ -35,6 +38,7 @@ export default function RegistrationForm() {
 
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState(false);
+	const [redirecting, setRedirecting] = useState(false); // State to track redirecting status
 
 	async function onSubmit(formData) {
 		const { firstName, lastName, email, password } = formData;
@@ -52,6 +56,27 @@ export default function RegistrationForm() {
 		} catch (error) {
 			setErrorMessage("An unexpected error occurred: " + error.message);
 			setSuccessMessage(false);
+		}
+	}
+
+	async function onSocialLogin(type) {
+		const loginFunctions = {
+			google: loginWithGoogle,
+			facebook: loginWithFacebook,
+		};
+
+		const loginFunction = loginFunctions[type];
+
+		if (loginFunction) {
+			try {
+				await loginFunction();
+				setRedirecting(true);
+				router.push("/account/profile");
+			} catch (error) {
+				setErrorMessage("Error: " + error.message);
+			}
+		} else {
+			setErrorMessage("Invalid login type");
 		}
 	}
 
@@ -136,8 +161,20 @@ export default function RegistrationForm() {
 									</Link>
 								</label>
 							</div>
-							<Button className="w-full" type="submit" disabled={isSubmitting}>
-								{isSubmitting ? "Submitting..." : "Submit"}
+							<Button className="w-full" type="submit" disabled={isSubmitting || redirecting}>
+								{redirecting ? (
+									<div className="flex items-center">
+										<FiSend className="animate-bounce mr-2" />
+										Redirecting...
+									</div>
+								) : isSubmitting ? (
+									<>
+										<FiLoader className="mr-2 h-4 w-4 animate-spin" />
+										Registering...
+									</>
+								) : (
+									"Register"
+								)}
 							</Button>
 						</form>
 					</Form>
@@ -149,7 +186,7 @@ export default function RegistrationForm() {
 						</div>
 					)}
 					<CustomSeparator text="Or Sign In with" />
-					<SocialLoginButtons onError={(error) => setErrorMessage(error)} />
+					<SocialLoginButtons onSocialLogin={onSocialLogin} />
 				</>
 			)}
 		</>

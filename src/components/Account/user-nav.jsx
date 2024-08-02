@@ -53,14 +53,18 @@ export default function UserNav() {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					{commonNavMenus.map((menu) => (
-						<Link href={menu.url} key={menu.id}>
-							<DropdownMenuItem>
-								{menu.title}
-								<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-							</DropdownMenuItem>
-						</Link>
-					))}
+					<Link href={`/team-members/${user?.teamMember?.uid || user?.company?.uid}`}>
+						<DropdownMenuItem>
+							Profile
+							<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+						</DropdownMenuItem>
+					</Link>
+					<Link href="/account/profile/change-password">
+						<DropdownMenuItem>
+							Settings
+							<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+						</DropdownMenuItem>
+					</Link>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem onClick={handleLogout}>
