@@ -21,7 +21,9 @@ export async function middleware(request) {
 
 			if (data.currentUser) {
 				const { uid, profile } = data.currentUser;
-				if (uid && profile && !profile.role) {
+				console.log(profile.role);
+				if (uid && (!profile || !profile.role)) {
+					console.log("choose-role", profile.role);
 					return NextResponse.redirect(new URL("/choose-role", request.url));
 				}
 				return NextResponse.next();

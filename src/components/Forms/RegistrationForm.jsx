@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Checkbox } from "@/components/ui/checkbox";
 import CustomSeparator from "@/components/ui/custom-separator";
 import { registrationSchema } from "@/schemas/Schemas";
@@ -142,7 +143,7 @@ export default function RegistrationForm() {
 									<FormItem>
 										<FormLabel>Password</FormLabel>
 										<FormControl>
-											<Input type="password" placeholder="*******" {...field} />
+											<PasswordInput placeholder="*******" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>

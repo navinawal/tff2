@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import CustomSeparator from "@/components/ui/custom-separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import SocialLoginButtons from "@/components/Auth/SocialLoginButtons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useState } from "react";
@@ -86,7 +87,7 @@ export default function LoginForm() {
 							<FormItem>
 								<FormLabel>Email</FormLabel>
 								<FormControl>
-									<Input type="email" placeholder="example@example.com" {...field} className="h-10" />
+									<Input type="email" placeholder="example@example.com" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -99,7 +100,7 @@ export default function LoginForm() {
 							<FormItem>
 								<FormLabel>Password</FormLabel>
 								<FormControl>
-									<Input type="password" placeholder="*******" {...field} className="h-10" />
+									<PasswordInput placeholder="*******" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -110,7 +111,7 @@ export default function LoginForm() {
 					</div>
 					<Button
 						type="submit"
-						className="w-full h-10 relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out bg-blue-600 rounded-lg shadow-xl group hover:bg-gradient-to-br from-blue-500 to-purple-600"
+						className="w-full relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out bg-blue-600 rounded-lg shadow-xl group hover:bg-gradient-to-br from-blue-500 to-purple-600"
 						disabled={isSubmitting || redirecting}
 					>
 						{redirecting ? (

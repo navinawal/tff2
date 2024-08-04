@@ -107,8 +107,7 @@ export default async function FindJob({ params, searchParams }) {
 									/>
 								</div>
 								<div className="flex flex-col gap-1">
-									<h3 className="text-2xl font-bold tracking-tight">{job.projectTitle}</h3>
-									<h2 className="text-xl font-bold tracking-tight">{job.companyName}</h2>
+									<h3 className="text-2xl font-bold tracking-tight">{job.companyName}</h3>
 								</div>
 							</div>
 							<div className="flex flex-col gap-2">

@@ -29,11 +29,11 @@ export default async function ComplanyDetails({ params }) {
 								<div className="flex flex-col gap-1">
 									<h3 className="text-2xl font-bold tracking-tight">{companyDetails.companyName}</h3>
 									<h2 className="text-xl font-bold tracking-tight">{companyDetails.category}</h2>
-									<div className="flex flex-row">
+									{/* 									<div className="flex flex-row">
 										<div className="gooogel">Googele</div>
 										<div className="gooogel">Facebook</div>
 										<div className="gooogel">Twitter</div>
-									</div>
+									</div> */}
 								</div>
 							</div>
 							<div className="flex flex-col gap-2">

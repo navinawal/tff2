@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,7 @@ import { FiLoader, FiSend } from "react-icons/fi";
 import { useState } from "react";
 
 export default function ChooseRoleForm({ uid }) {
-	const [redirecting, setRedirecting] = useState(false); // State to track redirecting status
+	const [redirecting, setRedirecting] = useState(false);
 	const router = useRouter();
 	const formHook = useForm({
 		resolver: zodResolver(ChooseRoleSchema),
@@ -29,17 +28,18 @@ export default function ChooseRoleForm({ uid }) {
 	} = formHook;
 
 	async function onSubmit(formData) {
+		setRedirecting(true);
+
 		try {
 			const response = await saveRole(uid, formData);
 			if (response.success === true) {
-				setRedirecting(true);
+				console.log("Success");
 				router.push("/account/profile");
+				router.refresh();
 			} else {
-				console.log(response.message);
 				toast.error("Something went wrong");
 			}
 		} catch (error) {
-			console.log(error.message);
 			toast.error("Something went wrong");
 		}
 	}
