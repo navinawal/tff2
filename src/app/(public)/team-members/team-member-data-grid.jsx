@@ -11,7 +11,7 @@ import { usePaginatedData } from "@/hooks/usePaginatedData";
 import { SortingDropdownMenu } from "./shorting-menu";
 import Loading from "./loading";
 
-export default function TeamMemberDataGrid() {
+export default function TeamMemberDataGrid({ teamMembers }) {
 	const { selectedFilters, updateFilter, searchQuery, updateSearchQuery, sortField, sortDirection, clearAllFilters } = useFilter();
 	const { data, loading, error, page, pageSize, totalItems, setPage, setPageSize } = usePaginatedData(
 		"/api/teamMember",
@@ -109,9 +109,9 @@ export default function TeamMemberDataGrid() {
 					<SortingDropdownMenu />
 				</div>
 			</div>
-			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-				{data?.map((teamMember) => (
-					<TeamMemberCard key={teamMember.id} teamMember={teamMember}></TeamMemberCard>
+			<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+				{teamMembers?.map((teamMember) => (
+					<TeamMemberCard key={teamMember.uid} teamMember={teamMember}></TeamMemberCard>
 				))}
 			</div>
 			<PaginationControls page={page} pageSize={pageSize} totalItems={totalItems} setPage={setPage} setPageSize={setPageSize} />

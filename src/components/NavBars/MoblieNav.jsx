@@ -6,9 +6,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { headerNavMenus } from "@/config/site";
 import { useAuth } from "@/hooks/useAuth";
+import { Skeleton } from "../ui/skeleton";
+import UserNav from "../Account/user-nav";
+import AuthButtons from "../Auth/AuthButtons/AuthButton";
 
 export default function MobileNav() {
-	const { user, logout } = useAuth();
+	const { user, loading, logout } = useAuth();
 	if (!user) return;
 	const { profileData } = user;
 
@@ -65,6 +68,9 @@ export default function MobileNav() {
 				<Link href="/" className="flex items-center text-lg font-semibold md:text-base">
 					<Image className="inline-block h-auto max-w-[300px]" alt="image" src="/logo_white.png" width="120" height="120" sizes="100vw"></Image>
 				</Link>
+			</div>
+			<div className="flex ml-auto justify-center items-center">
+				{loading ? <Skeleton className="h-8 w-8 rounded-full" /> : user ? <UserNav /> : <AuthButtons />}
 			</div>
 		</div>
 	);

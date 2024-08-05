@@ -1,7 +1,9 @@
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import TeamMemberDataGrid from "./team-member-data-grid";
+import { getAllTeamMembers } from "@/app/actions/team_members";
 
 export default async function TeamMembers() {
+	const teamMembers = await getAllTeamMembers();
 	return (
 		<div className="bg-black text-[#ffffffcc]">
 			<AppMaxWidthContainer>
@@ -12,7 +14,7 @@ export default async function TeamMembers() {
 							<p className="text-muted-foreground">Here&apos;s a list of members for our network!</p>
 						</div>
 					</div>
-					<TeamMemberDataGrid />
+					<TeamMemberDataGrid teamMembers={teamMembers} />
 				</div>
 			</AppMaxWidthContainer>
 		</div>

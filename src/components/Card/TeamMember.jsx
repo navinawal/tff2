@@ -8,12 +8,12 @@ import { socialLinks } from "@/config/site";
 export default function TeamMemberCard({ teamMember }) {
 	return (
 		<>
-			<Link key={teamMember.name} href={`/team-members/${teamMember.id}`}>
+			<Link key={teamMember.name} href={`/team-members/${teamMember.uid}`}>
 				<div className={`${styles.userWrapper} relative overflow-hidden rounded-md`}>
 					<Image
 						decoding="async"
 						className="aspect-[3/4] h-fit w-full object-cover transition-all hover:scale-105"
-						src={teamMember.profileImage || "/profile_pictures/team_member_profile_placeholder.jpg"}
+						src={teamMember.profileImage || "/profile_pictures/team_member_profile_placeholder.png"}
 						width="300"
 						height="400"
 						alt="tyler-nix-6UEyVsw_1lU-unsplash"

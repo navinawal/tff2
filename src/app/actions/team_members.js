@@ -23,7 +23,7 @@ export const getAllTeamMembers = async () => {
 		const teamMembersSnapshots = await teamMembersRef.get();
 
 		if (teamMembersSnapshots.empty) {
-			return { success: false, message: "No TeamMember data found" };
+			return { error: "No TeamMember data found" };
 		}
 
 		const allTeamMembers = teamMembersSnapshots.docs.map((doc) => ({
@@ -31,9 +31,9 @@ export const getAllTeamMembers = async () => {
 			...transformTimestamps(doc),
 		}));
 
-		return { success: true, data: allTeamMembers };
+		return JSON.parse(JSON.stringify(allTeamMembers));
 	} catch (error) {
-		return { success: false, message: error.message };
+		return { error: error.message };
 	}
 };
 

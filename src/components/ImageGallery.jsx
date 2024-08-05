@@ -10,7 +10,7 @@ import { deleteGalleryImage } from "@/app/actions/gallery-images";
 import { FiLoader } from "react-icons/fi";
 import { toast } from "sonner";
 
-export default function ImageGallery({ galleryImages, teamMemberId }) {
+export default function ImageGallery({ uid, galleryImages, teamMemberId }) {
 	const [loading, setLoading] = useState(false);
 	const [index, setIndex] = useState(-1);
 
@@ -54,18 +54,20 @@ export default function ImageGallery({ galleryImages, teamMemberId }) {
 					close={() => setIndex(-1)}
 					toolbar={{
 						buttons: [
-							<div className="flex gap-2 p-5" key="delete-button">
-								<Button
-									variant="outline"
-									size="icon"
-									className="rounded-full bg-red-900 hover:bg-white hover:text-red-800"
-									onClick={(e) => {
-										e.stopPropagation();
-										handleDeleteImage(galleryImages[index].id);
-									}}
-								>
-									{loading ? <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" /> : <Trash2 className="h-4 w-4" />}
-								</Button>
+							<div className="flex gap-2 p-5" key={galleryImages[index].id}>
+								{uid && uid === teamMemberId && (
+									<Button
+										variant="outline"
+										size="icon"
+										className="rounded-full bg-red-900 hover:bg-white hover:text-red-800"
+										onClick={(e) => {
+											e.stopPropagation();
+											handleDeleteImage(galleryImages[index].id);
+										}}
+									>
+										{loading ? <FiLoader className="mr-2 size-4 animate-spin" aria-hidden="true" /> : <Trash2 className="h-4 w-4" />}
+									</Button>
+								)}
 								<Button
 									variant="outline"
 									size="icon"

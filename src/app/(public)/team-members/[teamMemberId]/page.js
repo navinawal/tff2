@@ -49,7 +49,7 @@ export default async function TeamMemberDetails({ params }) {
 				<div className="flex flex-col lg:flex-row gap-10">
 					<div className="overflow-hidden rounded-md max-w-[300px]">
 						<Image
-							src={teamMember.profileImage || "/profile_pictures/team_member_profile_placeholder.jpg"}
+							src={teamMember.profileImage || "/profile_pictures/team_member_profile_placeholder.png"}
 							width={300}
 							height={400}
 							alt="Profile Picture"
@@ -182,7 +182,7 @@ export default async function TeamMemberDetails({ params }) {
 							{uid && uid === teamMemberId ? <UploadGalleryDialog teamMemberId={teamMemberId} galleryImages={galleryImages} /> : null}
 						</div>
 						<div className={`flex flex-col`}>
-							<ImageGallery galleryImages={galleryImages} teamMemberId={teamMemberId} />
+							<ImageGallery uid={uid} galleryImages={galleryImages} teamMemberId={teamMemberId} />
 						</div>
 					</div>
 				</AppMaxWidthContainer>
