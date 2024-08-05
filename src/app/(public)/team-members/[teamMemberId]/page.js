@@ -25,6 +25,8 @@ import { getAllShowReels } from "@/app/actions/teamMemberShowReels";
 import { getAudioReels } from "@/app/actions/audio-reels";
 import Reviews from "./Reviews";
 import { getTeamMemberReviews } from "@/app/actions/review";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function TeamMemberDetails({ params }) {
 	const user = await getCurrentUser();
@@ -47,13 +49,16 @@ export default async function TeamMemberDetails({ params }) {
 				<div className="flex flex-col lg:flex-row gap-10">
 					<div className="overflow-hidden rounded-md max-w-[300px]">
 						<Image
-							src={teamMember.profileImage || "/profile_pictures/placeholder.jpg"}
+							src={teamMember.profileImage || "/profile_pictures/team_member_profile_placeholder.jpg"}
 							width={300}
 							height={400}
 							alt="Profile Picture"
 							decoding="async"
 							className="aspect-[3/4] h-fit w-full object-cover transition-all hover:scale-105"
 						></Image>
+						<Button asChild size={"sm"} className="my-4 float-right">
+							<Link href="/account/profile/team-profile">Edit Profile</Link>
+						</Button>
 					</div>
 					<div className="flex flex-col flex-1 justify-center items-start gap-6">
 						<div className="flex flex-col justify-start items-start gap-4">

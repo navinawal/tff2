@@ -33,11 +33,11 @@ export default function AuthContainer({ heading, subHeading, footerHeading, foot
 					</div>
 				</div>
 				<div className="bg-background text-foreground flex flex-col justify-center py-16 px-10 lg:px-24 z-10">
-					<div className="grid gap-2 mb-4">
+					<div className="grid">
 						<h1 className="text-3xl font-bold">{heading}</h1>
-						<p className="text-balance text-muted-foreground">{subHeading}</p>
+						<p className="text-sm text-muted-foreground">{subHeading}</p>
 					</div>
-					{children}
+					<div className="mt-4">{children}</div>
 					<div className="mt-8 text-center">
 						{footerHeading}
 						<Link href={footerLink} className="ml-2 underline">

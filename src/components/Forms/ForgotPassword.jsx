@@ -59,6 +59,7 @@ export default function ForgotPasswordForm() {
 				</div>
 			) : (
 				<Form {...ForgotPasswordForm}>
+					<p className="text-sm text-muted-foreground mb-4">Enter your email below to get password reset link</p>
 					<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 						<FormField
 							control={control}

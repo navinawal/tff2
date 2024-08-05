@@ -4,11 +4,18 @@ export const basicInfo = {
 	name: "TeamForFilm",
 	url: "https://ui.shadcn.com",
 	description: "This is a description of my website.",
-	phoneNumber: "123-456-7890",
+	phoneNumber: "+977 981-7033862",
 	domain: "example.com",
-	address: "329 Queensberry Street, North Melbourne VIC	3051, Australia.",
+	address: (
+		<div>
+			Toronto,Ontario
+			<br />
+			Canada
+			<br /> Kathmandu, Nepal
+		</div>
+	),
 	title: "Welcome to My Website",
-	contactEmail: "email@example.com",
+	contactEmail: "Info@teamforfilm.com",
 };
 
 export const socialLinks = [

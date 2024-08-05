@@ -22,9 +22,7 @@ export default function AppFooter() {
 							<Link href="/" className="w-100 mb-6">
 								<Image className="inline-block h-auto max-w-52" alt="image" src="/logo_white.png" width="150" height="150"></Image>
 							</Link>
-							<div className="mb-6 text-base text-[#b2b2b2]">
-								Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantiu doloremque laudantium
-							</div>
+							<div className="mb-6 text-lg text-[#b2b2b2]">Come Together</div>
 							<div className="flex gap-2">
 								{socialLinks?.map((socialLink) => (
 									<Link
@@ -81,8 +79,8 @@ export default function AppFooter() {
 									</div>
 								</Link>
 								<div className="text-base text-[#b2b2b2]">
-									<div className="flex items-center gap-2">
-										<IoHome />
+									<div className="flex items-start gap-2">
+										<IoHome className="mt-1" />
 										{basicInfo.address}
 									</div>
 								</div>
