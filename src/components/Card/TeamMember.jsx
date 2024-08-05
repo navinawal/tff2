@@ -13,7 +13,7 @@ export default function TeamMemberCard({ teamMember }) {
 					<Image
 						decoding="async"
 						className="aspect-[3/4] h-fit w-full object-cover transition-all hover:scale-105"
-						src={teamMember.profileImage}
+						src={teamMember.profileImage || "/profile_pictures/team_member_profile_placeholder.jpg"}
 						width="300"
 						height="400"
 						alt="tyler-nix-6UEyVsw_1lU-unsplash"

@@ -56,9 +56,11 @@ export default async function TeamMemberDetails({ params }) {
 							decoding="async"
 							className="aspect-[3/4] h-fit w-full object-cover transition-all hover:scale-105"
 						></Image>
-						<Button asChild size={"sm"} className="my-4 float-right">
-							<Link href="/account/profile/team-profile">Edit Profile</Link>
-						</Button>
+						{uid && uid === teamMemberId && (
+							<Button asChild size={"sm"} className="my-4 float-right">
+								<Link href="/account/profile/team-profile">Edit Profile</Link>
+							</Button>
+						)}
 					</div>
 					<div className="flex flex-col flex-1 justify-center items-start gap-6">
 						<div className="flex flex-col justify-start items-start gap-4">
