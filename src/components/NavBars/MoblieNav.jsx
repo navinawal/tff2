@@ -1,5 +1,5 @@
 "use client";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Link from "next/link";
@@ -12,8 +12,6 @@ import AuthButtons from "../Auth/AuthButtons/AuthButton";
 
 export default function MobileNav() {
 	const { user, loading, logout } = useAuth();
-	if (!user) return;
-	const { profileData } = user;
 
 	const handleLogout = async () => {
 		try {
@@ -27,7 +25,7 @@ export default function MobileNav() {
 	};
 
 	return (
-		<div className="flex flex-grow">
+		<div className="flex items-center flex-grow">
 			<Sheet>
 				<SheetTrigger asChild>
 					<Button variant="outline" size="icon" className="shrink-0">
@@ -36,6 +34,10 @@ export default function MobileNav() {
 					</Button>
 				</SheetTrigger>
 				<SheetContent side="left">
+					<SheetHeader>
+						<SheetTitle></SheetTitle>
+						<SheetDescription></SheetDescription>
+					</SheetHeader>
 					<nav className="flex flex-col flex-grow gap-6 text-lg font-medium pt-8">
 						{user && (
 							<>
