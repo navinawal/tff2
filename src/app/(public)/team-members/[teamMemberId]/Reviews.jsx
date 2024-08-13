@@ -38,13 +38,13 @@ export default function Reviews({ uid, teamMemberId, teamMemberReviews }) {
 							);
 						})
 					) : (
-						<div className="flex justify-center items-center h-[400px] border w-full border-dashed rounded-md text-4xl">No Review Yet</div>
+						<div className="flex justify-center items-center h-[400px] border w-full border-dashed rounded-md text-2xl">No Review Yet</div>
 					)}
 				</div>
 			</div>
 			{uid && uid !== teamMemberId && (
-				<div className="py-5">
-					<h1 className="text-5xl font-bold text-center">Leave Us a Review</h1>
+				<div className="pt-14 py-5">
+					<h2 className="text-3xl font-bold text-center">Leave a Review</h2>
 					<ReviewForm uid={uid} teamMemberId={teamMemberId} />
 				</div>
 			)}

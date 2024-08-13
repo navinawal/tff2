@@ -93,3 +93,17 @@
 	-webkit-transition: linear 0.1s;
 	transition: linear 0.1s;
 }
+
+	.carousel-button {
+		position: absolute;
+		bottom: 0;
+		transform: translateY(50%);
+	  }
+	  
+	  .carousel-button.left {
+		left: 0;
+	  }
+	  
+	  .carousel-button.right {
+		right: 0;
+}

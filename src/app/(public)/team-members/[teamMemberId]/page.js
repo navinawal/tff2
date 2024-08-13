@@ -1,21 +1,17 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Image from "next/image";
 import styles from "./styles.module.css";
-import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { FaWhatsapp } from "react-icons/fa";
-
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import ImageGallery from "@/components/ImageGallery";
 import SocialShare from "@/components/ui/social-share";
 import TeamMemberMoreInfo from "./MoreInfo";
 import UploadGalleryDialog from "./UploadGalleryDialog";
-import AudioReelsDialog from "./AudioReelsDialog";
 import ShowReelsDialog from "./ShowReelsDialog";
 import CarrierSummaryChart from "./_components/carrier-summary-chart";
-import AudioReels from "./AudioReels";
 import ShowReels from "./ShowReels";
-
+import Reviews from "./Reviews";
 import { getCurrentUser } from "@/app/actions/userAuth";
 import { getTeamMemberDetails } from "@/app/actions/team_members";
 import { getTeamMemberTrainings } from "@/app/actions/teamMemberTrainings";
@@ -23,7 +19,6 @@ import { getTeamMemberFilmographies } from "@/app/actions/teamFilmography";
 import { getAllGalleryImages } from "@/app/actions/gallery-images";
 import { getAllShowReels } from "@/app/actions/teamMemberShowReels";
 import { getAudioReels } from "@/app/actions/audio-reels";
-import Reviews from "./Reviews";
 import { getTeamMemberReviews } from "@/app/actions/review";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -38,7 +33,6 @@ export default async function TeamMemberDetails({ params }) {
 	const teamMember = await getTeamMemberDetails(teamMemberId);
 	const trainings = await getTeamMemberTrainings(teamMemberId);
 	const filmographies = await getTeamMemberFilmographies(teamMemberId);
-	const audioReels = await getAudioReels(teamMemberId);
 	const showReels = await getAllShowReels(teamMemberId);
 	const galleryImages = await getAllGalleryImages(teamMemberId);
 	const teamMemberReviews = await getTeamMemberReviews(teamMemberId);
@@ -71,35 +65,38 @@ export default async function TeamMemberDetails({ params }) {
 									</Badge>
 								))}
 							</div>
-							<h1 className={`${styles.strokeHeading} text-5xl md:text-8xl text-white font-bold`}>
-								{teamMember.firstName} {teamMember.lastName}
-							</h1>
+							<h1 className={`text-4xl md:text-5xl lg:text-6xl xl:text-8xl ${styles.strokeHeading} text-white font-bold pt-1 pb-1 md:pt-6 md:pb-6 lg:pt-8 lg:pb-8 xl:pt-10 xl:pb-10`}>
+                                {teamMember.firstName} {teamMember.lastName}
+                            </h1>
+
+
 						</div>
 						<div className="flex gap-2">
-							<a href={`https://wa.me/12345678890`} target="_blank" rel="noopener noreferrer" variant="link" className="flex p-0 m-0 mr-10">
+							<a href={`https://wa.me/12345678890`} target="_blank" rel="noopener noreferrer" variant="link" className="flex p-2 m-0 mr-10">
 								Whatsapp
 								<FaWhatsapp className="h-5 w-5 ml-2" />
 							</a>
 							<SocialShare url="https://teamforfilm.vercel.app/" title={teamMember.firstName} hashtag="" />
 						</div>
-						<div className="flex flex-wrap justify-between md:justify-start w-full gap-6">
-							<DetailBox containerClass="flex flex-col gap-3" heading="Age" subHeading={teamMember.ageGroup} />
-							<DetailBox containerClass="flex flex-col gap-3" heading="Height" subHeading={teamMember.height} />
-							<DetailBox containerClass="flex flex-col gap-3" heading="Ethnicity" subHeading={teamMember.ethnicity} />
-							<DetailBox containerClass="flex flex-col gap-3" heading="Nationality" subHeading={teamMember.nationality} />
-							<DetailBox containerClass="flex flex-col gap-3" heading="Location" subHeading={teamMember.location} />
-						</div>
+						<div className="flex flex-wrap justify-between md:justify-start w-full px-2 gap-4 md:gap-10 lg:gap-12">
+                            <DetailBox containerClass="flex flex-col gap-3" heading="Age" subHeading={teamMember.ageGroup} />
+                            <DetailBox containerClass="flex flex-col gap-3" heading="Height" subHeading={teamMember.height} />
+                            <DetailBox containerClass="flex flex-col gap-3" heading="Ethnicity" subHeading={teamMember.ethnicity} />
+                            <DetailBox containerClass="flex flex-col gap-3" heading="Nationality" subHeading={teamMember.nationality} />
+                             <DetailBox containerClass="flex flex-col gap-3" heading="Location" subHeading={teamMember.location} />
+                        </div>
+
 						<Accordion type="single" collapsible className="w-full">
 							<AccordionItem value="item-1">
-								<AccordionTrigger>
-									<h6 className={`${styles.smallHeading}`}>Carrier Summary</h6>
+								<AccordionTrigger className="py-1 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 lg:py-5 lg:px-10">
+									<h6 className={`${styles.smallHeading}`}>Career Summary</h6>
 								</AccordionTrigger>
 								<AccordionContent>
 									<CarrierSummaryChart teamMember={teamMember} />
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-2">
-								<AccordionTrigger>
+								<AccordionTrigger className="py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 lg:py-5 lg:px-10">
 									<h6 className={`${styles.smallHeading}`}>Trainings</h6>
 								</AccordionTrigger>
 								<AccordionContent>
@@ -120,7 +117,7 @@ export default async function TeamMemberDetails({ params }) {
 								</AccordionContent>
 							</AccordionItem>
 							<AccordionItem value="item-3">
-								<AccordionTrigger>
+								<AccordionTrigger className="py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 lg:py-5 lg:px-10">
 									<h6 className={`${styles.smallHeading}`}>Skills</h6>
 								</AccordionTrigger>
 								<AccordionContent>
@@ -150,6 +147,8 @@ export default async function TeamMemberDetails({ params }) {
 				</div>
 			</AppMaxWidthContainer>
 
+			{/* AudioReels section hidden */}
+			{/* 
 			<div className="px-8 py-32">
 				<AppMaxWidthContainer>
 					<div className="flex flex-col gap-y-5 md:gap-x-10">
@@ -168,8 +167,9 @@ export default async function TeamMemberDetails({ params }) {
 					</div>
 				</AppMaxWidthContainer>
 			</div>
+			*/}
 
-			<div className="px-8 py-32">
+			<div className="px-2 py-32">
 				<AppMaxWidthContainer>
 					<div className="flex flex-col gap-y-5 md:gap-x-10">
 						<div className="flex justify-between items-center">
@@ -188,7 +188,7 @@ export default async function TeamMemberDetails({ params }) {
 				</AppMaxWidthContainer>
 			</div>
 
-			<div className="px-8 py-32">
+			<div className="px-2 py-32">
 				<AppMaxWidthContainer>
 					<div className="flex flex-col gap-y-5 md:gap-x-10">
 						<div className="flex justify-between items-center">
@@ -226,9 +226,14 @@ export default async function TeamMemberDetails({ params }) {
 
 function DetailBox({ containerClass, heading, subHeading }) {
 	return (
-		<div className={containerClass && "flex flex-col gap-1"}>
-			<h6 className={`${styles.smallHeading} text-white`}>{heading}</h6>
-			<div className="text-base leading-tight text-muted-foreground font-normal">{subHeading}</div>
+		<div className={containerClass}>
+			<h6 className="text-xs md:text-sm lg:text-base text-white uppercase mb-0.5">{heading}</h6>
+			<div className="text-xs md:text-sm lg:text-base leading-tight text-muted-foreground font-normal uppercase">
+				{subHeading}
+			</div>
 		</div>
 	);
 }
+
+
+
