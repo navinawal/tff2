@@ -93,3 +93,80 @@
 	-webkit-transition: linear 0.1s;
 	transition: linear 0.1s;
 }
+
+.custom-image-height {
+	height: 200px !important; /* Fixed height */
+	width: auto !important; /* Width adjusts automatically */
+}
+
+.bokeh-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	pointer-events: none; /* Prevent interaction with the background */
+  }
+  
+  .bokeh {
+	position: absolute;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.2);
+	animation: bokeh-animation 20s infinite;
+  }
+  
+  .bokeh:nth-child(1) {
+	width: 100px;
+	height: 100px;
+	top: 20%;
+	left: 30%;
+	animation-delay: 0s;
+  }
+  
+  .bokeh:nth-child(2) {
+	width: 150px;
+	height: 150px;
+	top: 50%;
+	left: 70%;
+	animation-delay: 5s;
+  }
+  
+  .bokeh:nth-child(3) {
+	width: 80px;
+	height: 80px;
+	top: 80%;
+	left: 20%;
+	animation-delay: 10s;
+  }
+  
+  .bokeh:nth-child(4) {
+	width: 120px;
+	height: 120px;
+	top: 10%;
+	left: 80%;
+	animation-delay: 15s;
+  }
+  
+  .bokeh:nth-child(5) {
+	width: 90px;
+	height: 90px;
+	top: 40%;
+	left: 40%;
+	animation-delay: 20s;
+  }
+  
+  @keyframes bokeh-animation {
+	0% {
+	  transform: scale(1);
+	  opacity: 0.2;
+	}
+	50% {
+	  transform: scale(1.5);
+	  opacity: 0.5;
+	}
+	100% {
+	  transform: scale(1);
+	  opacity: 0.2;
+	}
+  }

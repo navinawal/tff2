@@ -6,6 +6,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/components/ProgressBarProvider";
 
+
 const fontSans = FontSans({
 	subsets: ["latin"],
 	variable: "--font-sans",

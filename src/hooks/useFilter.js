@@ -1,12 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase"; // Ensure this path is correct
 
 export function useFilter() {
 	const [selectedFilters, setSelectedFilters] = useState({});
 	const [searchQuery, setSearchQuery] = useState("");
 	const [sortField, setSortField] = useState("");
 	const [sortDirection, setSortDirection] = useState("asc");
+	const [filteredData, setFilteredData] = useState([]); // New state for storing filtered data
 
 	const router = useRouter();
 
@@ -65,6 +68,36 @@ export function useFilter() {
 		setSelectedFilters(filters);
 	}, []);
 
+	// New: Fetch filtered data from Firestore
+	useEffect(() => {
+		const fetchFilteredData = async () => {
+			let q = query(collection(db, "yourCollection")); // Replace "yourCollection" with your actual collection name
+
+			// Apply search query
+			if (searchQuery) {
+				q = query(q, where("searchField", "==", searchQuery)); // Replace "searchField" with your actual search field
+			}
+
+			// Apply filters
+			Object.entries(selectedFilters).forEach(([key, values]) => {
+				if (values.length > 0) {
+					q = query(q, where(key, "in", values));
+				}
+			});
+
+			// Apply sorting
+			if (sortField) {
+				q = query(q, orderBy(sortField, sortDirection));
+			}
+
+			const snapshot = await getDocs(q);
+			const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+			setFilteredData(data);
+		};
+
+		fetchFilteredData();
+	}, [selectedFilters, searchQuery, sortField, sortDirection]);
+
 	return {
 		selectedFilters,
 		updateFilter,
@@ -74,5 +107,6 @@ export function useFilter() {
 		sortDirection,
 		updateSorting,
 		clearAllFilters,
+		filteredData, // Expose filtered data
 	};
 }

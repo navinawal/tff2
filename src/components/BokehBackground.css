@@ -1,0 +1,113 @@
+.bokeh-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none; /* Prevent interaction with the background */
+    z-index: -1; /* Ensure it's behind other content */
+}
+
+.bokeh {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1); /* Dim white bokeh */
+    animation: bokeh-animation 40s infinite; /* Slow down animation */
+}
+
+/* Increase the number of bokeh elements */
+.bokeh:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.bokeh:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    top: 30%;
+    left: 70%;
+    animation-delay: 5s;
+}
+
+.bokeh:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 40%;
+    animation-delay: 10s;
+}
+
+.bokeh:nth-child(4) {
+    width: 180px;
+    height: 180px;
+    top: 20%;
+    left: 80%;
+    animation-delay: 15s;
+}
+
+.bokeh:nth-child(5) {
+    width: 90px;
+    height: 90px;
+    top: 60%;
+    left: 30%;
+    animation-delay: 20s;
+}
+
+.bokeh:nth-child(6) {
+    width: 110px;
+    height: 110px;
+    top: 40%;
+    left: 50%;
+    animation-delay: 25s;
+}
+
+.bokeh:nth-child(7) {
+    width: 130px;
+    height: 130px;
+    top: 80%;
+    left: 10%;
+    animation-delay: 30s;
+}
+
+.bokeh:nth-child(8) {
+    width: 140px;
+    height: 140px;
+    top: 70%;
+    left: 60%;
+    animation-delay: 35s;
+}
+
+.bokeh:nth-child(9) {
+    width: 160px;
+    height: 160px;
+    top: 90%;
+    left: 20%;
+    animation-delay: 40s;
+}
+
+.bokeh:nth-child(10) {
+    width: 150px;
+    height: 150px;
+    top: 10%;
+    left: 50%;
+    animation-delay: 45s;
+}
+
+@keyframes bokeh-animation {
+    0% {
+        transform: scale(1);
+        opacity: 0.1; /* Dim opacity */
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.3; /* Slightly brighter */
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.1; /* Dim opacity */
+    }
+}

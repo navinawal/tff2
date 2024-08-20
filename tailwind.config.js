@@ -22,14 +22,19 @@ module.exports = {
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
 				ring: "hsl(var(--ring))",
-				background: "hsl(var(--background))",
+				background: {
+					DEFAULT: "#1F2937",
+					light: "#374151",
+				},
 				foreground: "hsl(var(--foreground))",
 				primary: {
-					DEFAULT: "hsl(var(--primary))",
+					DEFAULT: "#4F46E5",
+					dark: "#4338CA",
 					foreground: "hsl(var(--primary-foreground))",
 				},
 				secondary: {
-					DEFAULT: "hsl(var(--secondary))",
+					DEFAULT: "#10B981",
+					dark: "#059669",
 					foreground: "hsl(var(--secondary-foreground))",
 				},
 				destructive: {
@@ -52,6 +57,9 @@ module.exports = {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
 				},
+			},
+			borderColor: {
+				DEFAULT: "hsl(var(--border))",
 			},
 			borderRadius: {
 				lg: "var(--radius)",
