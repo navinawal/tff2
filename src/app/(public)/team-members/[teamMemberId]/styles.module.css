@@ -4,6 +4,7 @@
 	-webkit-text-stroke-color: white;
 	font-family: "Outfit", sans-serif;
 }
+
 .titleHeading {
 	position: relative;
 	display: inline-block;
@@ -14,23 +15,26 @@
 	text-transform: uppercase;
 	letter-spacing: 1px;
 }
+
 .titleHeading:before {
 	content: "";
 	position: absolute;
 	top: 50%;
 	left: 0;
-	-webkit-transform: translateY(-50%);
 	transform: translateY(-50%);
 	width: 12px;
 	height: 12px;
 	border: 2px solid #ffffff4d;
 	border-radius: 50%;
 }
+
 .textHGradient {
-	background: -webkit-linear-gradient(45deg, #ff82f3 0%, #7b13ff 50%, #400d64 100%);
+	background: linear-gradient(45deg, #ff82f3 0%, #7b13ff 50%, #400d64 100%);
 	-webkit-background-clip: text;
+	background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+
 .heading {
 	font-family: "Outfit", sans-serif;
 	font-weight: 500;
@@ -38,6 +42,7 @@
 	letter-spacing: 1px;
 	line-height: 1.2;
 }
+
 .smallHeading {
 	font-family: "Outfit", sans-serif;
 	font-size: 0.9em;
@@ -46,26 +51,25 @@
 	letter-spacing: 1px;
 	line-height: 1.2;
 }
+
 .borderedBox {
 	position: relative;
 	z-index: 1;
 	border-radius: 0.5em;
 	color: rgba(255, 255, 255, 0.7);
-	background: #181a1c;
-	--bs-bg-opacity: 1;
 	background-color: rgba(24, 26, 28, 1);
 	padding: 30px;
 }
+
 .fancyBorderedBox {
 	position: relative;
 	z-index: 1;
 	border-radius: 0.5em;
 	color: rgba(255, 255, 255, 0.7);
-	background: #181a1c;
-	--bs-bg-opacity: 1;
 	background-color: rgba(24, 26, 28, 1);
 	padding: 30px;
 }
+
 .fancyBorderedBox:before {
 	z-index: -1;
 	content: "";
@@ -78,9 +82,9 @@
 	background-image: linear-gradient(45deg, #ff82f3 0%, #7b13ff 50%, #400d64 100%);
 	width: 100%;
 	height: 100%;
-	-webkit-transition: linear 0.1s;
-	transition: linear 0.1s;
+	transition: opacity 0.1s linear, visibility 0s linear 0.1s;
 }
+
 .fancyBorderedBox:after {
 	content: "";
 	position: absolute;
@@ -90,20 +94,19 @@
 	background-image: linear-gradient(45deg, #ff82f3 0%, #7b13ff 50%, #400d64 100%);
 	width: 100%;
 	height: 2px;
-	-webkit-transition: linear 0.1s;
-	transition: linear 0.1s;
+	transition: background-color 0.1s linear;
 }
 
-	.carousel-button {
-		position: absolute;
-		bottom: 0;
-		transform: translateY(50%);
-	  }
-	  
-	  .carousel-button.left {
-		left: 0;
-	  }
-	  
-	  .carousel-button.right {
-		right: 0;
+.carousel-button {
+	position: absolute;
+	bottom: 0;
+	transform: translateY(50%);
+}
+
+.carousel-button.left {
+	left: 0;
+}
+
+.carousel-button.right {
+	right: 0;
 }

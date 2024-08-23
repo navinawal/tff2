@@ -4,8 +4,7 @@
 
 @layer base {
 	:root {
-		/* --background: 0 0% 100%; */
-		--background: 258, 29%, 51%;
+		--background: 258 29% 51%;
 		--foreground: 240 10% 3.9%;
 		--card: 0 0% 100%;
 		--card-foreground: 240 10% 3.9%;
@@ -59,8 +58,3 @@
 		@apply bg-background text-foreground;
 	}
 }
-
-/* .bg-black {
-	--tw-bg-opacity: 1;
-	background-color: #735da5;
-} */

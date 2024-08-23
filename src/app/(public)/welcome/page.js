@@ -1,5 +1,6 @@
-"use client"
-import React, { useEffect, useRef, useState } from 'react';
+"use client";
+
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Image from "next/image";
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import YouTube from 'react-youtube';
@@ -16,75 +17,22 @@ const getYouTubeID = (url) => {
 };
 
 export default function Home() {
+    const [isVertical, setIsVertical] = useState(false);
     const playerRef = useRef(null);
     const [isReady, setIsReady] = useState(false);
-    const [isVertical, setIsVertical] = useState(false);
 
-    // Define video URLs and their respective start and end times
     const videos = {
         horizontal: {
             url: "https://www.youtube.com/watch?v=bj_doe4CbTs",
-            startTime: 0,  // Start at 5 seconds
-            endTime: 12   // End at 30 seconds
+            startTime: 0,
+            endTime: 12
         },
         vertical: {
             url: "https://youtube.com/shorts/2VFfvPeMLG8?si=O44Bbu7ShmMjyqJW",
-            startTime: 0,  // Start at the beginning
-            endTime: 5    // End at 10 seconds
+            startTime: 0,
+            endTime: 5
         }
     };
-
-    const blurIntensity = 5;
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsVertical(window.innerHeight > window.innerWidth);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
-    const onReady = (event) => {
-        playerRef.current = event.target;
-        playerRef.current.mute();
-        setIsReady(true);
-    };
-
-    const loopVideo = (video) => {
-        if (playerRef.current) {
-            const currentTime = playerRef.current.getCurrentTime();
-            if (currentTime < video.startTime) {
-                playerRef.current.seekTo(video.startTime);
-            } else if (currentTime >= video.endTime) {
-                playerRef.current.seekTo(video.startTime);
-            }
-        }
-    };
-
-    useEffect(() => {
-        if (isReady && playerRef.current) {
-            const qualities = ['hd1080', 'hd720', 'large', 'medium', 'small'];
-            for (let quality of qualities) {
-                if (playerRef.current.getAvailableQualityLevels().includes(quality)) {
-                    playerRef.current.setPlaybackQuality(quality);
-                    break;
-                }
-            }
-
-            // Set up interval to check and loop video
-            const interval = setInterval(() => {
-                const currentVideo = isVertical ? videos.vertical : videos.horizontal;
-                loopVideo(currentVideo);
-            }, 1000); // Check every second
-
-            return () => clearInterval(interval);
-        }
-    }, [isReady, isVertical]);
 
     const currentVideo = isVertical ? videos.vertical : videos.horizontal;
     const videoId = getYouTubeID(currentVideo.url);
@@ -107,6 +55,61 @@ export default function Home() {
         },
     };
 
+    const onReady = useCallback((event) => {
+        playerRef.current = event.target;
+        playerRef.current.mute();
+        setIsReady(true);
+    }, []);
+
+    const setQuality = useCallback(() => {
+        if (playerRef.current) {
+            const qualities = ['hd1080', 'hd720', 'large', 'medium', 'small'];
+            const availableQualities = playerRef.current.getAvailableQualityLevels();
+            for (let quality of qualities) {
+                if (availableQualities.includes(quality)) {
+                    playerRef.current.setPlaybackQuality(quality);
+                    break;
+                }
+            }
+        }
+    }, []);
+
+    const loopVideo = useCallback(() => {
+        if (playerRef.current) {
+            const currentTime = playerRef.current.getCurrentTime();
+            if (currentTime < currentVideo.startTime) {
+                playerRef.current.seekTo(currentVideo.startTime);
+            } else if (currentTime >= currentVideo.endTime) {
+                playerRef.current.seekTo(currentVideo.startTime);
+            }
+        }
+    }, [currentVideo]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsVertical(window.innerHeight > window.innerWidth);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isReady) {
+            const qualityTimer = setTimeout(setQuality, 1000);
+            const loopInterval = setInterval(loopVideo, 1000);
+
+            return () => {
+                clearTimeout(qualityTimer);
+                clearInterval(loopInterval);
+            };
+        }
+    }, [isReady, setQuality, loopVideo]);
+
     return (
         <div className="relative min-h-screen overflow-hidden">
             <style jsx global>{`
@@ -123,7 +126,7 @@ export default function Home() {
                     z-index: -1;
                 }
                 .video-blur {
-                    filter: blur(${blurIntensity}px);
+                    filter: blur(5px);
                 }
             `}</style>
             <div className="fixed inset-0 w-full h-full z-0">
@@ -147,7 +150,7 @@ export default function Home() {
     );
 }
 
-// ... (Hero, Objective, Features, and AdditionalFeatures components remain unchanged)
+// ... Rest of your component definitions (Hero, Objective, Features, AdditionalFeatures) remain unchanged
 
 function Hero() {
     return (
