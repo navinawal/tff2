@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { FilmIcon, UserGroupIcon, ChartBarIcon, PhotoIcon, MicrophoneIcon, StarIcon } from '@heroicons/react/24/outline';
 import AppMaxWidthContainer from "@/components/ui/max-width-container";
 import styles from './Welcome.module.css';
-import FeaturedShowReel from './components/FeaturedShowReel';
 
 const features = [
     { name: "Comprehensive Profiles", icon: UserGroupIcon },

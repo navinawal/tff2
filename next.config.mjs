@@ -14,6 +14,8 @@ const nextConfig = {
 			},
 		],
 	},
+	transpilePackages: ['geist'],
+	// You can add other configurations here if needed
 };
 
 export default nextConfig;

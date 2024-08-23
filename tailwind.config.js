@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
 module.exports = {
 	darkMode: ["class"],
 	content: ["./pages/**/*.{js,jsx}", "./components/**/*.{js,jsx}", "./app/**/*.{js,jsx}", "./src/**/*.{js,jsx}"],
@@ -18,6 +20,11 @@ module.exports = {
 			},
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Geist Sans', ...fontFamily.sans],
+				mono: ['Geist Mono', ...fontFamily.mono],
+				orbitron: ['Orbitron', ...fontFamily.sans],
+			},
 			colors: {
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
@@ -62,7 +69,7 @@ module.exports = {
 				DEFAULT: "hsl(var(--border))",
 			},
 			borderRadius: {
-				lg: "var(--radius)",
+				lg: "var(--radius)", bv njv
 				md: "calc(var(--radius) - 2px)",
 				sm: "calc(var(--radius) - 4px)",
 			},

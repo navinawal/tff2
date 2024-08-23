@@ -35,7 +35,7 @@ function Hero() {
         <p className="text-lg lg:text-xl leading-relaxed text-purple-100">
           TeamForFilm aspires to become a common home for Nepali film
           professionals and serve as a comprehensive database for the film
-          industry. We've developed a platform to address the challenges in
+          industry. We&apos;ve developed a platform to address the challenges in
           locating suitable team members and provide a stage for emerging
           talents.
         </p>
@@ -64,7 +64,7 @@ function Hero() {
         <p className="text-base leading-relaxed text-purple-100">
           TeamForFilm aspires to become a common home for Nepali film
           professionals and serve as a comprehensive database for the film
-          industry. We've developed a platform to address the challenges in
+          industry. We&apos;ve developed a platform to address the challenges in
           locating suitable team members and provide a stage for emerging
           talents.
         </p>
@@ -96,6 +96,9 @@ function Objective() {
   );
 }
 
+// (Rest of the code remains unchanged)
+
+
 function Features() {
   const features = [
     {
@@ -123,9 +126,8 @@ function Features() {
       {features.map((feature, index) => (
         <motion.div
           key={index}
-          className={`flex flex-col ${
-            index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-          } items-center gap-10`}
+          className={`flex flex-col ${index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+            } items-center gap-10`}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, delay: index * 0.3, ease: "easeOut" }}
@@ -217,7 +219,7 @@ function AdditionalFeatures() {
       </div>
       <p className="mt-10 text-lg italic text-center text-purple-200">
         While many features are fully functional, some are still in development.
-        We're continuously working to enhance your experience and welcome your
+        We&apos;re continuously working to enhance your experience and welcome your
         valuable feedback.
       </p>
     </motion.section>

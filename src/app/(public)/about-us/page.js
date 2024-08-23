@@ -17,9 +17,9 @@ export default function AboutUs() {
 						<Image
 							src="/images/resource/search-popup-from-laptop.png"
 							alt="Search popup from laptop"
-							layout="responsive" // Ensures the image scales according to container
-							width={500}         // Maximum width
-							height={auto}        // Maximum height
+							width={500}  // Adjusted to be a number
+							height={300} // Adjusted to be a number
+							objectFit="cover" // Ensures the image covers the container
 						/>
 					</div>
 				</div>
@@ -36,9 +36,9 @@ export default function AboutUs() {
 						<Image
 							src="/images/resource/COMPREHENSIVE-PROFILE-2.png"
 							alt="Comprehensive Profile"
-							layout="responsive"
 							width={700}
 							height={300}
+							objectFit="cover"
 						/>
 					</div>
 					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
@@ -60,9 +60,9 @@ export default function AboutUs() {
 						<Image
 							src="/images/resource/timestamps-opt-2.png"
 							alt="ShowReels with Timestamps"
-							layout="responsive"
 							width={700}
 							height={300}
+							objectFit="cover"
 						/>
 					</div>
 				</div>
@@ -72,9 +72,9 @@ export default function AboutUs() {
 						<Image
 							src="/images/resource/CHARTS-2.png"
 							alt="Career Summary Metrics"
-							layout="responsive"
 							width={600}
 							height={300}
+							objectFit="cover"
 						/>
 					</div>
 					<div className="flex flex-col justify-center relative w-full lg:w-5/12 gap-2">
